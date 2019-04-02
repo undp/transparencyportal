@@ -1,0 +1,1365 @@
+{% load custom_filters %}
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+        crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" crossorigin=""
+    />
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
+        crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js" crossorigin=""></script>
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    ul,
+    li {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .sectionSeperatorWrapper {
+        margin-top: 30px;
+    }
+
+    /* Aggregate section end */
+
+    .sectionWrapper {
+
+        border: 1px solid #666666;
+        margin-top: 30px;
+        padding-bottom: 0;
+        box-sizing: border-box;
+    }
+
+
+    .sectionWrapper .sectionHeader {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        width: 100%;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .sectionWrapper .filterWrapper {
+        display: table;
+        width: 100%;
+        padding: 20px 0;
+        margin: 0;
+    }
+
+    .sectionWrapper .filterWrapper .filterItem {
+        display: inline-block;
+        float: left;
+        width: 33.3333%;
+    }
+
+    .sectionWrapper .filterWrapper .filterValue {
+        display: block;
+        font-size: 18px;
+        font-weight: 600;
+        margin-top: 5px;
+    }
+
+    .aggregateWrapper {
+        background-color: #F2F2F2;
+        padding: 20px;
+        display: table;
+        width: 100%;
+    }
+
+    .aggregateWrapper .aggregateHeader {
+        font-size: 20px;
+        font-weight: 600;
+        display: block;
+    }
+
+    .aggregateWrapper .aggregateSubTitle {
+        font-size: 18px;
+        display: table-cell;
+        line-height: 26px;
+        width: 20%;
+        text-align: center;
+    }
+
+    .sectionWrapper .themesWrapper {
+        width: 100%;
+        page-break-inside: avoid;
+        height: auto;
+        border: 1px solid #666666;
+        background-color: #fff;
+        padding: 16px;
+        margin-bottom: 10px;
+    }
+
+    .sectionWrapper .themesWrapper .budgetDigit {
+        font-size: 20px;
+        vertical-align: top;
+        padding-left: 10px;
+        font-weight: 700;
+    }
+
+    .themesName {
+        width: 100%;
+        text-align: center;
+        display: block;
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    .aggregateWrapper .aggregateSubTitle .aggregateLabel {
+        font-size: 18px;
+    }
+
+    .sectionWrapper .themesWrapper .themesName {
+        width: 100%;
+        text-align: left;
+        display: block;
+        font-size: 20px;
+        /* padding-bottom: 10px; */
+    }
+
+    .sectionWrapper .themesWrapper .themesList {
+        width: 100%;
+        display: table;
+    }
+
+    .sectionWrapper .themesWrapper .themesList .themesBudget {
+        width: 50%;
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    .sectionWrapper .themesWrapper .aggregateWrapper {
+        font-weight: 600;
+        border-radius: 7px;
+    }
+
+    .sectionWrapper .themesWrapper .aggregateWrapper .aggregateSubItem {
+        width: 33.33%;
+        display: inline-block;
+        text-align: center;
+    }
+
+    .sectionWrapper .themesWrapper .aggregateHead {
+        font-weight: 400;
+    }
+
+    .sectionWrapper .themesWrapper .aggregateWrapper span {
+        display: block;
+    }
+
+    .sectionWrapper .themesWrapper .themesList {
+        width: 100%;
+        display: table;
+    }
+
+    .sectionWrapper .aggregateWrapper .summary {
+        display: table-cell;
+    }
+
+    .sectionWrapper .themesWrapper .themesList .themesBudget {
+        width: 50%;
+        display: table-cell;
+        vertical-align: bottom;
+    }
+
+    .sectionWrapper .sdgImage {
+        width: 80px;
+        height: 80px;
+    }
+
+    .sectionWrapper .sdgWrapper {
+        width: 90%;
+        display: inline-block;
+        vertical-align: top;
+        padding-left: 5px;
+    }
+
+    .summaryText {
+        display: block;
+        font-size: 14px;
+    }
+
+    /*Chart Styles */
+
+    .sectionWrapper.chartWrapper {
+        display: table;
+        width: 100%;
+    }
+
+    .sectionOverviewWrapper {
+        font-size: 20px;
+        font-weight: 600;
+        padding-bottom: 10px;
+    }
+    .sectionWrapper .sectionOverviewWrapper {
+        font-size: 20px;
+        font-weight: 600;
+        padding-bottom: 10px;
+    }
+
+    .sectionWrapper.chartWrapper .chartSmall {
+        width: 49%;
+        vertical-align: top;
+        text-align: center;
+        background-color: #fff;
+        display: inline-block;
+        border: 2px solid #cbcbcb;
+    }
+
+    .sectionWrapper.chartWrapper .chartSmall:nth-child(1) {
+        width: calc(49% - 10px);
+        margin-right: 10px;
+    }
+
+    .sectionWrapper.chartWrapper .chartSmall .chartHead {
+        width: 100%;
+        display: block;
+        box-shadow: 0 2px 7px rgba(7, 61, 125, 0.18);
+        height: 70px;
+        font-size: 18px;
+        font-weight: 600;
+        padding: 23px 35px;
+        background-color: white;
+    }
+
+    .legend {
+        margin: 0 auto;
+        display: table;
+    }
+
+    @media(max-width:767px) {
+        .legend {
+            margin-bottom: 12px;
+        }
+    }
+
+    .textLabel {
+        position: absolute;
+        font-size: 9px;
+        left: -1px;
+        pointer-events: none;
+        font-weight: normal;
+        max-width: 100%;
+        min-width: 100%;
+        bottom: 54%;
+        text-align: center;
+    }
+
+    .exportLegend {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        width: 50%;
+    }
+
+    .legendWrapper {
+        padding: 0;
+        text-align: left;
+        line-height: 20px;
+    }
+
+    .legendWrapper.modality-contribution-legend {
+        display: inline-block;
+        background: rgb(244, 244, 244);
+        padding: 10px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: rgb(204, 204, 204);
+    }
+
+    .legendWrapper .legendItem {
+        /* display: table; */
+    }
+
+    .legendPercentage {
+        display: inline-block;
+        font-size: 11px;
+    }
+
+    .legendDescription {
+        display: inline-block;
+        margin-right: 10px;
+        font-size: 11px;
+    }
+
+    .legendColor {
+        width: 8px;
+        height: 8px;
+        margin-right: 10px;
+        display: inline-block;
+    }
+
+    .perc,
+    .textField {
+        display: inline-block;
+        width: 100%;
+        font-weight: bold;
+    }
+
+    .perc {
+        color: #000000;
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+
+    @media(min-width: 768px) {
+        .perc {
+            font-size: 22px;
+        }
+    }
+
+    .dollor {
+        color: #666;
+        font-weight: 600;
+        font-size: 12px;
+    }
+
+    .donut {
+        display: inline-block;
+        position: relative;
+        width: 100%;
+        vertical-align: top;
+        overflow: hidden;
+    }
+
+    .imageWrapper {
+        display: block;
+    }
+
+    .sdg_image {
+        width: 30px;
+        height: 30px;
+        margin-bottom: 3px;
+    }
+
+    @media(min-width: 992px) {
+        .sdg_image {
+            width: 52px;
+            height: 52px;
+            margin-bottom: 10px;
+        }
+    }
+
+    @media screen and (-ms-high-contrast: active),
+    (-ms-high-contrast: none) {
+        .svgIe {
+            width: 400px;
+            height: 456px;
+        }
+    }
+
+    /* Chart Styles Ends */
+
+    .donorsList .donorItem {
+        padding: 20px;
+        border: 1px solid #666666;
+        margin-top: 15px;
+        display: table;
+        width: 100%;
+        page-break-inside: avoid;
+    }
+
+    .donorsList .donorItem .donorTitle {
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .donorsList .donorItem .aggregateWrapper {
+        font-weight: 600;
+        border-radius: 17px;
+    }
+
+    .donorsList .donorItem .aggregateWrapper span {
+        display: table-cell;
+        width: 33.333%;
+        text-align: center;
+    }
+
+    .donorsList .donorItem .column {
+        display: table-cell;
+        width: 50%;
+    }
+
+    .contentWrapper {
+        display: table;
+        width: 100%;
+        margin: 20px 0;
+    }
+
+    .contentWrapper #sdgMap {
+        display: inline-block;
+        width: 870px;
+        height: 300px;
+        float: left;
+        border: 2px solid #e7e7e7;
+
+    }
+
+    .contentWrapper .donorSummary {
+        display: inline-block;
+        width: 100%;
+        background-color: #dcdcdc;
+        padding: 20px;
+    }
+
+    .contentWrapper .donorSummary .donorSummaryContribution,
+    .contentWrapper .donorSummary .donorSummaryDescription,
+        {
+        display: block;
+    }
+
+    .contentWrapper .donorSummary .donorSummaryContribution h1 {
+        font-size: 24px;
+        margin-top: 0;
+    }
+
+    .contentWrapper .donorSummary .donorSummaryDescription {
+        font-size: 18px;
+    }
+
+    /* Donor contribution to UNDP Regular Resources start*/
+
+    .contributionIndicator {
+        height: 240px;
+        display: table-cell;
+        vertical-align: middle;
+        padding: 0 10%;
+    }
+
+    .progress {
+        position: relative;
+        width: 100%;
+        height: 30px;
+        border: 1px solid #ababab;
+        background-color: #fff;
+    }
+
+    .progressBar {
+        position: absolute;
+        left: 0%;
+        height: 100%;
+        display: inline-block;
+        background-color: #16537d;
+        width: 20%;
+    }
+
+    .contribution_wrapper {
+        padding-bottom: 5px;
+    }
+
+    .contribution_wrapper .individual_contribution {
+        font-weight: 600;
+        text-transform: uppercase;
+        padding-right: 5px;
+    }
+
+    .contribution_wrapper .contribution_percentage {
+        color: #303030;
+        font-weight: 400;
+        opacity: 0.6;
+    }
+
+    .bar_step {
+        position: absolute;
+        top: 0;
+        margin-left: 0;
+        z-index: 1;
+        font-size: 12px;
+    }
+
+    .bar_step:nth-child(3) .label_line,
+    .bar_step:nth-child(4) .label_line,
+    .bar_step:nth-child(5) .label_line,
+    .bar_step:nth-child(6) .label_line {
+        background-color: #ababab;
+        width: 1px;
+        height: 30px;
+        float: right;
+    }
+
+    .bar_step:nth-child(2) .label_line {
+        background-color: transparent;
+        width: 1px;
+        height: 30px;
+        float: right;
+    }
+
+    .bar_step .label_txt {
+        float: left;
+    }
+
+    .bar_step .label_percent {
+        float: right;
+        margin-left: -8px;
+        margin-top: 30px;
+        color: #ababab;
+        font-size: 12px;
+        font-weight: 400;
+    }
+
+    .bar_step:first-child .label_percent {
+        margin-left: -2px;
+    }
+
+    .bar_step:last-child .label_percent {
+        margin-left: -28px;
+    }
+
+    .legend {
+        padding: 5px;
+        font-size: 14px;
+        display: inline-block;
+        padding-top: 30px;
+    }
+
+    .legend .legendLabel {
+        display: inline-block;
+    }
+
+    .legend .legendLabel .legendBlock {
+        width: 12px;
+        height: 12px;
+        background-color: #16537d,
+    }
+
+    .legend .legendLabelText {
+        padding-left: 10px;
+        font-size: 12px;
+    }
+
+    .legendCenter {
+        margin: 0 auto;
+    }
+
+    /* Donor contribution to UNDP Regular Resources end*/
+
+    /* Project Table   */
+    .projectListWrapper {
+        margin-top:25px;
+    }
+
+    .projectTable {
+        width: 100%;
+        margin: 15px 0;
+        border-collapse: collapse;
+        border: 1px solid #666666;
+
+    }
+
+    .projectTable th,
+    .projectTable td,
+    .projectTable tr {
+        page-break-inside: avoid;
+    }
+
+    .projectTable th,
+    .projectTable td {
+        border: 1px solid #666666;
+        padding: 15px;
+    }
+
+    .projectTable th {
+        background-color: #CBCBCB;
+        font-size: 20px;
+    }
+
+    .projectTable td {
+        font-size: 18px;
+    }
+    /* Contributions to Other Resources by Fund Modality start*/
+
+    .modalityWrapper {
+        width: 98%;
+        display: block;
+        -webkit-box-shadow: 0 2px 7px rgba(7, 61, 125, .18);
+        box-shadow: 0 2px 7px rgba(7, 61, 125, .18);
+        height: 70px;
+        font-size: 18px;
+        font-weight: 600;
+        padding: 23px 35px;
+        background-color: #fff;
+        margin-top: 30px;
+    }
+
+    /* Contributions to Other Resources by Fund Modality end*/
+
+    /* Donor Contribution to UNDP Regular Resources chart start  */
+
+    .donor-contribution-wrapper {
+        display: block;
+        padding-bottom: 20px;
+    }
+
+    .donor-contribution-wrapper .donor-contribution-row {
+        display: block;
+        font-size: 14px;
+        display: inline-block;
+    }
+
+    .donor-contribution-wrapper .donor-contribution-row:nth-child(1) {
+        width: 25%;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .donor-contribution-wrapper .donor-contribution-row:nth-child(2) {
+        width: 75%;
+        text-align: left;
+    }
+
+    .donor-contribution-wrapper .donor-contribution-row .donor-contribution-rowWrapper {
+        display: block;
+    }
+
+    .donor-contribution-wrapper .donor-contribution-row .donor-contribution-rowWrapper .donor-contribution-rowWrapperItem {
+        display: inline-block;
+    }
+
+    .donor-contribution-wrapper .donor-contribution-row .donor-contribution-rowWrapper .donor-contribution-rowText {
+        display: inline-block;
+        text-align: left;
+        padding-left: 10px;
+    }
+
+    .donor-contribution-wrapper .donor-contribution-row .donor-contribution-rowWrapper .donor-contribution-country_percentage {
+        padding-left: 5px;
+        font-size: 12px;
+        color: #303030;
+        font-weight: 400;
+        opacity: 0.6;
+    }
+
+    .donor-contribution-wrapper .donor-contribution-row .donor-contribution-countryWrapper {
+        height: 25px;
+        border-left: 1px solid #ff7e0e;
+    }
+
+    .donor-contribution-wrapper .donor-contribution-row .donor-contribution-allDonorWrapper {
+        height: 25px;
+    }
+
+    /* Donor Contribution to UNDP Regular Resources chart end  */
+
+    /* Chart Section Wrapper start */
+
+    .chartSectionWrapper {
+        width: 100%;
+        background-color: #fff;
+        display: table;
+        vertical-align: middle;
+        border: 2px solid hsla(0, 0%, 87%, .94);
+        margin-top: 50px;
+    }
+
+    .sectionHeaderWrapper {
+        width: 99.9%;
+        display: block;
+        -webkit-box-shadow: 0 2px 7px rgba(7, 61, 125, .18);
+        box-shadow: 0 2px 7px rgba(7, 61, 125, .18);
+        height: 70px;
+        font-size: 18px;
+        font-weight: 600;
+        padding: 23px 35px;
+        background-color: #fff;
+        box-sizing: border-box;
+    }
+
+    .legend_container {
+        display: inline-block;
+        float: right;
+    }
+
+    .legend_container .legend_item {}
+
+    .budget_legend_block {
+        border: 1px solid #42689b;
+        background-color: #42689b;
+    }
+
+    .expense_legend_block {
+        border: 1px solid #42689b;
+        background-color: #cae1f7
+    }
+
+    .legend_container .legend_item:nth-child(1) {
+        margin-right: 20px;
+    }
+
+    .legend_text {
+        color: #2d2d2d;
+        margin-left: 5px;
+        font-size: 16px;
+        /* vertical-align: top; */
+        font-weight: 400;
+        /* Text style for "Budget" */
+        letter-spacing: 0.13px;
+    }
+
+    .budget_legend_block,
+    .expense_legend_block {
+        display: inline-block;
+        width: 16px;
+        height: 15px;
+    }
+
+    #budget-sources-chart .xaxis .domain,
+    #recipient-offices-chart .xaxis .domain {
+        fill: none;
+        display: none;
+    }
+
+    #budget-sources-chart .xaxis line,
+    #recipient-offices-chart .xaxis line {
+        fill: none;
+        stroke: white;
+        shape-rendering: crispEdges;
+    }
+
+    #budget-sources-chart .yaxis path,
+    #recipient-offices-chart .yaxis path {
+        fill: none;
+        stroke: white;
+        shape-rendering: crispEdges;
+    }
+
+    #budget-sources-chart .yaxis line,
+    #recipient-offices-chart .yaxis line {
+        fill: none;
+        stroke: #cbcbcb;
+        stroke-dasharray: 5;
+    }
+
+    /* Chart Section Wrapper end */
+    .donorTable {
+        width: 100%;
+        margin: 25px 0;
+        border-collapse: collapse;
+        border: 1px solid #666666;
+        page-break-inside: avoid;
+    }
+
+    .donorTable th,
+    .donorTable td,
+    .donorTable tr {
+        page-break-inside: avoid;
+    }
+
+    .donorTable th,
+    .donorTable td {
+        border: 1px solid #666666;
+        padding: 15px;
+    }
+
+    .donorTable th {
+        background-color: #CBCBCB;
+        font-size: 20px;
+    }
+
+    .donorTable td {
+        font-size: 18px;
+    }
+    .mapCluster{
+        width: 40px;
+        height: 40px;
+        display: inline-block;
+        background-color: rgba(110,204,57,.6);
+        text-align: center;
+        border-radius: 20px;
+        font: 12px Helvetica Neue,Arial,Helvetica,sans-serif;
+    }
+
+    .mapCluster div {
+        padding-top: 7px;
+        width: 30px;
+        height: 30px;
+        margin-left: 5px;
+        margin-top: 5px;
+        text-align: center;
+        border-radius: 15px;
+        font: 12px Helvetica Neue,Arial,Helvetica,sans-serif;
+        background-color: rgba(110,204,57,.6);
+    }
+</style>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+
+<body>
+    <!-- Donor Name and Year section start -->
+    <!-- Page Header start -->
+    {% include "header.html" %}
+    <!-- Page Header end -->
+    <!-- Donor Name and Year section end -->
+    <!-- Donor Map and Summary section start -->
+    <!--{% if data.selected %}-->
+    <!--<div class="contentWrapper">-->
+        <!--&lt;!&ndash; Donor Map Summary start &ndash;&gt;-->
+        <!--<div class="donorSummary">-->
+            <!--<span class="donorSummaryContribution">-->
+                <!--<strong>-->
+                    <!--<h1>{{data.summaryDetails.percentage}}% ({{data.summaryDetails.budget|numberToCurrencyFormatter:"2"}})</h1>-->
+                <!--</strong>-->
+            <!--</span>-->
+            <!--<span class="donorSummaryDescription">-->
+                <!--of the the total alloted budget {% if data.donorSelected %}by-->
+                <!--<strong>{{data.donorSelected}}</strong> {% endif %} {% if data.unitSelected %}in-->
+                <!--<strong>{{data.unitSelected}}</strong> {% endif %} for-->
+                <!--<strong>{{data.aggregate.sdg_name}}</strong>-->
+                <!--</h3>-->
+
+            <!--</span>-->
+        <!--</div>-->
+        <!--&lt;!&ndash; Donor Map Summary end &ndash;&gt;-->
+    <!--</div>-->
+    <!--{% else %}-->
+    <section class="sectionWrapper" style="border: none">
+        <ul class="aggregateWrapper" style="background-color:#b9daf1;">
+            <li class="aggregateSubTitle">
+                <div class="aggregateSubItem">Overall budget</div>
+                <div class="aggregateLabel">
+                    <strong>{{data.sdgList.project.budget | numberToCurrencyFormatter:"1"}}</strong>
+                </div>
+            </li>
+            <li class="aggregateSubTitle">
+                <div class="aggregateSubItem">Overall expense</div>
+                <div class="aggregateLabel">
+                    <strong>{{data.sdgList.project.expense | numberToCurrencyFormatter:"1"}}</strong>
+                </div>
+            </li>
+
+            <li class="aggregateSubTitle">
+                <div class="aggregateSubItem">Projects</div>
+                <div class="aggregateLabel">
+                    <strong>{{data.sdgList.project.projects | numberToCommaFormatter}}</strong>
+                </div>
+            </li>
+        </ul>
+    </section>
+    {% endif %}
+    <!-- Donor Map and Summary section end -->
+    <!-- Donor Aggregate section start -->
+    {% if data.selected %}
+    <section class="sectionWrapper" style="border: none">
+        <!--<div class="sectionOverviewWrapper">{{data.aggregate.sdg_name}} Overview</div>-->
+        <ul class="aggregateWrapper" style="background-color:#b9daf1;">
+            <li class="aggregateSubTitle">
+                <div class="aggregateSubItem">Budget</div>
+                <div class="aggregateLabel">
+                    <strong>{{data.summaryDetails.budget | numberToCurrencyFormatter:"1"}}</strong>
+                </div>
+            </li>
+            <li class="aggregateSubTitle">
+                <div class="aggregateSubItem">Expense</div>
+                <div class="aggregateLabel">
+                    <strong>{{data.summaryDetails.expense | numberToCurrencyFormatter:"1"}}</strong>
+                </div>
+            </li>
+            <li class="aggregateSubTitle">
+                <div class="aggregateSubItem">Projects</div>
+                <div class="aggregateLabel">
+                    <strong>{{data.summaryDetails.total_projects | numberToCommaFormatter}}</strong>
+                </div>
+            </li>
+            <!--<li class="aggregateSubTitle">-->
+                <!--<div class="aggregateSubItem">Donors</div>-->
+                <!--<div class="aggregateLabel">-->
+                    <!--<strong>{{data.aggregate.budget_sources | numberToCommaFormatter}}</strong>-->
+                <!--</div>-->
+            <!--</li>-->
+            <li class="aggregateSubTitle">
+                <div class="aggregateSubItem">Countries</div>
+                <div class="aggregateLabel">
+                    <strong>{{data.summaryDetails.countries | numberToCommaFormatter}}</strong>
+                </div>
+            </li>
+        </ul>
+    </section>
+    {% endif %}
+    {% if data.recipientOffices %}
+    <section style="margin-top:30px; page-break-after: always">
+        <span class="sectionOverviewWrapper">Top 10 Recipient Offices</span>
+        <table class="donorTable">
+            <tr>
+                <th>Recipient Country</th>
+                <th>Budget</th>
+                <th>Expense</th>
+            </tr>
+            {% for recipient in data.recipientOffices %}
+            <tr>
+                <td>{{recipient.name}}</td>
+                <td style="text-align: right">${{recipient.total_budget|numberToCommaFormatter}}</td>
+                <td style="text-align: right">${{recipient.total_expense|numberToCommaFormatter}}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    </section>
+    {% endif %}
+    {% if data.selected %}
+    <section class="sectionWrapper">
+        <div class="sectionHeaderWrapper">
+            <span>Top 10 Donors</span>
+            <div class="legend_container">
+                <span class="legend_item">
+                    <span class="budget_legend_block"></span>
+                    <span class="legend_text">Budget</span>
+                </span>
+                <span class="legend_item">
+                    <span class="expense_legend_block"></span>
+                    <span class="legend_text">Expense</span>
+                </span>
+            </div>
+        </div>
+        <div class="grouped_chart" id="budget-sources-chart" style="display: table;width:100%;height: 400px">
+        </div>
+    </section>
+    <!--<section class="sectionWrapper" style="page-break-before: always;">-->
+        <!--<div class="sectionHeaderWrapper">-->
+            <!--<span>Top 10 Recipient Offices</span>-->
+            <!--<div class="legend_container">-->
+                <!--<span class="legend_item">-->
+                    <!--<span class="budget_legend_block"></span>-->
+                    <!--<span class="legend_text">Budget</span>-->
+                <!--</span>-->
+                <!--<span class="legend_item">-->
+                    <!--<span class="expense_legend_block"></span>-->
+                    <!--<span class="legend_text">Expense</span>-->
+                <!--</span>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="grouped_chart" id="recipient-offices-chart" style="display: table;width:100%;height: 400px">-->
+        <!--</div>-->
+    <!--</section>-->
+    <!-- Donor Aggregate section end -->
+    {% else %}
+    <section class="sectionWrapper" style="border: none">
+        {% for sdg in data.sdgList.sdg %}
+        <div class="themesWrapper">
+            {%if sdg.sdg_code == "0" %}
+                <img class="sdgImage" src="https://open.undp.org/assets/icons/SDG-0.svg">
+            {% else %}
+                <img class="sdgImage" src="https://open.undp.org/assets/icons/SDG-{{sdg.sdg_code}}.svg">
+            {% endif %}
+            <div class="sdgWrapper">
+                <span class="themesName">{{sdg.sdg_name}}</span>
+                <div class="themesList">
+                    <div class="themesBudget">
+                        <span class="themesbar" style="display: inline-block;width:{{sdg.share_percent}}%;height: 30px;background-color:{{sdg.color}}"></span>
+                        <span class="budgetDigit">{{sdg.share_percent|roundTo:"1"}}%</span>
+                        <span class="summaryText">of the total budget allotted to this SDG</span>
+                    </div>
+                    <div class="themesBudget">
+                        <div class="aggregateWrapper">
+                            <div class="aggregateSubItem">
+                                <span class="aggregateHead">Budget</span>
+                                <span>{{sdg.budget | numberToCurrencyFormatter:"1"}}</span>
+                            </div>
+                            <div class="aggregateSubItem">
+                                <span class="aggregateHead">Expense</span>
+                                <span>{{sdg.expense | numberToCurrencyFormatter:"1"}}</span>
+                            </div>
+                            <div class="aggregateSubItem">
+                                <span class="aggregateHead">projects</span>
+                                <span>{{sdg.total_projects | numberToCommaFormatter}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+    {% endif %}
+    {% if data.mapData %}
+        <div class="contentWrapper">
+            <!-- Donor Map section start -->
+            <div id="sdgMap"></div>
+            <!-- Donor Map section end -->
+        </div>
+    {% endif %}
+    {% if data.projectList %}
+        <section class="projectListWrapper">
+            <span style="font-weight:600; font-size:18px;">
+            {% if data.projectList|length < 10 %}
+                Top {{data.projectList|length}} projects
+            {% else %}
+                Top 10 projects
+            {% endif %}
+            </span>
+            <table class="projectTable">
+                <tr>
+                    <th>ID</th>
+                    <th>Project Title</th>
+                    <th>Budget</th>
+                    <th>Expense</th>
+                </tr>
+                {% for project in data.projectList %}
+                <tr>
+                    <td>{{project.project_id}}</td>
+                    <td>{{project.title}}</td>
+                    <td>${{project.budget|numberToCommaFormatter}}</td>
+                    <td>${{project.expense|numberToCommaFormatter}}</td>
+                </tr>
+                {% endfor %}
+
+            </table>
+        </section>
+        {% endif %}
+    {% include "common_script.html" %}
+    <script>
+        {% if data.mapData %}
+        /* Map Script */
+        function generateIcon(iconUrl) {
+            var icon = new L.icon()
+            icon.options.iconSize = [24, 33.33]
+            icon.options.popupAnchor = [1, -24]
+            icon.options.iconAnchor = [13, 28.33]
+            icon.options.shadowSize = [68, 95]
+            icon.options.shadowAnchor = [22, 94]
+            icon.options.iconUrl = iconUrl
+            return icon
+        }
+
+        function getMarkerIcon(colorCode) {
+            switch (colorCode) {
+                case 'Administrative Region':
+                    return generateIcon(administrative); break;
+                case 'Populated Place':return generateIcon(populated); break;
+                case 'Structure': return generateIcon(structure); break;
+                case 'Other Topographical Feature': return generateIcon(otherTopo); break;
+                default: return generateIcon(other);
+            }
+        }
+        var mapData = {{ data.mapData| safe}}
+        var mymap = L.map('sdgMap', { zoomControl: false }).setView([51.505, -0.09], 3);
+        L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2VldGh1ZGFzIiwiYSI6ImNqZm1qcHpnMDBmZmczM280dm9zdzR5bjcifQ.zRivs5JkUZzTzUU_OpYXPw')
+            .addTo(mymap);
+
+        var markers = L.markerClusterGroup({
+            showCoverageOnHover: false,
+            removeOutsideVisibleBounds: false,
+            iconCreateFunction: function(cluster) {
+                return L.divIcon({ html: '<div>'+cluster.getChildCount()+'</div>', className: 'mapCluster', iconSize: L.point(40, 40) });
+            }
+        });
+        var layers = L.layerGroup();
+
+        if (mapData.length == 1) {
+            mapData[0].outputs.map(function (feature, index) {
+                var marker = L.marker([
+                    parseFloat(feature.output_latitude),
+                    parseFloat(feature.output_longitude)
+                ], {
+                        icon: getMarkerIcon(feature.output_location_class)
+                    })
+                markers.addLayer(marker)
+            })
+            mymap.addLayer(this.markers)
+
+            if (
+                mapData[0].boundaries != null &&
+                mapData[0].boundaries.geometry.type == "Polygon"
+            ) {
+                var coord = mapData[0].boundaries.geometry.coordinates[0];
+                var bounds = L.polyline(coord).getBounds();
+                layers.addLayer(L.polygon(coord, { stroke: false, fillColor: '#bbb' }))
+                layers.addTo(mymap)
+                mymap.fitBounds(bounds)
+            } else if (
+                mapData[0].boundaries != null &&
+                mapData[0].boundaries.geometry.type == "MultiPolygon"
+            ) {
+                var modifiedCoord = mapData[0].boundaries.geometry.coordinates;
+                var modifiedCoord = [].concat.apply([], modifiedCoord);
+                var modifiedCoord = [].concat.apply([], modifiedCoord);
+                var bounds = L.polyline(modifiedCoord).getBounds();
+                mymap.fitBounds(bounds)
+                var polygons = [];
+                mapData[0].boundaries.geometry.coordinates.forEach(
+                    function (item) {
+                        layers.addLayer(L.polygon(item[0], { stroke: false, fillColor: '#bbb' }))
+                    }
+                );
+                layers.addTo(mymap)
+            }
+        }
+
+        else {
+            var min = d3.min(mapData, function (d) { return parseInt(d.total_budget) })
+            var max = d3.max(mapData, function (d) { return parseInt(d.total_budget) })
+            var scale = d3.scale.linear()
+                .domain([min, max])
+                .range([10, 50]);
+            mapData.length ? mymap.setView([mapData[0].latitude, mapData[0].longitude], 3) : null
+            mapData.forEach(function (location, index) {
+                var circleMarker = L.circleMarker([
+                    parseFloat(location.latitude),
+                    parseFloat(location.longitude)
+                ], {
+                        radius: scale(location.total_budget),
+                        weight: 2
+                    })
+
+                layers.addLayer(circleMarker)
+            })
+            layers.addTo(mymap)
+        }
+
+        /* Map Script Ends */
+        {% endif %}
+        {% if data.selected %}
+        // Donor Contribution to Regular and Other Resources chart start
+        const EDGE = window.navigator.userAgent.indexOf("Edge") > -1,
+            IE = false || !!document.documentMode,
+            EDGE_IE = EDGE || IE;
+        /* Vertical Bar Chart Script */
+
+        var data = {{ data.budgetSources| safe}};
+        label = 'short_name';
+        var margin = { top: 40, right: 20, bottom: 40, left: 40 },
+            width = 1250,
+            height = 700 - margin.top - margin.bottom;
+
+        var y0 = d3.scale.ordinal()
+            .rangeRoundBands([height, 0], .1);
+
+        var y1 = d3.scale.ordinal();
+
+        var x = d3.scale.linear()
+            .range([0, width - 200])
+
+        var color = d3.scale.ordinal()
+            .range(['#16537d', '#cae1f7']);
+
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom")
+            .ticks(6)
+            .tickFormat('')
+            .tickFormat(
+             function (d) {
+                return numberToCurrencyFormatter(d, 0);
+             })
+            .innerTickSize(-height)
+            .outerTickSize(0)
+            .tickPadding(10);
+
+
+        var yAxis = d3.svg.axis()
+            .scale(y0)
+            .orient("left");
+
+        var actualHeight = height + margin.top + margin.bottom;
+
+        var svg = d3.select('#budget-sources-chart').append("svg")
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "0 0 " + width + " " + actualHeight)
+            .classed("svg-content", true)
+            .classed("style.svgIe", true)
+
+        var ageNames = d3.keys(data[0]).filter(function (key) { return (key == "total_expense" || key == "total_budget"); });
+
+        data.forEach(function (d) {
+            d.ages = ageNames.map(function (name) { return { name: name, value: +d[name] }; });
+        });
+        data = data.slice(0, 10)
+        data.sort(function (a, b) { return (a.total_budget - b.total_budget) })
+        y0.domain(data.map(function (d) { return d[label]; }));
+        y1.domain(ageNames).rangeRoundBands([0, y0.rangeBand()]);
+        x.domain([0, d3.max(data, function (d) { return d3.max(d.ages, function (d) { return d.value; }); })]);
+
+        var alteredHeight = height + 20;
+        var translate_xaxis = 200,
+            translate_yaxis = 160,
+            translate_graph = 200;
+
+        svg.append("g")
+            .attr("class", "xaxis")
+            .attr("transform", "translate(" + translate_yaxis + "," + 10 + ")")
+            .call(yAxis)
+            .selectAll('text')
+            .call(wrap, 200)
+            .selectAll('tspan')
+            .attr("font-size", '20px')
+
+
+
+        svg.append("g")
+            .attr("class", "yaxis")
+            .call(xAxis)
+            .attr("transform", "translate(" + translate_xaxis + "," + (alteredHeight + 10) + ")")
+            .selectAll('text').attr("font-size", '20px')
+
+        var wrap = svg.append("g")
+            .attr("transform", "translate(" + translate_graph + "," + 20 + ")")
+
+        var state = wrap.selectAll(".state")
+            .data(data)
+            .enter().append("g")
+            .attr("class", "state")
+            .attr("transform", function (d) {
+                return "translate(0," + y0(d[label]) + ")";
+            });
+
+        state.selectAll("rect")
+            .data(function (d) { return d.ages; })
+            .enter().append("rect")
+            // .attr("width", Math.min(x1.rangeBand() - 2, 100))
+            .attr("height", y1.rangeBand())
+            .attr("x", function (d, i) {
+                return 0
+
+            })
+            .attr("y", function (d) { return y1(d.name); })
+            .attr("width", function (d) { return Math.abs(x(d.value)); })
+            .style("fill", function (d) {
+                return d.name === "total_budget" ?
+                    '#16537d' : '#cae1f7'
+            });
+
+
+        function wrap(text, width) {
+            text.each(function () {
+                var text = d3.select(this),
+                    words = text.text().split(/\s+/).reverse(),
+                    word,
+                    line = [],
+                    lineNumber = 0,
+                    lineHeight = 0.35, // ems
+                    y = text.attr("y"),
+                    dy = 0.6,
+                    tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em").attr("font-size", 12);
+                while (word = words.pop()) {
+                    line.push(word);
+                    tspan.text(line.join(" "));
+                    if (tspan.node().getComputedTextLength() > width) {
+                        line.pop();
+                        tspan.text(line.join(" "));
+                        line = [word];
+                        tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word).attr("font-size", 12);
+                    }
+                }
+            });
+        }
+
+        /* End of Vertical Bar Chart */
+
+        var data = {{ data.recipientOffices| safe}}
+        label = 'iso3';
+        var margin = { top: 40, right: 20, bottom: 40, left: 40 },
+            width = 1250,
+            height = 700 - margin.top - margin.bottom;
+
+        var y0 = d3.scale.ordinal()
+            .rangeRoundBands([height, 0], .1);
+
+        var y1 = d3.scale.ordinal();
+
+        var x = d3.scale.linear()
+            .range([0, width - 200])
+
+        var color = d3.scale.ordinal()
+            .range(['#16537d', '#cae1f7']);
+
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom")
+            .ticks(6)
+            .tickFormat('')
+            .tickFormat(
+             function (d) {
+                return numberToCurrencyFormatter(d, 0);
+             })
+            .innerTickSize(-height)
+            .outerTickSize(0)
+            .tickPadding(10);
+
+
+        var yAxis = d3.svg.axis()
+            .scale(y0)
+            .orient("left");
+
+        var actualHeight = height + margin.top + margin.bottom;
+
+        var svg = d3.select('#recipient-offices-chart').append("svg")
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "0 0 " + width + " " + actualHeight)
+            .classed("svg-content", true)
+            .classed("style.svgIe", true)
+
+        var ageNames = d3.keys(data[0]).filter(function (key) { return (key == "total_expense" || key == "total_budget"); });
+
+        data.forEach(function (d) {
+            d.ages = ageNames.map(function (name) { return { name: name, value: +d[name] }; });
+        });
+        data = data.slice(0, 10)
+        data.sort(function (a, b) { return (a.total_budget - b.total_budget) })
+        y0.domain(data.map(function (d) { return d[label]; }));
+        y1.domain(ageNames).rangeRoundBands([0, y0.rangeBand()]);
+        x.domain([0, d3.max(data, function (d) { return d3.max(d.ages, function (d) { return d.value; }); })]);
+
+        var alteredHeight = height + 20;
+        var translate_xaxis = 200,
+            translate_yaxis = 160,
+            translate_graph = 200;
+
+        svg.append("g")
+            .attr("class", "xaxis")
+            .attr("transform", "translate(" + translate_yaxis + "," + 10 + ")")
+            .call(yAxis)
+            .selectAll('text')
+            .attr('dy',15)
+            // .call(wrap, 200)
+            // .selectAll('tspan')
+            .attr("font-size", '20px')
+
+
+
+        svg.append("g")
+            .attr("class", "yaxis")
+            .call(xAxis)
+            .attr("transform", "translate(" + translate_xaxis + "," + (alteredHeight + 10) + ")")
+            .selectAll('text').attr("font-size", '20px')
+
+        var wrap = svg.append("g")
+            .attr("transform", "translate(" + translate_graph + "," + 20 + ")")
+
+        var state = wrap.selectAll(".state")
+            .data(data)
+            .enter().append("g")
+            .attr("class", "state")
+            .attr("transform", function (d) {
+                return "translate(0," + y0(d[label]) + ")";
+            });
+
+        state.selectAll("rect")
+            .data(function (d) { return d.ages; })
+            .enter().append("rect")
+            // .attr("width", Math.min(x1.rangeBand() - 2, 100))
+            .attr("height", y1.rangeBand())
+            .attr("x", function (d, i) {
+                return 0
+
+            })
+            .attr("y", function (d) { return y1(d.name); })
+            .attr("width", function (d) { return x(d.value); })
+            .style("fill", function (d) {
+                return d.name === "total_budget" ?
+                    '#16537d' : '#cae1f7'
+            });
+            {% endif %}
+    </script>
+</body>
+
+</html>

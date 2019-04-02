@@ -1,0 +1,303 @@
+@import "../../node_modules/react-image-gallery/styles/css/image-gallery.css";
+
+html, body {
+	height: 100%;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	background: #FAFAFA;
+	font-family: 'ProximaNova-Regular', arial, sans-serif;
+	font-weight: 400;
+	color: #444;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+* {
+	box-sizing: border-box;
+}
+ul{
+	list-style-type: none !important;
+}
+a{ 
+	text-decoration:none;
+}
+.leaflet-map-pane canvas {
+	z-index: 1!important;
+}
+.leaflet-top, .leaflet-bottom {
+	z-index: 1! important;
+}
+.leaflet-pane {
+	z-index: 1!important;
+}
+#app {
+	height: 100%;
+}
+a {
+	outline: none;
+}
+input[type=text]::-ms-clear {
+    display: none;
+}
+.heading-highlight {
+	background-color: #1c81c2;
+	width: 80px;
+	height: 8px;
+	margin: 0 auto;
+	display: block;
+}
+
+@font-face {
+    font-family: 'Lora-Regular';
+    src: url("/assets/font/Lora/Lora-Regular.ttf") format("truetype"), url("/assets/font/Lora/lora-regular-webfont.eot") format("eot"), url("/assets/font/Lora/lora-regular-webfont.woff") format("woff"), url("/assets/font/Lora/lora-regular-webfont.svg") format("svg");
+}
+@font-face {
+    font-family: 'Lora-Bold';
+    src: url("/assets/font/Lora/Lora-Bold.ttf") format("truetype");
+}
+@font-face {
+    font-family: 'ProximaNova-Regular';
+    src: url("/assets/font/ProximaNova/PROXIMANOVA-REGULAR.OTF") format("otf"), url("/assets/font/ProximaNova/proximanova-regular-webfont.ttf") format("embedded-opentype"), url("/assets/font/ProximaNova/proximanova-regular-webfont.eot") format("eot"), url("/assets/font/ProximaNova/proximanova-regular-webfont.woff") format("woff"), url("/assets/font/ProximaNova/proximanova-regular-webfont.svg") format("svg");
+}
+@font-face {
+    font-family: 'ProximaNova-bold';
+	src: url("/assets/font/ProximaNova/PROXIMANOVA-BOLD.OTF") format("otf"), url("/assets/font/ProximaNova/proximanova-bold.ttf") format("truetype"), url("/assets/font/ProximaNova/proximanova-bold.eot") format("eot"), url("/assets/font/ProximaNova/proximanova-bold.woff") format("woff"), url("/assets/font/ProximaNova/proximanova-bold.svg") format("svg");
+}
+@font-face {
+    font-family: 'ProximaNova-extrabold';
+	src: url("/assets/font/ProximaNova/PROXIMANOVA-EXTRABOLD.OTF") format("otf"), url("/assets/font/ProximaNova/proximanova-extrabold.ttf") format("truetype"), url("/assets/font/ProximaNova/proximanova-extrabold.eot") format("eot"), url("/assets/font/ProximaNova/proximanova-extrabold.woff") format("woff"), url("/assets/font/ProximaNova/proximanova-extrabold.svg") format("svg");
+}
+@font-face {
+    font-family: 'ProximaNova-semibold';
+	src: url("/assets/font/ProximaNova/PROXIMANOVA-SEMIBOLD.OTF") format("otf");
+}
+@font-face {
+    font-family: 'Bebas';
+    src: url("/assets/font/Bebas/bebas___-webfont.ttf") format("truetype"), url("/assets/font/Bebas/bebas___-webfont.eot") format("eot"), url("/assets/font/Bebas/bebas___-webfont.woff") format("woff"), url("/assets/font/Bebas/bebas___-webfont.svg") format("svg");
+}
+
+.row {
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+}
+
+/* //about */
+
+.aboutUs {
+    overflow: auto;
+    height: 100%;
+}
+.aboutUsWrapper .accordion {
+	padding: 10px;
+}
+.aboutUsWrapper .accordionItem .accordionPosition {
+	position: fixed;
+	top: 80px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: #fff;
+	z-index: 3;
+}
+.aboutUsWrapper .accordioncontentScroll {
+	height: 100%;
+}
+.aboutUsWrapper .accordionContent {
+	height: calc(100% - 46px);
+}
+.aboutUsWrapper .accordionHead {
+	font-size: 18px;
+}
+.aboutUsWrapper .accordionTitle {
+	color: #000;
+	padding-left: 8px;
+	margin-bottom: 8px;
+	box-shadow: 0 12px 76px rgba(7, 61, 125, 0.1);
+	border: 2px solid #cbcbcb;
+	background-color: #ffffff;
+	position: relative;
+	cursor: pointer;
+}
+.aboutUsWrapper .accordionTitle::after {
+	display: block;
+	content: '';
+	position: absolute;
+	top: 46%;
+	left: 90%;
+	right: 0;
+	bottom: 0;
+	background: url('#{$icons}/accordion-arrow.png') no-repeat;
+}
+.aboutUsWrapper .accordionTitle.accordionSelected {
+	background-color: #1c81c2;
+	color: #fff;
+	padding-left: 8px;
+	margin-bottom: 8px;
+	border: 1px solid transparent;
+}
+.aboutUsWrapper .accordionTitle.accordionSelected::after {
+	display: block;
+	content: '';
+	position: absolute;
+	top: 46%;
+	left: 90%;
+	right: 0;
+	bottom: 0;
+	background: url('#{$icons}/uparrow.png') no-repeat;
+}
+.aboutUsWrapper {
+    margin: 0 auto;
+    font-size: 14px;
+    font-weight: 400;
+    max-width: 1200px;
+    padding: 10px;
+    line-height: 1.5;
+	padding-bottom: 12px;
+}
+@media only screen and (max-width: 992px) {
+    .aboutUsWrapper .mobile {
+        display: block;
+    }
+    .aboutUsWrapper .desktop {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .aboutUsWrapper .desktop {
+        display: block;
+    }
+    .aboutUsWrapper .mobile {
+        display: none;
+    }
+}
+
+.aboutUsWrapper .sectionBodyColor{
+	background-color: #f4f5fa;
+	padding: 12px;
+}
+.aboutUsWrapper .aboutArrow {
+  position: relative;
+  color:#ff7f0f;
+}
+.aboutUsWrapper .aboutArrow::before {
+	background: url('/assets/icons/arrow.png') no-repeat;
+	position: absolute;
+	left: -40px;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	display: block;
+	content: '';
+}
+.aboutUsWrapper .list {
+    width: 100%;
+    max-width: 920px;
+    font-size: 0;
+    display: table;
+    padding: 0;
+	margin: 0 auto;
+}
+.aboutUsWrapper .list li {
+	font-size: 16px;
+	display: table-cell;
+	text-align: left;
+}
+.aboutUsWrapper .list li:first-child {
+	text-align: center;
+}
+.aboutUsWrapper .list li button {
+	border:2px solid #cbcbcb;
+	border-radius:44px;
+	font-size: 16px;
+	outline: none;
+	background-color: #ffff;
+	color: #000;
+	font-weight: 600;
+	box-shadow: 0 12px 76px #e6ebf2;
+	cursor: pointer;
+	text-align: center;
+	display: inline-block;
+	padding: 15px 40px;
+	text-decoration: none;
+	overflow: visible;
+	min-width: 150px;
+}
+.aboutUsWrapper .list li:hover,
+.aboutUsWrapper .list li:focus {
+	border: 2px solid #1c81c2;
+	border-radius: 44px;
+}
+.aboutUsWrapper .list li.active {
+	color: #ffff;
+	background-color: #1c81c2;
+	font-weight: 700;
+	border: none;
+	position: relative;
+}
+.linkSectionTraining{
+    list-style-type:initial !important;
+ }  
+.aboutWrapper {
+    font-size: 16px;
+    display: table-cell;
+	text-align: left;
+}
+.aboutWrapper:first-child {
+	text-align: center;
+}
+.aboutUsWrapper .linkColor {
+	color: #1c81c2;
+}
+.aboutUsWrapper .trainingLink {
+	font-weight: bold;
+}
+
+.aboutUsWrapper .contactSection h3 {
+	text-transform: uppercase;
+}
+
+@media (max-width:767px) {
+	.aboutUsWrapper .accordionScroll {
+		position: fixed;
+		overflow: hidden;
+	}
+	.aboutUsWrapper h2{
+		display: none;
+	}
+}
+@media (min-width:992px) {
+	.aboutUsWrapper	{
+		padding: 10px;
+		font-size: 16px;
+		line-height: 1.5;
+	}
+	.aboutUsWrapper h2{
+		margin: 0;
+		padding: 20px 0 0 0;
+		text-transform: uppercase
+	}
+}
+
+.mapCluster{
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    background-color: rgba(110,204,57,.6);
+    text-align: center;
+    border-radius: 20px;
+	font: 12px Helvetica Neue,Arial,Helvetica,sans-serif;
+}
+
+.mapCluster div {
+    padding-top: 7px;
+	width: 30px;
+	height: 30px;
+	margin-left: 5px;
+	margin-top: 5px;
+	text-align: center;
+	border-radius: 15px;
+	font: 12px Helvetica Neue,Arial,Helvetica,sans-serif;
+	background-color: rgba(110,204,57,.6);
+}

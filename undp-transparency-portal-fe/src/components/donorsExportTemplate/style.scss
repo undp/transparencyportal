@@ -1,0 +1,145 @@
+@import "../../style/helpers/_variables";
+@import "../../style/helpers/_mixins";
+
+.paginationWrapper{
+    text-align: center;
+    height: 36px;;
+    button{
+        display: inline-block;
+        padding: 5px 10px;
+        margin: 0 10px;
+        background-color: #f4f5fa;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        &.selected {
+            background-color:#1c81c2;
+            border-color: #337ab7;
+            color: #fff;
+        }
+    }
+}
+.pdfBackground {
+    background-color:#666666;
+    padding: 10px 30px;
+    position: relative;
+    display: table;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    .previewLoading {
+        display: table-cell;
+        text-align: center;
+        color: #fff;
+        vertical-align: middle;
+    }
+ }
+.exportWrapper {
+    padding: 30px 20px;
+    margin: 10px 0;
+    border: 1px solid #666666;
+    background-color: #fff;
+    display: inline-block;
+    text-align: left;
+    width: 210mm;
+    height: 297mm;
+    overflow: hidden;
+    -webkit-box-shadow: 0 10px 60px rgba(7,61,125,.18);
+    box-shadow: 0 10px 60px rgba(7,61,125,.18);
+    .header {
+        line-height: 26px;
+        span{
+            display: block;
+            &.title {
+                margin: 0;
+                font-size: 22px;
+                font-weight: 700;
+                text-align: center;
+            }
+            &.subTitle {
+                margin: 0;
+                font-size: 18px;
+                font-weight: 700;
+                text-align: center;
+            }
+        }
+    }
+    &.globalDonorsWrapper {
+        ul{
+            margin: 0;
+            padding: 0;
+        }
+        .sectionWrapper{
+            margin-top: 10px;
+            .sectionHeader {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-pack: justify;
+                -ms-flex-pack: justify;
+                justify-content: space-between;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                width: 100%;
+                font-size: 20px;
+                font-weight: 600;
+            }
+            .filterWrapper {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                padding: 20px 0;
+                margin: 0;
+                .filterItem {
+                    .filterValue {
+                        display: block;
+                        font-size: 18px;
+                        font-weight: 600;
+                        margin-top: 5px;
+                    }
+                }
+            }
+            .aggregateWrapper {
+                background-color: #F2F2F2;
+                padding: 20px 0;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                justify-content: space-around;
+                .aggregateHeader {
+                    font-size: 20px;
+                    font-weight: 600;
+                    display: block;
+                }
+                .aggregateSubTitle {
+                    font-size: 18px;
+                    font-weight: 600;
+                }
+            }
+            .donorsList {
+                .donorItem {
+                    padding: 20px;
+                    border: 1px solid #666666;
+                    margin-top: 15px;
+                    display: table;
+                    width: 100%;
+                    .donorTitle{
+                        font-size: 20px;
+                        font-weight: 700;
+                    }
+                    .aggregateWrapper{
+                        font-weight: 600;
+                        border-radius: 17px;
+                    }
+                    .column{
+                        display: table-cell;
+                        width: 50%;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,1362 @@
+{% load custom_filters %}
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+        crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" crossorigin=""
+    />
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
+        crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js" crossorigin=""></script>
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    ul,
+    li {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+
+    .sectionSeperatorWrapper {
+        margin-top: 30px;
+    }
+
+    .sectionWrapper .sectionHeader {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        width: 100%;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .sectionWrapper .filterWrapper {
+        display: table;
+        width: 100%;
+        padding: 20px 0;
+        margin: 0;
+    }
+
+    .sectionWrapper .filterWrapper .filterItem {
+        display: inline-block;
+        float: left;
+        width: 33.3333%;
+    }
+
+    .sectionWrapper .filterWrapper .filterValue {
+        display: block;
+        font-size: 18px;
+        font-weight: 600;
+        margin-top: 5px;
+    }
+
+    .aggregateWrapper {
+        background-color: #F2F2F2;
+        padding: 17px;
+        display: table;
+        font-weight: 600;
+        width: 100%;
+        margin-bottom:12px;
+    }
+
+    .aggregateWrapper .aggregateHeader {
+        font-size: 20px;
+        font-weight: 600;
+        display: block;
+    }
+
+    .aggregateWrapper .aggregateSubTitle {
+        font-size: 18px;
+        display: table-cell;
+        width: 20%;
+        line-height: 21px;
+        text-align: center;
+    }
+
+    .aggregateWrapper .aggregateTitle {
+        font-size: 16px;
+        font-weight: 500;
+        display: block;
+        text-align: center;
+    }
+
+    .aggregateWrapper .aggregateSubItem {
+        font-weight: 500;
+        font-size: 20px;
+    }
+
+    .aggregateWrapper .aggregateSubTitle .aggregateLabel {
+        font-size: 18px;
+    }
+
+    /*Chart Styles */
+
+    .sectionWrapper.chartWrapper {
+        display: table;
+        width: 100%;
+        border-spacing: 6px 0;
+    }
+
+    .sectionWrapper .sectionOverviewWrapper {
+        font-size: 20px;;
+        font-weight: 600;
+        padding-bottom: 10px;
+    }
+
+    .sectionWrapper.chartWrapper .chartSmall {
+        width: 49%;
+        vertical-align: top;
+        text-align: center;
+        background-color: #fff;
+        display: table-cell;
+        border: 2px solid #cbcbcb;
+    }
+
+    .sectionWrapper.chartWrapper .chartSmall:nth-child(1) {
+        width: calc(49% - 10px);
+        margin-right: 10px;
+    }
+
+    .sectionWrapper.chartWrapper .chartSmall .chartHead {
+        width: 100%;
+        display: block;
+        box-shadow: 0 2px 7px rgba(7, 61, 125, 0.18);
+        font-size: 15px;
+        font-weight: 600;
+        padding: 10px 35px;
+        height:63px;
+        background-color: white;
+    }
+
+    .legend {
+        margin: 0 auto;
+        display: table;
+    }
+
+    @media(max-width:767px) {
+        .legend {
+            margin-bottom: 12px;
+        }
+    }
+
+    .textLabel {
+        position: absolute;
+        font-size: 11px;
+        left:0;
+        pointer-events: none;
+        font-weight: normal;
+        max-width: 100%;
+        min-width: 100%;
+        bottom: 46%;
+        text-align: center;
+    }
+
+    .exportLegend {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        width: 45%;
+    }
+
+    .legendWrapper {
+        padding: 0;
+        text-align: left;
+        line-height: 20px;
+    }
+
+    .legendWrapper.modality-contribution-legend {
+        display: inline-block;
+        background: rgb(244, 244, 244);
+        padding: 10px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: rgb(204, 204, 204);
+        width: 100%;
+    }
+
+    .modality-contribution-legend .legendItem {
+        width: 32.3%;
+        display: inline-block;
+    }
+
+    .legendPercentage {
+        display: inline-block;
+        font-size: 11px;
+        width: 22%;
+        text-align: right;
+    }
+
+    .legendDescription {
+        display: inline-block;
+        margin-right: 10px;
+        font-size: 11px;
+        width: 55%;
+        vertical-align: top;
+    }
+
+    .legendColor {
+        width: 8px;
+        height: 8px;
+        margin-right: 5px;
+        display: inline-block;
+        vertical-align: top;
+        margin-top: 7px;
+    }
+
+    .perc,
+    .textField {
+        display: inline-block;
+        width: 100%;
+        font-weight: bold;
+    }
+
+    .perc {
+        color: #000000;
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+
+    @media(min-width: 768px) {
+        .perc {
+            font-size: 22px;
+        }
+    }
+
+    .dollor {
+        color: #666;
+        font-weight: 600;
+        font-size: 18px;
+    }
+
+    .donut {
+        display: inline-block;
+        position: relative;
+        width: 100%;
+        vertical-align: top;
+        overflow: hidden;
+    }
+
+    .imageWrapper {
+        display: block;
+    }
+
+    .sdg_image {
+        width: 30px;
+        height: 30px;
+        margin-bottom: 3px;
+    }
+
+    @media(min-width: 992px) {
+        .sdg_image {
+            width: 52px;
+            height: 52px;
+            margin-bottom: 10px;
+        }
+    }
+
+    @media screen and (-ms-high-contrast: active),
+    (-ms-high-contrast: none) {
+        .svgIe {
+            width: 400px;
+            height: 456px;
+        }
+    }
+
+    /* Chart Styles Ends */
+
+    .donorsList .donorItem {
+        padding: 20px;
+        border: 1px solid #666666;
+        margin-top: 15px;
+        display: table;
+        width: 100%;
+        page-break-inside: avoid;
+    }
+
+    .donorsList .donorItem .donorTitle {
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .donorsList .donorItem .aggregateWrapper {
+        font-weight: 600;
+        border-radius: 17px;
+    }
+
+
+    .donorsList .donorItem .column {
+        display: table-cell;
+        width: 50%;
+        vertical-align: middle;
+    }
+
+    .contentWrapper {
+        display: table;
+        width: 100%;
+        margin: 20px 0;
+    }
+
+    .contentWrapper #donorMap {
+        display: inline-block;
+        width: 875px;
+        height: 300px;
+        float: left;
+        border: 2px solid #e7e7e7;
+
+    }
+
+    .contentWrapper .donorSummary {
+        display: inline-block;
+        width: 100%;
+        background-color: #dcdcdc;
+        padding: 20px;
+    }
+
+    .contentWrapper .donorSummary .donorSummaryContribution,
+    .contentWrapper .donorSummary .donorSummaryDescription,
+        {
+        display: block;
+    }
+
+    .contentWrapper .donorSummary .donorSummaryContribution h1 {
+        font-size: 24px;
+        margin-top: 0;
+    }
+
+    .contentWrapper .donorSummary .donorSummaryDescription {
+        font-size: 18px;
+    }
+
+    /* Donor contribution to UNDP Regular Resources start*/
+
+    .contributionIndicator {
+        height: 180px;
+        display: table-cell;
+        vertical-align: middle;
+        padding: 0 10%;
+    }
+
+    .progress {
+        position: relative;
+        width: 100%;
+        height: 30px;
+        border: 1px solid #ababab;
+        background-color: #fff;
+    }
+
+    .progressBar {
+        position: absolute;
+        left: 0%;
+        height: 100%;
+        display: inline-block;
+        background-color: #16537d;
+
+    }
+
+    .contribution_wrapper {
+        padding-bottom: 5px;
+    }
+
+    .contribution_wrapper .individual_contribution {
+        font-weight: 600;
+        text-transform: uppercase;
+        padding-right: 5px;
+    }
+
+    .contribution_wrapper .contribution_percentage {
+        color: #303030;
+        font-weight: 400;
+        opacity: 0.6;
+    }
+
+    .bar_step {
+        position: absolute;
+        top: 0;
+        margin-left: 0;
+        z-index: 1;
+        font-size: 12px;
+    }
+
+    .bar_step:nth-child(3) .label_line,
+    .bar_step:nth-child(4) .label_line,
+    .bar_step:nth-child(5) .label_line,
+    .bar_step:nth-child(6) .label_line {
+        background-color: #ababab;
+        width: 1px;
+        height: 30px;
+        float: right;
+    }
+
+    .bar_step:nth-child(2) .label_line {
+        background-color: transparent;
+        width: 1px;
+        height: 30px;
+        float: right;
+    }
+
+    .bar_step .label_txt {
+        float: left;
+    }
+
+    .bar_step .label_percent {
+        float: right;
+        margin-left: -8px;
+        margin-top: 30px;
+        color: #ababab;
+        font-size: 12px;
+        font-weight: 400;
+    }
+
+    .bar_step:first-child .label_percent {
+        margin-left: -2px;
+    }
+
+    .bar_step:last-child .label_percent {
+        margin-left: -28px;
+    }
+
+    .legend {
+        padding: 5px;
+        font-size: 14px;
+        display: inline-block;
+        padding-top: 30px;
+    }
+
+    .legend .legendLabel {
+        display: inline-block;
+    }
+
+    .legend .legendLabel .legendBlock {
+        width: 12px;
+        height: 12px;
+        background-color: #16537d,
+    }
+
+    .legend .legendLabelText {
+        padding-left: 10px;
+        font-size: 12px;
+    }
+
+    .legendCenter {
+        margin: 0 auto;
+    }
+
+    /* Donor contribution to UNDP Regular Resources end*/
+
+    /* Contributions to Other Resources by Fund Modality start*/
+
+    .modalityWrapper {
+        width: 98%;
+        display: block;
+        -webkit-box-shadow: 0 2px 7px rgba(7, 61, 125, .18);
+        box-shadow: 0 2px 7px rgba(7, 61, 125, .18);
+        height: 70px;
+        font-size: 18px;
+        font-weight: 600;
+        padding: 23px 35px;
+        background-color: #fff;
+        margin-top: 30px;
+    }
+
+    /* Contributions to Other Resources by Fund Modality end*/
+
+    /* Donor Contribution to UNDP Regular Resources chart start  */
+
+    .donor-contribution-wrapper {
+        display: block;
+        padding-bottom: 20px;
+    }
+
+    .donor-contribution-wrapper .donor-contribution-row {
+        display: block;
+        font-size: 14px;
+        display: inline-block;
+
+
+    }
+
+    .donor-contribution-wrapper .donor-contribution-row::after {
+        content: '';
+        display: block;
+        clear: both;
+    }
+
+    .donor-contribution-wrapper .donor-contribution-row:nth-child(1) {
+        width: 25%;
+        text-align: left;
+        vertical-align: top;
+        float: left;
+    }
+
+    .donor-contribution-wrapper .donor-contribution-row:nth-child(2) {
+        width: 75%;
+        text-align: left;
+    }
+
+    .donor-contribution-wrapper .donor-contribution-row .donor-contribution-rowWrapper {
+        display: block;
+        height: 15px;
+    }
+
+    .donor-contribution-wrapper .donor-contribution-row .donor-contribution-rowWrapper .donor-contribution-rowWrapperItem {
+        display: inline-block;
+    }
+
+    .donor-contribution-wrapper .donor-contribution-row .donor-contribution-rowWrapper .donor-contribution-rowText {
+        display: inline-block;
+        text-align: left;
+        padding-left: 10px;
+        font-size: 13px;
+    }
+
+    .donor-contribution-wrapper .donor-contribution-row .donor-contribution-rowWrapper .donor-contribution-country_percentage {
+        padding-left: 5px;
+        font-size: 12px;
+        color: #303030;
+        font-weight: 400;
+        opacity: 0.6;
+    }
+
+    .donor-contribution-wrapper .donor-contribution-row .donor-contribution-countryWrapper {
+        height: 15px;
+        border-left: 1px solid #ff7e0e;
+    }
+
+    .donor-contribution-wrapper .donor-contribution-row .donor-contribution-allDonorWrapper {
+        height: 15px;
+    }
+
+    /* Donor Contribution to UNDP Regular Resources chart end  */
+
+    /* Donor Table start */
+
+    .donorTable {
+        width: 100%;
+        margin: 25px 0;
+        border-collapse: collapse;
+        border: 1px solid #666666;
+    }
+
+    .donorTable th,
+    .donorTable td,
+    .donorTable tr {
+        page-break-inside: avoid;
+    }
+
+    .donorTable th,
+    .donorTable td {
+        border: 1px solid #666666;
+        padding: 15px;
+    }
+
+    .donorTable th {
+        background-color: #CBCBCB;
+        font-size: 20px;
+    }
+
+    .donorTable td {
+        font-size: 18px;
+    }
+
+    .donut-chart-legend-wrapper {
+        display: inline-block;
+        background: rgb(244, 244, 244);
+        padding: 10px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: rgb(204, 204, 204);
+    }
+
+    /* Donor Table end */
+
+    .mapCluster{
+        width: 40px;
+        height: 40px;
+        display: inline-block;
+        background-color: rgba(110,204,57,.6);
+        text-align: center;
+        border-radius: 20px;
+        font: 12px Helvetica Neue,Arial,Helvetica,sans-serif;
+    }
+
+    .mapCluster div {
+        padding-top: 7px;
+        width: 30px;
+        height: 30px;
+        margin-left: 5px;
+        margin-top: 5px;
+        text-align: center;
+        border-radius: 15px;
+        font: 12px Helvetica Neue,Arial,Helvetica,sans-serif;
+        background-color: rgba(110,204,57,.6);
+    }
+
+</style>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+
+<body>
+    <!-- Donor Name and Year section start -->
+    <!-- Page Header start -->
+    {% include "header.html" %}
+    <!-- Page Header end -->
+    <!-- Donor Name and Year section end -->
+
+    <!-- Donor Map and Summary section start -->
+    {% if not data.selected %}
+    <section class="sectionWrapper" >
+        <ul class="aggregateWrapper" style="background-color:#b9daf1;">
+            <li class="aggregateSubTitle">
+                <span class="aggregateTitle">Overall Budget</span>
+                {{data.donorList.data.project.budget|numberToCurrencyFormatter:"2"}}
+            </li>
+            <li class="aggregateSubTitle">
+                <span class="aggregateTitle">Overall Expense</span>
+                {{data.donorList.data.project.expense|numberToCurrencyFormatter:"2"}}
+            </li>
+            <li class="aggregateSubTitle">
+                <span class="aggregateTitle">Projects</span>
+                {{data.donorList.data.project.projects|numberToCommaFormatter}}
+            </li>
+        </ul>
+    </section>
+    {% else %}
+    <!--<div class="contentWrapper">-->
+        <!-- Donor Map section start -->
+        <!-- Donor Map section end -->
+        <!-- Donor Map Summary start -->
+        <!--<div class="donorSummary">-->
+            <!--<span class="donorSummaryContribution">-->
+                <!--<strong>-->
+                    <!--<h1>{{data.summaryDetails.total_budget|numberToCurrencyFormatter:"2"}}</h1>-->
+                <!--</strong>-->
+            <!--</span>-->
+            <!--<span class="donorSummaryDescription">-->
+                <!--{% if data.basicDetails.donor_name %}-->
+                <!--<strong>{{data.basicDetails.donor_name}}</strong> contribution {% endif %} {% if data.unitSelected %} in-->
+                <!--<strong>{{data.unitSelected}}</strong>-->
+                <!--{% endif %} {% if data.sectorSelected %} for-->
+                <!--<strong>{{data.sectorSelected}}</strong>-->
+                <!--{% endif %} {% if data.sdgSelected %} for-->
+                <!--<strong>{{data.sdgSelected}}</strong>-->
+                <!--{% endif %} {% if data.year %} in-->
+                <!--<strong>{{data.year}}</strong>-->
+                <!--{% endif %}-->
+                <!--</h3>-->
+
+            <!--</span>-->
+        <!--</div>-->
+        <!-- Donor Map Summary end -->
+    <!--</div>-->
+    <!-- Donor Map and Summary section end -->
+    {% endif %} {% if data.selected and data.recipient %}
+    <!-- Donor Aggregate section start -->
+    <section class="sectionWrapper">
+        <!--<div class="sectionOverviewWrapper">{{data.basicDetails.donor_name}} Overview</div>-->
+        <ul class="aggregateWrapper" style="background-color:#b9daf1; margin-top:40px;">
+            <li class="aggregateSubTitle">
+                <div class="aggregateSubItem">Budget</div>
+                <div class="aggregateLabel">
+                    <strong>{{data.basicDetails.total_budget | numberToCurrencyFormatter:"2"}}</strong>
+                </div>
+            </li>
+            <li class="aggregateSubTitle">
+                <div class="aggregateSubItem">Expense</div>
+                <div class="aggregateLabel">
+                    <strong>{{data.basicDetails.total_expense | numberToCurrencyFormatter:"2"}}</strong>
+                </div>
+            </li>
+            <li class="aggregateSubTitle">
+                <div class="aggregateSubItem">Direct Funded Projects</div>
+                <div class="aggregateLabel">
+                    <strong>{{data.basicDetails.total_projects | numberToCommaFormatter}}</strong>
+                </div>
+            </li>
+        </ul>
+    </section>
+    {% endif %}
+    
+    <!-- Donor Aggregate section end -->
+    {% if data.basicDetails.level_3_name and not data.unitSelected and not data.sdgSelected and not data.sectorSelected %}
+
+    <!-- Donor Contribution Split Up chart start -->
+    <section class="sectionWrapper sectionSeperatorWrapper chartWrapper">
+        <!-- Donor Contribution to Regular and Other Resources chart start -->
+        <div class="chartSmall">
+            <span class="chartHead">
+                {{data.basicDetails.level_3_name}}'s Contribution to Regular and Other Resources
+            </span>
+            <div class="donut_wrapper" style="display: table;width:100%;height: 200px">
+                <div class="donut" id="donor-contribution-split-chart" style="display: table-cell;width: 50%;">
+                    <span class="textLabel" style="top:40%;left:-8px;">
+                        <span class="dollor">{{data.regularOtherAggregate|numberToCurrencyFormatter:"2"}}</span>
+                        <span class="textField">Total Contribution</span>
+                    </span>
+
+                </div>
+                <div class="exportLegend">
+                    <div class="donut-chart-legend-wrapper">
+                        <ul class="legendWrapper">
+                            {% for fund in data.regularOther.country %}
+                            <li class="legendItem">
+                                <span class="legendColor" style="background-color: #{{fund.color}}"></span>
+                                <span class="legendDescription">{{fund.fund_type}}</span>
+                                <span class="legendPercentage">{{fund.percentage|roundTo:"1"}}%</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Donor Contribution to Regular and Other Resources chart end -->
+        <!-- Donor Contribution to UNDP Regular Resources chart start -->
+        <div class="chartSmall">
+            <span class="chartHead">
+                {{data.basicDetails.level_3_name}}'s Contribution to UNDP Regular Resources
+            </span>
+            <div class="donut_wrapper" style="display: table;width:100%;height: 200px">
+
+                <div class="contributionIndicator">
+                    <div class="contribution_wrapper">
+                        <span class="individual_contribution">{{data.regularOther.country|TotalContribution:"Regular Resources"|numberToCurrencyFormatter:"2"}}</span>
+                        <span class="contribution_percentage">({{data.regularOther.country|PercentageContribution:"Regular Resources"|roundTo:"1"}}%)</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progressBar" style="width:{{data.regularOther.country|PercentageContribution}}%;"></div>
+                        <div class="bar_step" style="left: 0%">
+                            <div class="label_percent">0%</div>
+                            <div class="label_line"></div>
+                        </div>
+                        <div class="bar_step" style="left: 20%">
+                            <div class="label_percent">20%</div>
+                            <div class="label_line"></div>
+                        </div>
+                        <div class="bar_step" style="left: 40%">
+                            <div class="label_percent">40%</div>
+                            <div class="label_line"></div>
+                        </div>
+                        <div class="bar_step" style="left: 60%">
+                            <div class="label_percent">60%</div>
+                            <div class="label_line"></div>
+                        </div>
+                        <div class="bar_step" style="left: 80%">
+                            <div class="label_percent">80%</div>
+                            <div class="label_line"></div>
+                        </div>
+                        <div class="bar_step" style="left: 100%">
+                            <div class="label_percent">100%</div>
+                            <div class="label_line"></div>
+                        </div>
+                    </div>
+
+                    <div class="legendCenter">
+                        <div class="legend">
+                            <div class="legendLabel">
+                                <div class="legendBlock">
+                                </div>
+                            </div>
+                            <span class="legendLabelText">
+                                {{data.basicDetails.level_3_name}}'s Contribution to UNDP Regular Resources
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Donor Contribution to UNDP Regular Resources chart end -->
+    </section>
+    <!-- Donor Contribution Split Up chart end -->
+    <!-- Donor Contributions to Other Resources by Fund Modality section start -->
+    <div style="height:658px;">
+        <span class="modalityWrapper">Contributions to Other Resources by Fund Modality</span>
+        <!-- Donor Contributions to Other Resources by Fund Modality chart section start -->
+        <section class="sectionWrapper chartWrapper">
+            <!-- Contribution to Other Resources by Fund Category chart start -->
+            <div class="chartSmall">
+                <span class="chartHead">
+                    Contribution to Other Resources by Fund Category
+                </span>
+                <div class="donut_wrapper" style="display: table;width:100%;height: 200px">
+                    <div class="donut" id="fund-category-contribution-chart" style="display: table-cell;width: 52.5%">
+                        <span class="textLabel" style="top:40%;left:-8px;">
+                            <span class="dollor">{{data.resourcesModalityContributionAggregate|numberToCurrencyFormatter:"2"}}</span>
+                            <span class="textField">Total Contribution</span>
+                        </span>
+
+                    </div>
+                    <div class="exportLegend">
+                        <div class="donut-chart-legend-wrapper">
+                            <ul class="legendWrapper">
+                                {% for fund in data.resourcesModalityContribution.country %}
+                                <li class="legendItem">
+                                    <span class="legendColor" style="background-color: #{{fund.color}}"></span>
+                                    <span class="legendDescription">{{fund.fund_stream}}</span>
+                                    <span class="legendPercentage">{{fund.percentage|roundTo:"1"}}%</span>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Contribution to Other Resources by Fund Category chart end -->
+            <!-- Other Resources Modality Contributions - donor vs All Donors start -->
+            <div class="chartSmall" style="page-break-after: always">
+                <span class="chartHead">
+                    Other Resources Modality Contributions - {{data.basicDetails.level_3_name}} vs All Donors
+                </span>
+                <div class="donut_wrapper" style="display: table;width:100%;height: 200px;padding:10px">
+                    <div>
+                        {% for donor in data.resourcesModalityContribution.total %}
+                        <section class="donor-contribution-wrapper">
+                            <div class="donor-contribution-row">{{donor.fund_stream}}</div>
+                            <div class="donor-contribution-row">
+                                <div class="donor-contribution-rowWrapper">
+                                    <div class="donor-contribution-countryWrapper donor-contribution-rowWrapperItem" style="height: 15;
+                    vertical-align: middle;
+                    width: {{donor.country_percentage|calc:donor.percentage}}%;
+                    border-color: #ff7e0e;
+                    border-left-width: 1;
+                    background-color: #ff7e0e;"></div>
+                                    <div class="donor-contribution-rowText">
+                                        <span>
+                                            {{donor.country_contribution|numberToCurrencyFormatter:"2"}}
+                                        </span>
+                                        <span class="donor-contribution-country_percentage">({{donor.country_percentage|roundTo:"1"}}%)</span>
+                                    </div>
+
+                                </div>
+                                <div class="donor-contribution-rowWrapper">
+                                    <div class="donor-contrselectedibution-countryWrapper donor-contribution-rowWrapperItem" style="height: 15;
+                    vertical-align: middle;
+                    width: {{donor.percentage}}%;
+                    background-color: #{{donor.color}};
+                    border-left-width: 1;
+                    border-color: #{{donor.color}};"></div>
+                                    <div class="donor-contribution-rowText">
+                                        {{donor.total_contribution|numberToCurrencyFormatter:"2"}}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </section>
+                        {% endfor %}
+                    </div>
+                    <div>
+                        <ul class="legendWrapper modality-contribution-legend">
+                            {% for fund in data.resourcesModalityContribution.total %}
+                            <li class="legendItem">
+                                <span class="legendColor" style="background-color: #{{fund.color}}"></span>
+                                <span class="legendDescription">{{fund.fund_stream}}</span>
+                            </li>
+                            {% endfor %}
+                            <li class="legendItem">
+                                <span class="legendColor" style="background-color: #ff7e0e"></span>
+                                <span class="legendDescription">{{data.basicDetails.level_3_name}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Other Resources Modality Contributions - donor vs All Donors end -->
+        </section>
+        <!-- Donor Contribution to Other Resources by Fund Modality chart section end -->
+    </div>
+    <!-- Donor Contributions to Other Resources by Fund Modality section end -->
+    {% else %}
+        {% if not data.basicDetails.level_3_name and not data.recipient and not data.sdgSelected and not data.unitSelected %}
+        <section class="sectionWrapper chartWrapper">
+            <div class="chartSmall">
+                <span class="chartHead">
+                    Overall Contribution to Regular and Other Resources
+                </span>
+                <div class="donut_wrapper" style="display: table;width:100%;height: 200px">
+                    <div class="donut" id="overall-contribution-chart" style="display: table-cell;width: 40%;">
+                        <span class="textLabel">
+                            <span class="dollor">{{data.regularOtherAggregate|numberToCurrencyFormatter:"2"}}</span>
+                            <span class="textField">Total Contribution</span>
+                        </span>
+
+                    </div>
+                    <div class="exportLegend">
+                        <ul class="legendWrapper">
+                            {% for fund in data.regularOther.total %}
+                            <li class="legendItem">
+                                <span class="legendColor" style="background-color: #{{fund.color}}"></span>
+                                <span class="legendDescription" style="width:100px;">{{fund.fund_type}}</span>
+                                <span class="legendPercentage">{{fund.percentage|roundTo:"1"}}%</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="chartSmall">
+                <span class="chartHead">
+                    Other Resources Modality Contribution Split up
+                </span>
+                <div class="donut_wrapper" style="display: table;width:100%;height: 200px">
+                    <div class="donut" id="modality-contribution-chart" style="display: table-cell;width: 40%;">
+                        <span class="textLabel" style="">
+                            <span class="dollor">{{data.resourcesModalityContributionAggregate|numberToCurrencyFormatter:"2"}}</span>
+                            <span class="textField">Total Contribution</span>
+                        </span>
+                    </div>
+                    <div class="exportLegend">
+                        <ul class="legendWrapper modality-contribution-legend" style="max-width: 200px;">
+                            {% for fund in data.resourcesModalityContribution.total %}
+                            <li class="legendItem" style=" width:100%;">
+                                <span class="legendColor" style="background-color: #{{fund.color}};"></span>
+                                <span class="legendDescription">{{fund.fund_stream}}</span>
+                                <span class="legendPercentage">{{fund.percentage|roundTo:"1"}}%</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+    {% endif %}
+
+    {% if data.basicDetails.level_3_name and not data.recipient %}
+    <!-- Donor Aggregate section start -->
+    {% if data.basicDetails.level_3_name and data.sdgSelected or data.basicDetails.level_3_name and data.unitSelected or data.basicDetails.level_3_name and data.sectorSelected %}
+    <section class="sectionWrapper"  >
+    {% else %}
+    <section class="sectionWrapper" style="page-break-before:always;">
+    {% endif %}
+        <!--<div class="sectionOverviewWrapper">{{data.basicDetails.level_3_name}} Overview</div>-->
+        <ul class="aggregateWrapper" style="background-color:#b9daf1;">
+            <li class="aggregateSubTitle">
+                <div class="aggregateSubItem">Budget</div>
+                <div class="aggregateLabel">
+                    <strong>{{data.basicDetails.total_budget | numberToCurrencyFormatter:"2"}}</strong>
+                </div>
+            </li>
+            <li class="aggregateSubTitle">
+                <div class="aggregateSubItem">Expense</div>
+                <div class="aggregateLabel">
+                    <strong>{{data.basicDetails.total_expense | numberToCurrencyFormatter:"2"}}</strong>
+                </div>
+            </li>
+            <li class="aggregateSubTitle">
+                <div class="aggregateSubItem">Direct Funded Projects</div>
+                <div class="aggregateLabel">
+                    <strong>{{data.basicDetails.total_projects | numberToCommaFormatter}}</strong>
+                </div>
+            </li>
+        </ul>
+    </section>
+    {% endif %}
+    {% if data.selected and not data.recipient %}
+    <!-- Recipient Offices section start -->
+    <br/><br/>
+    <section class="sectionWrapper">
+        <table class="donorTable">
+            <tr>
+                <th>Recipient County</th>
+                <th>Budget</th>
+                <th style="width:25%">Expense</th>
+            </tr>
+            {% for recipient in data.recipientOffices %}
+            <tr>
+                <td>{{recipient.recipient}}</td>
+                <td style="text-align: right;">${{recipient.total_budget|numberToCommaFormatter}}</td>
+                <td style="text-align: right;">${{recipient.total_expense|numberToCommaFormatter}}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    </section>
+    <!-- Recipient Offices section end -->
+    {% endif %} {% if data.mapData or data.budgetSources %}
+    <section style="">
+        {% if data.mapData %}
+        <br/><br/><br/><br/>
+        <section class="sectionWrapper mapSectionWrapper" style="page-break-inside: avoid">
+            <div style="width:878px;height:298px;" id="donorMap"></div>
+        </section>
+        {% endif %} {% if data.budgetSources %}
+        <section class="sectionWrapper">
+            <table class="donorTable">
+                <tr>
+                    <th>Donors</th>
+                    <th style="width:25%">Budget</th>
+                </tr>
+                {% for donor in data.budgetSources %}
+                <tr>
+                    <td>{{donor.org_name}}</td>
+                    <td style="text-align: right; width:25%">${{donor.total_budget|numberToCommaFormatter}}</td>
+                </tr>
+                {% endfor %}
+
+            </table>
+        </section>
+        {% endif %}
+    </section>
+    {% endif %} {% if data.donorList.data.data %}
+    <section class="sectionWrapper">
+        <br/><br/>
+        <span class="sectionHeader">
+            Top Donors
+        </span>
+        <table class="donorTable">
+            <tr>
+                <th>Donors</th>
+                <th>Budget</th>
+                <th>Expense</th>
+                <th>Projects</th>
+            </tr>
+            {% for donor in data.donorList.data.data|slice:"10" %}
+            <tr>
+                <td class="column donorTitle">{{donor.level_3_name}}</td>
+                <td style="text-align: right;">${{donor.total_budget|numberToCommaFormatter}}</td>
+                <td style="text-align: right;">${{donor.total_expense|numberToCommaFormatter}}</td>
+                <td style="text-align: right;">{{donor.total_projects|numberToCommaFormatter}}</td>
+               
+            </tr>
+            {% endfor %}
+        </table>
+        <!-- <ul class="donorsList">
+            {% for donor in data.donorList.data.data|slice:"10" %}
+            <li class="donorItem">
+                <span class="column donorTitle">{{donor.level_3_name}}</span>
+                <span class="column donorDetailsWrapper">
+                    <div class="aggregateWrapper">
+                        <span class="aggregateSubTitle">
+                            <span class="aggregateTitle">Budget</span>
+                            {{donor.total_budget|numberToCurrencyFormatter:"2"}}
+                        </span>
+                        <span class="aggregateSubTitle">
+                            <span class="aggregateTitle">Expense</span>
+                            {{donor.total_expense|numberToCurrencyFormatter:"2"}}</span>
+                        <span class="aggregateSubTitle">
+                            <span class="aggregateTitle">Projects</span>
+                            {{donor.total_projects|numberToCommaFormatter}}</span>
+                    </div>
+                    </div>
+
+                </span>
+            </li>
+            {% endfor %}
+        </ul> -->
+    </section>
+    {% endif %}
+    {% if data.projectList %}
+        {% if not data.basicDetails.level_3_name and not data.sdgSelected and not data.unitSelected and not data.recipient  %}
+        <section class="sectionWrapper" style="page-break-before:always;">
+        {% else %}
+        <section class="sectionWrapper">
+        {% endif %}
+        <span class="sectionHeader">
+            {% if data.projectList|length < 10 %}
+                Top {{data.projectList|length}} projects
+            {% else %}
+                Top 10 projects
+            {% endif %}
+        </span>
+        <table class="donorTable">
+            <tr>
+                <th>ID</th>
+                <th>Project Title</th>
+                <th>Budget</th>
+                <th>Expense</th>
+            </tr>
+            {% for project in data.projectList %}
+            <tr>
+                <td>{{project.project_id}}</td>
+                <td>{{project.title}}</td>
+                <td>${{project.budget|numberToCommaFormatter}}</td>
+                <td>${{project.expense|numberToCommaFormatter}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </section>
+    {% endif %}{% include "common_script.html" %}
+    <!-- Donor Contributions to Other Resources by Fund Modality section start -->
+    <script>
+
+        /* Map Script */
+        function generateIcon(iconUrl) {
+            var icon = new L.icon()
+            icon.options.iconSize = [24, 33.33]
+            icon.options.popupAnchor = [1, -24]
+            icon.options.iconAnchor = [13, 28.33]
+            icon.options.shadowSize = [68, 95]
+            icon.options.shadowAnchor = [22, 94]
+            icon.options.iconUrl = iconUrl
+            return icon
+        }
+
+        function getMarkerIcon(colorCode) {
+            switch (colorCode) {
+                case 'Administrative Region':
+                    return generateIcon(administrative); break;
+                case 'Populated Place': return generateIcon(populated); break;
+                case 'Structure': return generateIcon(structure); break;
+                case 'Other Topographical Feature': return generateIcon(otherTopo); break;
+                default: return generateIcon(other);
+            }
+        }
+        var mapData = [{{ data.mapData | safe }}];
+        if (mapData.length > 0) {
+            mapData = mapData[0];
+
+            var mymap = L.map('donorMap', { zoomControl: false }).setView([51.505, -0.09], 3);
+            L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2VldGh1ZGFzIiwiYSI6ImNqZm1qcHpnMDBmZmczM280dm9zdzR5bjcifQ.zRivs5JkUZzTzUU_OpYXPw')
+                .addTo(mymap);
+
+            var markers = L.markerClusterGroup({
+                showCoverageOnHover: false,
+                removeOutsideVisibleBounds: false,
+                iconCreateFunction: function(cluster) {
+                    return L.divIcon({ html: '<div>'+cluster.getChildCount()+'</div>', className: 'mapCluster', iconSize: L.point(40, 40) });
+                }
+            });
+            var layers = L.layerGroup();
+
+            if (mapData.length == 1) {
+                mapData[0].outputs.map(function (feature, index) {
+                    var marker = L.marker([
+                        parseFloat(feature.output_latitude),
+                        parseFloat(feature.output_longitude)
+                    ], {
+                            icon: getMarkerIcon(feature.output_location_class)
+                        })
+                    markers.addLayer(marker)
+                })
+                mymap.addLayer(this.markers)
+
+                if (
+                    mapData[0].boundaries != null &&
+                    mapData[0].boundaries.geometry.type == "Polygon"
+                ) {
+                    var coord = mapData[0].boundaries.geometry.coordinates[0];
+                    var bounds = L.polyline(coord).getBounds();
+                    layers.addLayer(L.polygon(coord, { stroke: false, fillColor: '#bbb' }))
+                    layers.addTo(mymap)
+                    mymap.fitBounds(bounds)
+                } else if (
+                    mapData[0].boundaries != null &&
+                    mapData[0].boundaries.geometry.type == "MultiPolygon"
+                ) {
+                    var modifiedCoord = mapData[0].boundaries.geometry.coordinates;
+                    var modifiedCoord = [].concat.apply([], modifiedCoord);
+                    var modifiedCoord = [].concat.apply([], modifiedCoord);
+                    var bounds = L.polyline(modifiedCoord).getBounds();
+                    mymap.fitBounds(bounds)
+                    var polygons = [];
+                    mapData[0].boundaries.geometry.coordinates.forEach(
+                        function (item) {
+                            layers.addLayer(L.polygon(item[0], { stroke: false, fillColor: '#bbb' }))
+                        }
+                    );
+                    layers.addTo(mymap)
+                }
+            }
+
+            else {
+                var min = d3.min(mapData, function (d) { return parseInt(d.total_budget) })
+                var max = d3.max(mapData, function (d) { return parseInt(d.total_budget) })
+                var scale = d3.scale.linear()
+                    .domain([min, max])
+                    .range([10, 50]);
+                mapData.length ? mymap.setView([mapData[0].latitude, mapData[0].longitude], 3) : null
+                mapData.forEach(function (location, index) {
+                    var circleMarker = L.circleMarker([
+                        parseFloat(location.latitude),
+                        parseFloat(location.longitude)
+                    ], {
+                            radius: scale(location.total_budget),
+                            weight: 2
+                        })
+
+                    layers.addLayer(circleMarker)
+                })
+                layers.addTo(mymap)
+            }
+        }
+
+        /* Map Script Ends */
+
+        // Donor Contribution to Regular and Other Resources chart start
+        const EDGE = window.navigator.userAgent.indexOf("Edge") > -1,
+            IE = false || !!document.documentMode,
+            EDGE_IE = EDGE || IE;
+        var data = {{ data.regularOther.country| safe}};
+        var width = 400,
+            height = 400,
+            radius = Math.min(width, height) / 2,
+            labelr = radius + 40,
+            outerRadius = radius - 10,
+            innerRadius = radius - 50;
+
+        var arc = d3.svg.arc()
+            .outerRadius(outerRadius)
+            .innerRadius(innerRadius);
+
+        var pie = d3.layout.pie()
+            .sort(null)
+            .value(function (d) {
+                return d.percentage;
+            })
+            .padAngle(0);
+
+        var svg = d3.select('#donor-contribution-split-chart')
+            .append("svg")
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "0 0 " + width + " " + height)
+            .append("g")
+            .attr("transform",
+                "translate(" + width / 2 + "," + height / 2 + ") scale(0.7, 0.7)");
+
+        var g = svg.selectAll(".arc")
+            .data(pie(data))
+            .enter().append("g")
+            .attr("class", "arc");
+
+        var newArcs = g.append("path")
+            .attr("d", arc)
+            .style("fill", function (d) { console.log(d); return "#" + (d.data.color || d.data.sector_color); });
+
+        // Donor Contribution to Regular and Other Resources chart end
+
+        //    Contribution to Other Resources by Fund Category chart start
+        // var data = {{ data.resourcesModalityContribution.total| safe}};
+        var data = {{ data.resourcesModalityContribution.country| safe}};
+        var width = 400,
+            height = 400,
+            radius = Math.min(width, height) / 2,
+            labelr = radius + 40,
+            outerRadius = radius - 10,
+            innerRadius = radius - 50;
+
+        var arc = d3.svg.arc()
+            .outerRadius(outerRadius)
+            .innerRadius(innerRadius);
+
+        var pie = d3.layout.pie()
+            .sort(null)
+            .value(function (d) {
+                return d.percentage;
+            })
+            .padAngle(0);
+
+        var svg = d3.select('#fund-category-contribution-chart')
+            .append("svg")
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "0 0 " + width + " " + height)
+            .append("g")
+            .attr("transform",
+                "translate(" + width / 2 + "," + height / 2 + ") scale(0.7, 0.7)");
+
+        var g = svg.selectAll(".arc")
+            .data(pie(data))
+            .enter().append("g")
+            .attr("class", "arc");
+
+        var newArcs = g.append("path")
+            .attr("d", arc)
+            .style("fill", function (d) { return "#" + (d.data.color || d.data.sector_color); });
+
+        //    Contribution to Other Resources by Fund Category chart end
+        /*Overall Contribution Chart */
+
+        // var that = this;
+        var data = {{ data.regularOther.total| safe}};
+        var width = 400,
+            height = 400,
+            radius = Math.min(width, height) / 2,
+            labelr = radius + 40,
+            outerRadius = radius - 10,
+            innerRadius = radius - 50;
+
+        var arc = d3.svg.arc()
+            .outerRadius(outerRadius)
+            .innerRadius(innerRadius);
+
+        var pie = d3.layout.pie()
+            .sort(null)
+            .value(function (d) {
+                return d.percentage;
+            })
+            .padAngle(0);
+
+        var svg = d3.select('#overall-contribution-chart')
+            .append("svg")
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "0 0 " + width + " " + height)
+            .append("g")
+            .attr("transform",
+                "translate(" + width / 2 + "," + height / 2 + ") scale(0.7, 0.7)");
+
+        var g = svg.selectAll(".arc")
+            .data(pie(data))
+            .enter().append("g")
+            .attr("class", "arc");
+
+        var newArcs = g.append("path")
+            .attr("d", arc)
+            .style("fill", function (d) { return "#" + (d.data.color || d.data.sector_color); });
+
+        /*Overall Contribution Chart Ends */
+
+        /*Modality Contribution Chart */
+        // totalData = [{ "total_contribution": 14829030, "fund_stream": "Cost Sharing", "percentage": "100.00000", "color": "795E58", "priority": "1", "country_contribution": 14829031, "country_percentage": 100 }]
+
+        // var that = this;
+        var data = {{ data.resourcesModalityContribution.total| safe}};
+        var width = 400,
+            height = 400,
+            radius = Math.min(width, height) / 2,
+            labelr = radius + 40,
+            outerRadius = radius - 10,
+            innerRadius = radius - 50;
+
+        var arc = d3.svg.arc()
+            .outerRadius(outerRadius)
+            .innerRadius(innerRadius);
+
+        var pie = d3.layout.pie()
+            .sort(null)
+            .value(function (d) {
+                return d.percentage;
+            })
+            .padAngle(0);
+
+        var svg = d3.select('#modality-contribution-chart')
+            .append("svg")
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "0 0 " + width + " " + height)
+            .append("g")
+            .attr("transform",
+                "translate(" + width / 2 + "," + height / 2 + ") scale(0.7, 0.7)");
+
+        var g = svg.selectAll(".arc")
+            .data(pie(data))
+            .enter().append("g")
+            .attr("class", "arc");
+
+        var newArcs = g.append("path")
+            .attr("d", arc)
+            .style("fill", function (d) { return "#" + (d.data.color || d.data.sector_color); });
+
+            /*Modality Contribution Chart Ends */
+    </script>
+</body>
+
+</html>

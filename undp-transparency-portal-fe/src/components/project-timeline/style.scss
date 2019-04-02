@@ -1,0 +1,94 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+.progressBar {
+    width: 100%;
+    height: 32px;
+    border: 1px solid #dddddd;
+    background-color: #ededed;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden; // &:before {
+    .progressBarChild {
+        height: 30px;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+        background-color: #65a51e;
+    }
+    .bar_step {
+        position: absolute;
+        bottom: 0;
+        margin-left: 0;
+        z-index: 1;
+        font-size: 12px;
+        cursor: pointer;
+        .label_line {
+            background-color: #4a4b4c;
+            opacity: 0.5;
+            width: 1px;
+            height: 7px;
+            float: right;
+        }
+        .label_txt {
+            float: left;
+        }
+        @include not-last-child ('.bar_step') {
+            &:hover {
+                .label_percent {
+                    display: none;
+                }
+            }
+        }
+        .label_percent {
+            display: none;
+            float: right;
+            margin-left: -8px;
+            margin-top: 30px;
+            color: #4a4b4c;
+            font-size: 16px;
+            font-weight: 400;
+        }
+        &:nth-child(1) {
+            &:hover {
+                .label_percent {
+                    display: none;
+                }
+            }
+        }
+        &:hover {
+            .label_percent {
+                display: block;
+            }
+        }
+    }
+}
+
+.dateWrapper {
+    width: 100%;
+    display: inline-block;
+    margin-top: 8px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #dddddd;
+    span {
+        color: #4a4b4c;
+        font-size: 16px;
+        &:first-child {
+            display: inline-block;
+            width: 50%;
+        }
+        &:last-child {
+            display: inline-block;
+            width: 50%;
+            text-align: right;
+        }
+    }
+}
+
+.timeLine {
+    font-weight: 600;
+    padding: 20px 0;
+    margin: 0;
+    font-size: 20px;
+    // @media(max-width: $tablets) {
+    //     margin-top: 100px;
+    // }
+}

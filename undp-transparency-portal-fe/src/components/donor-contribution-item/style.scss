@@ -1,0 +1,46 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+.wrapper {
+    display: block;
+    padding-bottom: 20px;
+    .row {
+        display: block;
+        font-size: 14px;
+        display: inline-block;
+        &:nth-child(1) {
+            width: 25%;
+            text-align: left;
+            vertical-align: top;
+        }
+        &:nth-child(2) {
+            width: 75%;
+            text-align: left;
+
+        }
+        .rowWrapper {
+            display: block;
+            .rowWrapperItem {
+              
+                display: inline-block;
+            }
+            .rowText {
+                display: inline-block;
+                text-align: left;
+                padding-left: 10px;
+            }
+            .country_percentage {
+                padding-left: 5px;
+                font-size: 12px;
+                color: #949494;
+                font-weight: bold;
+            }
+        }
+        .countryWrapper {
+            height: 25px;
+            border-left: 1px solid #ccc;
+        }
+        .allDonorWrapper {
+            height: 25px;
+        }
+    }
+}

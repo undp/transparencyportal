@@ -1,0 +1,392 @@
+@import '../../../style/helpers/_variables';
+@import '../../../style/helpers/_mixins';
+
+
+.tableOuterWrapper{
+    display: none;
+    @media(min-width: $mobiles) {
+        display: block;
+    }
+}
+
+
+.cardListOuterWrapper{
+    display: block;
+    @media(min-width: $mobiles) {
+        display: none;
+    }
+}
+
+.cardTitle{
+    font-size: 15px;
+    margin-bottom: 3px;
+    font-weight:700;
+}
+
+.projectId{
+    color: #626262;;
+    font-size: 12px;
+    font-weight: 400;
+    margin-bottom:20px;
+}
+
+.amountWrapper{
+   display: table;
+   width:100%;
+   .budgetWrapper{
+       display: table-cell;
+   }
+    .label{
+            margin-right:5px;
+            color: #737373;
+            font-size: 12px;
+            font-weight: 400;
+    }
+    .text{
+        font-weight:600;
+        font-size: 12px;
+        color: #303030;
+    }
+
+}
+
+
+.projectListActive{
+    table{
+        tbody{
+            tr{
+                cursor: pointer;
+                &:hover {
+                    @include not-last-child ('th') {
+                        border-right: 1px solid #dfdfdf!important;
+                    }
+                    td, .projectTitleLink {
+                        color: $active-color;
+                    }
+                    
+                }
+            }
+        } 
+    }
+}
+
+.markerprojectList {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+    @media(max-width: 767px) {
+        overflow: scroll;
+    }
+    
+    table {
+        box-shadow: 0 10px 60px rgba(7, 61, 125, 0.18);
+        @media (max-width: 767px) {
+            width: 1200px;
+            max-width: none;
+        };
+        tbody {
+            tr {
+                background-color: #f4f5fa;
+            }
+        }
+    }
+}
+
+.projectList {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+    top: 30px;
+    @media(max-width: 767px) {
+        overflow: scroll;
+    }
+    
+    table {
+        box-shadow: 0 10px 60px rgba(7, 61, 125, 0.18);
+        @media (max-width: 767px) {
+            width: 1200px;
+            max-width: none;
+        };
+        tbody {
+            tr {
+                background-color: #f4f5fa;
+            }
+        }
+    }
+}
+.mainTableContainer {
+    padding: 0;
+    @media screen and (max-width: $wide-screen) {
+        padding: 10px;
+    }
+    @media screen and (max-width: 648px) {
+        overflow-x: scroll;
+    }
+    @media screen and (max-width: $desktop) {
+        padding: 15px;
+    }
+    
+}
+.react-bs-table-tool-bar .row {
+    margin-right: 0!important;
+    margin-left: 0!important;
+}
+.headerContainerClass {
+    @media(max-width: 767px) {
+        width: 1200px;
+    }
+    table {
+        margin-bottom: 0;
+        thead {
+            tr {
+                @include not-last-child ('th') {
+                    border-right: 1px solid #dfdfdf!important;
+                }
+                th {
+                    text-align: center !important;
+                    padding: 17px 0 ;
+                    -webkit-box-shadow: 0 1px 1px #dfdfdf;
+                    -moz-box-shadow: 0 1px 1px #dfdfdf;
+                    box-shadow: 0 1px 1px #dfdfdf;
+                    overflow-wrap: break-word;
+                    word-break: break-word;
+                    background-color: #ffffff;
+                    border-bottom: none !important;
+                    .priceColumn {
+                        font-family: ProximaNova-Regular;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.tableBodyClass {
+    font-family: "ProximaNova-Regular";
+    font-weight: 600;
+    margin-bottom: 0;
+    tbody {
+        tr {
+            @include not-last-child ('td') {
+                border-right: 1px solid #dfdfdf!important;
+            }
+            td {
+                border: none !important;
+                padding-right: 0;
+                padding-left: 15px;
+                outline: none;
+                word-break: break-word;
+                font-weight: 400;
+                line-height: 60px;
+                font-size: 16px;
+                padding: 15px !important;
+            }
+        }
+        
+    }
+}
+
+.projectTitleLink {
+    color: #626262;
+    font-weight: 400;
+    &:hover {
+        text-decoration: none;
+        color: #337ab7;
+        font-weight: 400;
+    }
+}
+.projectCountWrapper {
+    display: table;
+    margin: 10px 0;
+    padding: 0 10px;
+    color:#959595;
+    .projectCountDetails {
+        display: table-cell;
+        vertical-align: middle;
+        min-width: 150px;
+        span {
+            color: #363636;
+            font-weight: 600; 
+        }
+        
+    }
+    @media(min-width: 768px) {
+        height: 100px;
+        font-size: 16px;
+    }
+}
+.projectMarkerCountWrapper {
+    display: table;
+    margin: 10px 0;
+    width: 100%;
+    color:#959595;
+    .projectCountDetails {
+        display: table-cell;
+        vertical-align: middle;
+        min-width: 150px;
+        span {
+            color: #363636;
+            font-weight: 600; 
+        }
+        
+    }
+    @media(min-width: 768px) {
+
+        font-size: 16px;
+    }
+}
+.toolBar{
+    display: flex;
+    justify-content: space-between;
+}
+.markerWrapper{
+    display: block;
+    margin-top: 40px;
+    vertical-align: middle;
+    @media (max-width: 768px) {
+        padding: 0;
+    }
+} 
+
+input[type=text]::-ms-clear {
+    display: none;
+}
+.searchContainer {
+    .searchLabel {
+        color: #2c2c2c;
+        font-size: 16px;
+        font-weight: 700;
+        padding: 0 10px;
+        @media(min-width: $tablets) {
+            font-size: 18px;
+        }
+    }
+    .buttons {
+        display: none;
+        @media(min-width: $tablets) {
+            display: block;
+            color: #fff;
+            font-weight: $bold;
+            font-size: $text-small;
+            background-color: $active-color;
+            border-radius: 40px;
+            padding: 12px 29px;
+            margin-top: 0;
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+            margin-top: 10px;
+            outline: none;
+            border: none;
+            margin-left: 16px;
+         }
+    }
+    .searchItems {
+        padding-top: 10px;
+        width: 100%;
+        display: inline-block;
+        text-align: center;
+        .searchField {
+            color: #000;
+            display: inline-block;
+            width: 87%;
+            padding: 10px 10px 10px 20px;
+            box-sizing: border-box;
+            font-size: 16px;
+            outline: none;
+            height: 44px;
+            border-radius:0;
+            box-shadow: 0 2px 1px rgba(0, 0, 0, 0.03);
+            border-top-left-radius: 30px;
+            border-bottom-left-radius: 30px;
+            background-color: #ffffff;
+            border: 1px solid #d6d6de;
+            border-right: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            @media(max-width: $tablets) {
+                width: 83%;
+             }
+        }
+        .searchIcon {
+            height: 44px;
+            box-shadow: 0 2px 1px rgba(0, 0, 0, 0.03);
+            border: 1px solid #d6d6de;
+            background-color: #ffffff;
+            border-top-right-radius: 30px;
+            border-bottom-right-radius: 30px;
+            border-left: none;
+            background-image: url('#{$icons}/icon-search.svg');
+            background-repeat: no-repeat;
+            background-position: left center;
+            background-size: auto 50%;
+            display: inline-block;
+            padding: 20px 18px 18px;
+            position: relative;
+            vertical-align: top;
+            &.clearIcon {
+                background: url('#{$icons}/closeIcon.png') no-repeat;
+                background-size: 15px 15px;
+                background-position: center;
+                cursor: pointer;
+            }
+        }
+        @media(min-width: $tablets) {
+            width: 400px;
+        }
+    }
+}
+
+.searchWrapper {
+    display: block;
+    padding: 10px 0;
+    vertical-align: middle;
+    margin-right: 9px;
+    float: right;
+    @media(max-width: $tablets) {
+        float: none;
+        width:100%;
+        margin-right: 0;
+    }
+}
+.priceColumn{
+    text-align: right;
+    font-family: helvetica;
+}
+
+.preloaderWrapper {
+    position: relative;
+    height: 300px;
+}
+.changeSizeOuterWrapper {
+    display: block;
+    @media(min-width: $tablets) {
+      display: table-cell;
+      vertical-align: middle;
+    }
+    .changeSizeWrapper {
+        position: relative;
+        display: table;
+        #pageSize {
+          color: #3a3a3a;
+          font-weight: 700;
+          font-size: 16px;
+        }
+        span {
+          display: table-cell;
+          vertical-align: middle;
+          /* Style for "Show" */
+          color: #545556;
+          font-weight: 400;
+        }
+    
+        .changeSizeBtnWrapper {
+          display: table-cell;
+          position: relative;
+        }
+    }
+}
+
+ 

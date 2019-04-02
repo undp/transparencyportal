@@ -1,0 +1,45 @@
+@mixin transition ($name, $duration, $ease: ease) {
+    -webkit-transition: $name $duration $ease;
+    -moz-transition: $name $duration $ease;
+    -ms-transition: $name $duration $ease;
+    -o-transition: $name $duration $ease;
+    transition: $name $duration $ease;
+}
+
+@mixin transform($string) {
+    -webkit-transform: $string;
+    -moz-transform: $string;
+    -ms-transform: $string;
+    -o-transform: $string;
+    transform: $string;
+}
+
+@mixin animation ($name, $duration, $ease: ease) {
+    -webkit-animation: $name $duration $ease;
+    -moz-animation: $name $duration $ease;
+    -ms-animation: $name $duration $ease;
+    -o-animation: $name $duration $ease;
+    animation: $name $duration $ease;
+}
+
+@mixin font($size, $weight, $color, $family: 'ProximaNova-Regular') {
+    font-size: $size;
+    font-weight: $weight;
+    color: $color;
+    font-family: $family;
+}
+
+@mixin border($size, $variant, $color, $radius: 0) {
+    border: $size $variant $color;
+    border-radius: $radius;
+}
+
+@mixin not-last-child($selector) {
+    & #{$selector}:not(:last-child) {
+        @content;
+    }
+}
+@mixin selection {
+    ::-moz-selection { @content; }
+    ::selection { @content; }
+}

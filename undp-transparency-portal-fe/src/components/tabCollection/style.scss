@@ -1,0 +1,33 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+
+.list {
+    width: 100%;
+    font-size: 0;
+    display: block;
+    margin: 0 auto;
+    .listElement{
+        font-size: $text-small;
+        display: inline-block;
+        span{
+            @include border(2px,solid,$tabs-border,44px);
+            white-space: nowrap;
+            background-color: $white-background;
+            color: $black-color;
+            font-weight: $medium;
+            box-shadow: 0 12px 76px $tabs-shadow;
+            cursor: pointer;
+            text-align: center;
+            display: inline-block;
+            padding: 15px 40px;
+            text-decoration: none;
+            &.active{
+                color: $white-background;
+                background-color: $active-color;
+                font-weight: $bold;
+                border: none;
+                position: relative;
+            }
+        }
+    }
+}

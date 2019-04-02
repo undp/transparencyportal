@@ -1,0 +1,506 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+
+.barTextWrapper {
+    width: 100%;
+    display: block;
+    color: #303030;
+    .barTextLeft {
+        width: 50%;
+        display: inline-block;
+        text-align: left;
+        font-weight: $medium;
+        position: relative;
+       
+    }
+    .barTextRight {
+        width: 50%;
+        display: inline-block;
+        text-align: right;
+        font-weight: $medium;
+    }
+}
+.barContainer {
+    .totalOther {
+        display: inline-block;
+        position: fixed;
+        border: 1px solid #ccc;
+        padding: 2px;
+        font-size: 12px;
+        color:#3a3a3a;
+        background: #fff;
+        border-radius: 8px;
+        text-align: center;
+        z-index: 1;
+        font-weight: normal;
+        width: 228px;
+    }
+}
+.noTooltip {
+    display:none;
+}
+.textPerc{
+ color: rgba(48,48,48,0.5)  
+}
+.textLabel{
+    margin-Bottom:5px;
+    color: rgba(48,48,48,0.7)
+}
+
+.dropdowndonorWrapper{
+    width:100%;
+    border-bottom: 2px solid #b9b9b9;
+    padding:20px;
+    @media(min-width: $tablets) {
+        padding: 0 12px;
+    }
+    .dropdowndonorInnerWrapper{
+        display: block;
+        .donorType{
+            @media(min-width: $tablets) {
+                display: inline-block;
+                text-align:left;
+            }
+        }
+        .filter{
+            margin-left: 0;
+            .donorTypeDropdown{
+                margin-left: 0;
+            }
+        }
+        .fundCategory{
+            display: block;  
+            @media(min-width: $tablets) {
+                display: inline-block;
+                margin-left:20px; 
+                text-align:left;          
+            }
+        }
+        .displayNone{
+            display: none;
+        }
+        max-width: 1200px;
+        margin:0 auto;
+        padding:10px 0 20px 0;
+        .filter {
+            @media(min-width: $tablets) {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.detailViewWrapper{
+    background-color: #f4f5fa;
+    margin-bottom:50px;
+    padding:20px;
+    @media(min-width: $tablets) {
+        padding: 12px;
+        margin-bottom:0px;
+        padding-top:20px;
+        padding-bottom:20px;
+        margin-top:10px;
+    }   
+}  
+.wrapper {
+    width: 100%;
+    padding: 0 10px;
+    .chartWrapper {
+        display: block;
+        width: 100%;
+        padding-bottom: 10px;
+    }
+}
+
+.detailView {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    &::after {
+        content: '';
+        display: block;
+        clear: both;
+    }
+    .statsWrapper{
+        @media(min-width: $tablets) {
+            display: table-cell;
+            margin: 0;
+            vertical-align: top;
+            text-align: left;
+        }
+    }
+    .stats {
+        display: block;
+        vertical-align: middle;
+        margin-bottom: 40px;
+        color: #3a3a3a;
+        font-size: $text-small;
+        span {
+            display: block;
+            font-size: $text-big;
+            font-weight: $bold;
+        }
+        @media(min-width: $tablets) {
+            margin: 0;
+            margin-top: 26px;
+            text-align: left;
+        }
+    }
+    .contributionBarWrapper {
+        display: block;
+        margin: 0 auto;
+        width: 100%; 
+        height: 30px;
+        .contributionBar {
+            display: inline-block;
+            position: relative;
+            text-align: center;
+            padding: 6px 0;
+            color: white;
+            height: 100%;
+            @media(min-width: $tablets) {
+                text-align: center;
+                height:39px
+            }
+            .barLabel {
+                position: absolute;
+                bottom: calc(100% + 5px);
+                left: 0;
+                right: 0;
+                font-size: $text-medium;
+                text-align: center;
+                color: #303030;
+            }
+            .barValue {
+                position: absolute;
+                top: calc(100% + 5px);
+                left: 0;
+                right: 0;
+                font-weight: $medium;
+                text-align: center;
+                color: #303030;
+                span {
+                    display: block;
+                    font-weight: $normal;
+                    margin-left: 10px;
+                    color: #303030;
+                    @media(min-width: $tablets) {
+                        display: inline-block;
+                    }
+                }
+            }
+        }
+        @media(min-width: $tablets) {
+            width: 400px;
+            padding: 0;
+            display: table-cell;
+        }
+    }
+    @media(min-width: $tablets) {
+        display: table;
+    }
+}
+
+
+
+@media only screen and (max-width: 992px) {
+    .mobile {
+        display: block;
+    }
+    .desktop {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .desktop {
+        display: block;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .mobile {
+        display: none;
+    }
+}
+
+.btnListWrapper {
+    text-align: center;
+    margin-bottom: 15px;
+    .btnList {
+        width: 100%;
+        font-size: 0;
+        display: block;
+        padding: 0;
+        margin: 0 auto;
+        li {
+            font-size: $text-small;
+            display: inline-block;
+            margin-bottom: 10px;
+            button {
+                @include border(2px, solid, $tabs-border, 44px);
+                white-space: nowrap;
+                text-transform: uppercase;
+                outline: none;
+                font-size: 18px;
+                margin-right: 30px;
+                background-color: $white-background;
+                color: $black-color;
+                font-weight: $medium;
+                box-shadow: 0 12px 76px $tabs-shadow;
+                cursor: pointer;
+                text-align: center;
+                display: inline-block;
+                padding: 10px 12px;
+                padding: 15px 40px;
+                text-decoration: none;
+                overflow: visible;
+                &.active {
+                    color: $white-background;
+                    background-color: $active-color;
+                    font-weight: $bold;
+                    border: none;
+                    position: relative;
+                   
+                }
+            }
+            @media(min-width: $desktop) {
+                margin: 0;
+            }
+        }
+    }
+    @media(min-width: $desktop) {
+        display: block;
+        margin-top: 20px; 
+    }
+}
+.barContainer,
+.tooltipContainer {
+    position: relative;
+    .tooltipDonors {
+        visibility: hidden;
+        position:absolute;
+        border: 1px solid #ccc;
+        padding: 2px;
+        font-size: 12px;
+        color:#3a3a3a;
+        background: #fff;
+        border-radius: 8px;
+        text-align: center;
+        z-index: 1;
+        font-weight: normal;
+        top:19px;
+        width: 228px;
+        &:before {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            position: absolute;
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            border-bottom: 7px solid #c6c6c4;
+            left: 31%;
+            top: -8px;
+        }
+        &:after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            position: absolute;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 6px solid white;
+            /* right: 10%; */
+            left: 31.3%;
+            top: -6px;
+        }
+    }
+    &:hover {
+        .tooltipDonors {
+            visibility: visible;
+        }
+    }
+    .regularTooltip {
+        top: -34px;
+        left: -4px;
+        text-align: left;
+        padding: 6px;
+        &:before {
+            left: 10.5%;
+            transform: rotate(180Deg);
+            top: 27px;
+        }
+        &:after {
+            left: 11%;
+            transform: rotate(180Deg);
+            top: 26px;
+        }            
+    }
+    .otherTooltip {
+        right: -4px;
+        top: -38px;
+        &:before {
+            left: 85%;
+            transform: rotate(180Deg);
+            top: 32px;
+        }
+        &:after {
+            left: 85.5%;
+            transform: rotate(180Deg);
+            top: 31px;
+        }            
+    }
+    .tabTooltip {
+        top: 62px;
+        left: 0;
+        padding:10px;
+    }
+}
+
+.barTextWrapper .bartextLeft {
+    position: relative;
+    .regularBar {
+        visibility: hidden;
+        position:absolute;
+        display: block;
+        border: 1px solid #ccc;
+        padding: 2px;
+        font-size: 12px;
+        color:#3a3a3a;
+        background: #fff;
+        border-radius: 8px;
+        text-align: center;
+        z-index: 1;
+        font-weight: normal;
+        top:19px;
+        width: 228px;
+        &:before {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            position: absolute;
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            border-bottom: 7px solid #c6c6c4;
+            left: 31%;
+            top: -8px;
+        }
+        &:after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            position: absolute;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 6px solid white;
+            left: 31.3%;
+            top: -6px;
+        }
+    }
+}
+
+.accordion {
+    padding: 10px;
+    .accordionItem {
+        &.accordionPosition {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: $white-background;
+            z-index: 3;
+        }
+    }
+    .accordioncontentScroll {
+        height: 1000px;
+    }
+    .accordionContent {
+        height: 100%;
+    }
+    .accordionHead {
+        font-size: 18px;
+        text-transform: uppercase;
+    }
+    .accordionTitle {
+        color: #000;
+        padding-left: 8px;
+        margin-bottom: 8px;
+        box-shadow: 0 12px 76px rgba(7, 61, 125, 0.1);
+        border: 2px solid #cbcbcb;
+        background-color: #ffffff;
+        position: relative;
+        cursor: pointer;
+        &:after {
+            display: block;
+            content: '';
+            position: absolute;
+            top: 46%;
+            left: 90%;
+            right: 0;
+            bottom: 0;
+            background: url('#{$icons}/accordion-arrow.png') no-repeat;
+        }
+        &.accordionSelected {
+            background-color: #1c81c2;
+            color: #fff;
+            padding-left: 8px;
+            margin-bottom: 8px;
+            border: 1px solid transparent;
+            &:after {
+                display: block;
+                content: '';
+                position: absolute;
+                top: 46%;
+                left: 90%;
+                right: 0;
+                bottom: 0;
+                background: url('#{$icons}/uparrow.png') no-repeat;
+            }
+        }
+    }
+    .filterIcon,
+    .mapIcon {
+        padding: 10px;
+        cursor: pointer;
+    }
+    .embedSection {
+        text-align: right;
+    }
+    .embedImage {
+        padding: 5px;
+        cursor: pointer;
+    }
+    .exportSection {
+        float: right;
+    }
+    @media (max-width:450px){
+        padding-left: 1px;
+    }
+}
+
+
+.noData{
+    .headingText{
+        font-size: 20px;
+        font-weight: 300;
+        margin-bottom: 10px;
+    }
+    .type{
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 5px;        
+    }
+}
+.disclaimer {
+    font-size: 12px;
+    padding: 5px;
+    line-height: 1;
+    color: #4f4f4f;
+    margin: 0 auto;
+    font-size: 18px;
+    padding-bottom: 40px;
+}

@@ -1,0 +1,21 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+.loadingOverlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom:0;
+    z-index: 3;
+    display: table;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.3);
+    span {
+      display: table-cell;
+      vertical-align: middle;
+      background: url('#{$images}/loading.gif') no-repeat;
+      background-size: 50px 50px;
+      background-position: center center;
+    }
+  }

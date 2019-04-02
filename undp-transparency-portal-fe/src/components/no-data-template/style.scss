@@ -1,0 +1,38 @@
+    @import '../../style/helpers/_variables';
+    @import '../../style/helpers/_mixins';
+    .template_container {
+        margin-top: 50px;
+        margin-bottom: 50px;
+        .template_wrapper {
+            margin: 0 auto;
+            width: 90%;
+            min-height: 270px;
+            border-radius: 8px;
+            border: 1px solid #e8e8e8;
+            background-color: #f8f8f8;
+            display: -webkit-flex;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            padding: 50px 0;
+            .no_data_img {
+                width: 69px;
+                height: 60px;
+            }
+            .no_data_text {
+                font-size: 16px;
+                font-weight: 300;
+                padding-top: 25px;
+            }
+        }
+    }

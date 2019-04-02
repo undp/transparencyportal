@@ -1,0 +1,66 @@
+@import '../../../style/helpers/_variables';
+@import '../../../style/helpers/_mixins';
+.outerItem {
+    display: inline-block;
+    width: 100%;
+    ::selection {
+        .innerListWrapper{
+            background-color: transparent;
+        }
+    }
+    .labelWrapper {
+        width: 100%;
+        display: inline-block;
+        vertical-align: middle;
+        color: #222;
+        font-size: 17px;
+    }
+}
+
+.outerItemHover{
+    &:hover {
+         background-color: #ebf5ff;
+        color: $active-color;
+    }
+}
+
+
+.innerListWrapper {
+    padding: 0px;
+    margin-bottom: 5px;
+}
+.listItemCountry,
+.listItem {
+
+    color: #717171;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 3px;
+    padding-left: 30px;
+    padding-right: 10px;
+    outline: none;
+    &:hover, &:focus {
+        background-color: #ebf5ff;
+    }
+}
+.listItemCountry{
+    padding-left: 18px;
+}
+.flagIcon{
+    width: 25px;
+    vertical-align: text-bottom;
+    margin-top: 3px;
+}
+.country_name{
+    padding-left: 5px;
+}
+.labelWrapper {
+    padding: 8px 18px;
+    outline: none;
+    @media(max-width:767px) {
+       padding: 3px 18px;
+    }
+    &:hover, &:focus {
+        background-color: #ebf5ff;
+    }
+}

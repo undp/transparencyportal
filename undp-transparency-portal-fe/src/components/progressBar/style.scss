@@ -1,0 +1,38 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+
+.percentageFill{
+  width: 70%;
+  height: 25px;
+  @include border(1px,solid,$border-fade,20px);
+  background-color: $grey-fade;
+}
+
+ .progressOuterWrapper{
+  display: block;
+  height: 30px;
+  width:calc(100% - 74px);
+  position: relative;
+ }
+
+
+.progressWrapper{
+  display: block;
+  position: absolute;
+  left: 0;
+  height: 30px;
+  vertical-align: middle;
+}
+
+.progressPercent{
+  margin: 0;
+  display: block;
+  padding-left: 5px;
+  vertical-align: middle;
+  font-weight: 700;
+  font-size: 25px;
+  position: absolute;
+}
+.progressPercentage{
+  font-size: 20px;
+}

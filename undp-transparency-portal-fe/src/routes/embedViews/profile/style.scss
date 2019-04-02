@@ -1,0 +1,108 @@
+@import '../../../style/helpers/_variables';
+@import '../../../style/helpers/_mixins';
+
+.statsWrapper{
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+.titleWrapper{
+    color: #212121;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    margin: 15px 0 10px 0;
+  }
+
+.sectionTitle {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1200px;
+    text-align: left;
+    width: 100%;
+    font-size: 18px;
+    text-transform: uppercase;
+    font-weight: 700;
+    @media(max-width:1199px) {
+        padding-left:10px;
+    }
+}
+
+.list {
+    width: 100%;
+    margin: 40px 0 20px 0;
+    padding: 0;
+    border-top: 5px solid #1c81c2;
+    display: table;
+    height: 83px;
+    background-color: #f4f5fa;
+    li {
+        display: inline-block;
+        width: 50%;
+        font-size: 15px;
+        text-align: center;
+        padding: 10px;
+        @media(min-width: $tablets) {
+            display: table-cell;
+            width: 25%;
+            vertical-align: middle;
+        }
+        .value {
+            display: block;
+            font-size: 16px;
+            color: #454545;
+            font-weight: 700;
+        }
+        .label {
+            display: block;
+            font-size: 13px;
+            font-weight: 400;
+            @media(min-width: $tablets) {
+                padding-top: 5px;
+            }
+        }
+    }
+}
+
+.wrapper{
+    max-width: 1200px;
+    margin: 0 auto;
+    @media(min-width: $tablets) {
+        margin-top:30px;
+        margin-bottom: 30px;
+        @media(min-width: $desktop) {
+            display: inline-block;
+            margin: 0;
+        }
+    }
+}
+
+
+.mapContainer {
+    height: 500px;
+    position: relative;
+    margin-bottom: 65px;
+
+    .disclaimer {
+        font-size: 12px;
+        padding: 5px;
+        line-height: 1;
+        color: #4f4f4f;
+        padding-bottom: 20px;
+        @media(min-width: $desktop) {
+            padding-bottom: 0;
+        }
+    }
+}
+
+.recipientDocumentWrapper {
+    position: relative;
+    max-width: 1200px;
+    margin: 41px auto;
+    width: 100%;
+    @media(max-width:767px) {
+        overflow: scroll;
+        margin: 0 auto;
+    }
+}

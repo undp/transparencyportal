@@ -1,0 +1,75 @@
+.sdgLegend {
+    display: flex;
+    flex-direction: column;
+    @media (max-width: 649px) {
+        width: 100%;
+        margin: 3px 5px;
+    }
+    .rightSDG{
+        flex-direction: row-reverse;
+        .sdgImage {
+            margin-right: 0;
+            margin-left: 10px;
+        }
+    }
+    .leftSDG{
+        flex-direction: row
+    }
+    .sdgItem {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        .sdgPercent {
+            height: 50px;
+            min-width: 50px;
+            background: #f1f2f7;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .sdgImage {
+            height: 50px;
+            min-width: 50px;
+            border: 1px solid #f1f2f7;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+            overflow: hidden;
+            .imageItem{
+                height: 37px;
+                width: 37px;
+            }
+            .othersItem {
+                height: 50px;
+                min-width: 50px;
+            }
+        }
+        .sdgName {
+            font-size: 12px;
+            color: #444;
+            cursor: pointer;
+            &:hover {
+                color: #4a90e2
+            }
+        }
+    }
+    .sdgTooltip {
+            position: absolute;
+            display: none;
+            min-width: 80px;
+            height: auto;
+            background: none repeat scroll 0 0 #ffffff;
+            border: 1px solid #d6d6de;
+            padding: 10px;
+            border-radius: 6px;
+            max-width: 300px;
+            text-align: left
+    }
+}
+

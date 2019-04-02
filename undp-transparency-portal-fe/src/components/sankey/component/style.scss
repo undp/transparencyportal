@@ -1,0 +1,215 @@
+@import '../../../style/helpers/_variables';
+@import '../../../style/helpers/_mixins';
+
+.financialTab {
+  max-width: 1200px;
+  margin: 0 auto 20px auto;
+  text-align: center;
+  display: table;
+}
+.loaderWrapper {
+  position: relative;
+  height: 200px;
+}
+$labelWidth: 130px;
+.switch {
+  border: 1px solid $flow-border;
+  box-shadow: 0 2px 1px $drop-down-shadow;
+  position: relative;
+  display: inline-block;
+  margin: 20px;
+  height: 44px;
+  width: $labelWidth * 2 + 4px;
+  background: $flow-background;
+  opacity:0.8;
+  border-radius: 30px;
+}
+.switchLabel {
+  position: relative;
+  padding: 9px;
+  z-index: 2;
+  float: left;
+  width: $labelWidth;
+  line-height: 26px;
+  font-size: 20px;
+  font-weight: 700;
+  color: $black-color;
+  text-align: center;
+  cursor: pointer;
+  &:active { font-weight: $bold; }
+}
+
+.switchLabeloff { padding-left: 2px; }
+.switchLabelon { padding-right: 2px; }
+
+.switchInput {
+  display: none;
+
+  &:checked + .switchLabel {
+    font-weight: bold;
+    color: $black-color;
+    transition: .15s ease-out;
+  }
+
+  &:checked + .switchLabelon ~ .switchSelection {
+    left: $labelWidth + 2px;
+  }
+}
+
+.switchSelection {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: $labelWidth;
+  height: 44px;
+  background: $white-background;
+  border-radius: 30px;
+  transition: left .15s ease-out;
+}
+.buttonsWrapper {
+  display: table-cell;
+  vertical-align: middle;
+  font-family: 'ProximaNova-Regular';
+  line-height: 23px;
+  text-align: right;
+  @media screen and (max-width: 991px) {
+      width: 50%;
+  }
+  .buttons {
+    display: inline-block;
+      color: $button-text-color;
+      font-weight: $bold;
+      font-size: $text-small;
+      background-color: $button-background-color;
+      @include border(2px, solid, $button-text-color, 40px);
+      padding: 8px 10px;
+      cursor: pointer;
+      padding-left: 44px;
+      position: relative;
+      &:hover {
+        // @include transform(scale(1.1));
+        // @include transition(transform,0.7s);
+    }
+      @media screen and (max-width: 991px) {
+          border-radius: 50%;
+          padding: 20px 40px 15px 0;
+          margin-left: 10px;
+          float: right;
+      }
+      b {
+          @media screen and (max-width: 991px) {
+              display: none;
+          }
+      }
+      &::after {
+          content: '';
+          position: absolute;
+          display: block;
+          top: 8px;
+          left: 15px;
+          width: 30px;
+          height: 30px;
+          @media screen and (max-width: 991px) {
+              left: 8px;
+              top: 6px;
+          }
+      }
+      &:nth-of-type(2):after {
+          background: url('#{$icons}/embed-icon.svg') no-repeat;
+      }
+      &:nth-of-type(1),
+      &:nth-of-type(2) {
+          // margin-left: 10px;
+          margin-right: 12px;
+      }
+      &:after {
+          background: url('#{$icons}/export-icon.svg') no-repeat;
+      }
+
+  }
+
+  .yearWrapper {
+      display: inline-block;
+      position: relative;
+      // float: left;
+      padding-left: 10px;
+      @media(min-width: $tablets) {
+          float: none;
+          padding-left: 0;
+      }
+      .pageSizeModal {
+        -webkit-box-shadow: 0px 0px 1px rgba(0, 0, 0, .5);
+        -moz-box-shadow: 0px 0px 1px rgba(0, 0, 0, .5);
+        box-shadow: 0px 0px 1px rgba(0, 0, 0, .5);
+          z-index: 6;
+          position: absolute;
+          left: 0;
+          top: 16px;
+          padding-top: 25px;
+
+          border: 1px solid #d6d6de;
+          background-color: #ffffff;
+          border-radius: 10px;
+          @media(max-width: 767px) {
+              left: 9px;
+          }
+          ul {
+              padding: 0;
+              margin-top: 0;
+              margin-bottom: 0;
+              cursor: pointer;
+              li {
+                  border: none;
+                  padding: 3px 0;
+                  text-align: left;
+                  padding-left: 10px;
+                  width: 116px;
+                  outline: none;
+                  font-weight: 700;
+                  &:hover, &:focus {
+                      background-color: #ebf5ff;
+                  }
+                  &:last-child {
+                      border-bottom-left-radius: 10px;
+                      border-bottom-right-radius: 10px;
+                    }
+              }
+          }
+      }
+  }
+  .dropDownWrapper {
+      box-shadow: 0 2px 1px $drop-down-shadow;
+      @include border(1px,
+      solid,
+      $drop-down-border-color,
+      30px);
+      background-color: $white-background;
+      margin-right: 10px;
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      height: 42px;
+      // width: 100px;
+      padding: 8px 51px 8px 21px;
+      font-weight: 700;
+      font-size: 18px;
+      z-index: 7;
+      width: 117px;
+      &::after {
+          content: '';
+          background: url('#{$icons}/drop-down-arrow.png') no-repeat;
+          position: absolute;
+          right: -5px;
+          top: 12px;
+          display: block;
+          width: 30px;
+          height: 30px;
+      }
+      span {
+          @media(max-width:767px) {
+              font-size: 16px;
+          }
+      }
+  }
+}

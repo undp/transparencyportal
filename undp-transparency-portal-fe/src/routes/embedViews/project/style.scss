@@ -1,0 +1,125 @@
+@import '../../../style/helpers/_variables';
+@import '../../../style/helpers/_mixins';
+.container{
+  font-family: "ProximaNova-Regular";
+  .titleWrapper{
+    color: #212121;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    margin: 15px 0 10px 0;
+      @media(max-width:767px){
+        margin: 0;
+    }
+  }
+
+  .projectListWrapper {
+    margin: 20px auto;
+    margin-top: 90px;    
+    
+    @media screen and (max-width: 768px) {
+      margin: 0 auto;
+      margin-top: 90px;    
+      
+      
+    }
+    @media(max-width: 767px) {
+        width: 100%;
+    }
+  }
+
+  .mapWrapper {
+    width: 100%;
+    height: 500px;
+
+    @media screen and (max-width: 767px) {
+        margin: 0 10px;
+        width: auto;
+        height: 400px;
+    }
+    @media screen and (max-width: 620px) {
+        margin: 0 10px;
+        width: auto;
+      
+    }
+  }
+}
+.disclaimer {
+  font-size: 12px;
+  padding: 5px;
+  line-height: 1;
+  color: #4f4f4f;
+  padding-bottom: 20px;
+
+}
+.filterHighlight {
+  font-weight: 700;
+}
+.filterTextWrapper{
+  margin-bottom:10px;
+  text-align: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+
+.topographyIconsContainer{
+  position: relative;
+  top:0;
+}
+
+.filterText{
+  font-size: 16px;
+  padding: 16px;
+  width:100%;
+  background-color: #f4f5fa;
+  @media (max-width:767px){
+    padding: 5px;
+  }
+}
+
+
+.filterTitle{
+  font-size: 16px;
+  padding: 0 10px;
+}
+
+.filterListWrapper{
+ width:100%;
+ height: 62px;
+ overflow-y: hidden;
+ margin-bottom: 10px;
+ 
+  .filterInnerWrapper{
+    width:100%;
+    padding-bottom: 25px;
+    overflow: auto;
+    white-space: nowrap;
+    display: inline-block;
+}
+    .filterLabels {
+      display: inline-block;
+      border-radius: 8px;
+      background-color: #1c81c2;
+      display: inline-block;
+      padding: 10px 15px;
+      color: #fff;
+      font-size: 14px;
+      margin: 12px 8px 10px 8px;
+      
+      @media (min-width: $desktop) {
+        margin: 12px 12px 10px 14px;
+    }   
+     
+  }
+  
+}
+
+
+
+
+
+
+
+
+

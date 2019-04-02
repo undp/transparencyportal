@@ -1,0 +1,213 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+
+.container{
+    max-width: 767px;
+  
+    margin: 10px;
+    background-color: #fbfbfb;
+    border: 1px solid #eeeeee;
+    border-radius:2%; 
+    .innerContainer{
+        padding: 12px;
+    }
+    
+.cardDetails{
+    color: #4c4c4c;
+    font-size: 12px;
+    font-weight:400px;
+    .title{
+        font-size: 15px;
+        font-weight:700;
+        color: #303030;
+    }
+
+    .projectId{
+        margin-bottom: 16px;
+    }
+    .description{
+        margin-bottom: 16px;
+    }
+
+    .label{
+        // color: #212121;
+        // font-size: 12px;
+        // font-weight: 600;
+    }
+    .value{
+        font-weight:600;
+        font-size: 12px;
+        color: #303030;
+    }
+    .sdgData{
+        margin-left: 15px;
+    }
+}
+
+}
+
+.resultsWrapper{
+    display: inline-block;
+    width: 100%;
+    height: 35px;
+    margin-top:10px;
+    &::after{
+            content: '';
+            display: block;
+            clear: both;
+    }
+    .results{
+        display: inline-block;
+        width: 50%;
+        height: 100%;
+        float:left;
+    }
+   
+    
+    .lessDetails{
+        display: inline-block;
+        width: 50%;
+        height: 100%;
+        text-align: center;
+        float: left;
+        &::after{
+            content: '';
+            display: block;
+            clear: both;
+        }
+        .lessDetailsText{
+            float: right;
+            color: #0167ce;
+            font-size: 14px;
+            text-align: left;
+            margin-right: 8px;
+            margin-top: 3px;
+        }
+        .lessDetailImage{
+            float: right;
+            background: url('../../assets/icons/more_details_open.png') no-repeat;
+            background-size: contain;
+            transform-origin: 50% 50%;
+            transform: rotate(-90deg);
+            height: 17px;
+            width: 21px;
+            margin-top: 4px;
+            
+        }
+        .moreDetailImage{
+        
+            float: right;
+            background: url('../../assets/icons/more_details_open.png') no-repeat;
+            background-size: contain;
+            transform-origin: 50% 50%;
+            transform: rotate(90deg);
+            height: 17px;
+            width: 21px;
+            margin-top: 4px;
+
+
+
+            
+        }
+     
+        // .viewDetailIcon{
+        //     width:25px;
+        //     height: 25px;
+        // }
+    }
+}
+
+.genderEquality{
+    width:100%;
+    .heading{
+        color:#212121;
+        font-size: 12px;
+    }
+}
+
+.budgetSources{
+    background-color: #eeeeee;
+    ul{
+        padding: 5px 10px;
+        .header{
+            font-weight: bold;
+            font-size: 16px;
+            color: #1c81c2;
+            margin-left: 5px;
+        }
+        .subheader{
+            font-weight: bold;
+            font-size: 14px;
+            margin-left: 15px;
+        }
+        .sub_section{
+            margin-left: 15px;
+            .bullet{
+                width: 10px;
+                vertical-align: baseline;
+                margin-right: 5px;            
+            }
+        }
+    }
+    .budgetSourcesHeading{
+        background-color: #D8D8D8;
+        padding: 5px 10px;
+        font-weight: 600;   
+    }
+    .policyMarkerSection{
+        padding: 5px 10px;
+        .policyMarker {
+            font-weight: 400;     
+            .policyMarkerHeading{
+                font-weight: 600;   
+                font-size: 12.5px;
+            }
+        }
+    }
+}
+
+
+
+.view_results {
+    background: url('../../assets/icons/View_Results_Icon.png') no-repeat;
+    background-size: contain;
+    height: 25px;
+    width: 25px;
+}
+
+
+.budgetTable{
+    width:100%;
+    margin-top: 1rem;
+    tr{
+        th{
+            background-color: #D8D8D8;            
+            text-align: left;
+            padding:5px 10px; 
+            color: #303030;
+            font-size: 13px;
+            font-weight: 500;           
+            &:first-child{
+                width:30%;
+            }
+            width:35%;
+        
+        }
+
+        td{
+            color: #626262;
+            font-size: 12px;
+            font-weight: 400;
+            text-align: left;
+            padding:5px 10px;            
+            
+            &:first-child{
+                width:30%;
+            }
+            
+            width:35%;
+        }
+    }
+}
+
+
