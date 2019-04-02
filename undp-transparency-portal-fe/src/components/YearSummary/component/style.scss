@@ -1,0 +1,203 @@
+@import '../../../style/helpers/_variables';
+@import '../../../style/helpers/_mixins';
+.annualSection {
+    width: 100%;
+    position: absolute;
+    bottom: -40px;
+    @media(min-width: $tablets) {
+        bottom: -130px;
+    }
+    @media(min-width: $desktop) {
+        bottom: -12px;
+    }
+}
+
+.annualFigure {
+    background-color: $blue-banner;
+    box-shadow: 0 11px 69px rgba(7, 61, 125, 0.1);
+    width: 100%;
+    max-width: 1200px;
+    @media(min-width: $desktop) {
+        border-radius: 10px;
+    }
+    .graphSection {
+        @include transition(transform, 1s);
+        color: $white-background;
+        position: relative;
+        width: 33%;
+        text-align: center;
+        display: inline-block;
+        a{
+            color: $white-background;
+        }
+        @media(max-width: $desktop) {
+            padding: 20px;
+            &:nth-child(1),
+            &:nth-child(2),
+            &:nth-child(3) {
+                border-bottom: 1px solid #29516c;
+            }
+            &:nth-child(4),
+            &:nth-child(5) {
+                width: 50%
+            }
+            &:nth-child(3):after {
+                background-image: none
+            }
+        }
+        @media(min-width: $desktop) {
+            width: 20%;
+            &:nth-child(4),
+            &:nth-child(5) {
+                width: 20%
+            }
+            &:nth-child(3):after {
+                background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), color-stop(rgba(255, 255, 255, 0.5)), to(rgba(255, 255, 255, 0)));
+                background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+                background-image: -o-linear-gradient(top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+                background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+            }
+        }
+        &:hover {
+            @include transform(scale(1.1));
+            @include transition(transform, 1s);
+            background-color: $white-background;
+            color: $black-color;
+            border-radius: 10px;
+            -webkit-box-shadow: 0 10px 60px rgba(7, 61, 125, 0.18);
+            box-shadow: 0 10px 60px rgba(7, 61, 125, 0.18);
+            z-index: 5;
+            cursor: pointer;
+            a{
+                color: $black-color;
+            }
+        }
+        &:after {
+            content: '';
+            height: 50%;
+            top: 25%;
+            width: 2px;
+            position: absolute;
+            right: 0;
+            display: block;
+            background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), color-stop(rgba(255, 255, 255, 0.5)), to(rgba(255, 255, 255, 0)));
+            background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+            background-image: -o-linear-gradient(top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+            background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+            @media(min-width: $desktop) {
+                height: 136px;
+                top: 16px;
+            }
+        }
+        &:last-child:after {
+            background-image: none;
+        }
+        .graphContent {
+            @media(min-width: $desktop) {
+                padding-top: 38px;
+                padding-bottom: 38px;
+            }
+            .value,
+            .description {
+                font-family: ProximaNova-bold;
+                font-size: $text-xsmall;
+                display: block;
+            }
+            .value {
+                @media(min-width: $desktop) {
+                    padding-bottom: 23px;
+                }
+                font-family: $project-heading;
+                @media(min-width: $tablets) {
+                    font-size: $text-xlarge;
+                }
+            }
+            .description {
+                padding-top: 6px;
+                font-weight: 700;
+                @media(min-width: $tablets) {
+                    font-size: $text-big;
+                }
+            }
+        }
+    }
+}
+
+.yearSlider {
+    padding: 20px;
+    text-align: center;
+    .annualHeading {
+        font-family: ProximaNova-extrabold;
+        color: $white-background;
+        font-weight: $bold;
+        font-size: $heading-medium;
+        padding-left: 48px;
+        padding-right: 48px;
+        @media(max-width:767px) {
+            font-size:24px;
+        }
+    } // .disableArrowLeft,
+    // .arrowLeft {
+    //     width: 0;
+    //     display: inline-block;
+    //     height: 0;
+    //     border-top: 8px solid transparent;
+    //     border-bottom: 8px solid transparent;
+    //     border-right: 8px solid $white-background;
+    //     background: transparent;
+    //     outline: none;
+    // }
+    // .disableArrowRight,
+    // .arrowRight {
+    //     width: 0;
+    //     display: inline-block;
+    //     height: 0;
+    //     border-top: 8px solid transparent;
+    //     border-bottom: 8px solid transparent;
+    //     border-left: 8px solid $white-background;
+    //     background: transparent;
+    //     outline: none;
+    // }
+    // .disableArrowLeft {
+    //     border-right: 8px solid $white-background;
+    //     opacity: 0.3;
+    // }
+    // .disableArrowRight {
+    //     border-left: 8px solid $white-background;
+    //     opacity: 0.3;
+    // }
+    .previous,
+    .next,
+    .inActivePrevious,
+    .inActiveNext {
+        content: '';
+        cursor: pointer;
+        outline: none;
+        border: none;
+        height: 20px;
+        width: 20px;
+        display: inline-block
+    }
+    .previous,
+    .next {
+        opacity: 1;
+        background: url('#{$icons}/previous.png') no-repeat;
+    }
+    .previous {
+        transform: rotate(180deg) translateY(4px);
+    }
+    .inActivePrevious,
+    .inActiveNext {
+        opacity: 0.3;
+        background: url('#{$icons}/previous.png') no-repeat;
+        @media(max-width:767px) {
+            transform: translateY(2px);
+        }
+    }
+    .inActivePrevious {
+        transform: rotate(180deg) translateY(4px);
+        @media(max-width:767px) {
+            transform: translateY(1px);
+        }
+    }
+}

@@ -1,0 +1,40 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+.footer {
+    background: url('#{$images}/footer-background.jpg') no-repeat 100%;
+    background-size: cover;
+    text-align: center;
+    .whiteLogo {
+        padding-top: 42px;
+        padding-bottom: 14px;
+    }
+    .linkSection {
+        margin: 0 auto;
+        padding: 0;
+        max-width: 833px;
+        .linkItems {
+            display: block;
+            padding: 10px;
+            @media(min-width: $tablets) {
+                display: inline-block;
+                box-sizing: border-box;
+                padding-right: 24px;
+            }
+            .footerLink {
+                @include font($text-xsmall,
+                $bold,
+                $white-fade);
+                text-decoration: none;
+                &:hover {
+                    color: #fff;
+                }
+                cursor: pointer;
+            }
+        }
+    }
+    .copyrightDetails {
+        font-size: $text-small;
+        padding-bottom: 17px;
+        margin: 0;
+    }
+}

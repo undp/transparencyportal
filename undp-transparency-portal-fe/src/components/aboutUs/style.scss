@@ -1,0 +1,206 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+.accordionScroll {
+    @media(max-width:767px) {
+        position: fixed;
+        overflow: hidden;
+    }
+}
+.aboutUs {
+    overflow: auto;
+    height: 100%;
+}
+.accordion {
+    padding: 10px;
+    .accordionItem {
+        &.accordionPosition {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: $white-background;
+            z-index: 3;
+        }
+    }
+    .accordioncontentScroll {
+        height: 100%;
+    }
+    .accordionContent {
+        height: calc(100% - 46px);
+    }
+    .accordionHead {
+        font-size: 18px;
+    }
+    .accordionTitle {
+        color: #000;
+        padding-left: 8px;
+        margin-bottom: 8px;
+        box-shadow: 0 12px 76px rgba(7, 61, 125, 0.1);
+        border: 2px solid #cbcbcb;
+        background-color: #ffffff;
+        position: relative;
+        cursor: pointer;
+        &:after {
+            display: block;
+            content: '';
+            position: absolute;
+            top: 46%;
+            left: 90%;
+            right: 0;
+            bottom: 0;
+            background: url('#{$icons}/accordion-arrow.png') no-repeat;
+        }
+        &.accordionSelected {
+            background-color: #1c81c2;
+            color: #fff;
+            padding-left: 8px;
+            margin-bottom: 8px;
+            border: 1px solid transparent;
+            &:after {
+                display: block;
+                content: '';
+                position: absolute;
+                top: 46%;
+                left: 90%;
+                right: 0;
+                bottom: 0;
+                background: url('#{$icons}/uparrow.png') no-repeat;
+            }
+        }
+    }
+}
+.contactSection,
+.faqSection,
+.glossarySection,
+.aboutUsWrapper {
+    margin: 0 auto;
+    font-size: 14px;
+    font-weight: 400;
+    max-width: 1200px;
+    padding: 10px;
+    line-height: 1.5;
+    padding-bottom: 12px;
+    @media (min-width:992px) {
+        padding: 10px;
+        font-size: 16px;
+        line-height: 1.5;
+        h2{
+            margin: 0;
+            padding: 20px 0 0 0;
+            text-transform: uppercase
+        }
+    }
+}
+@media only screen and (max-width: 992px) {
+    .mobile {
+        display: block;
+    }
+    .desktop {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .desktop {
+        display: block;
+    }
+    .mobile {
+        display: none;
+    }
+}
+  .sectionBodyColor{
+      background-color: #f4f5fa;
+      padding: 12px;
+  }
+  .aboutArrow {
+    position: relative;
+    color:#ff7f0f;
+    &::before {
+        background: url('/assets/icons/arrow.png') no-repeat;
+        position: absolute;
+        left: -40px;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: block;
+        content: '';
+      }
+  }
+  .list {
+    width: 100%;
+    max-width: 1200px;
+    font-size: 0;
+    display: table;
+    padding: 0;
+    margin: 0 auto;
+    @media(min-width: 768px) {
+        margin: 0 10px;
+    }
+    @media(min-width: 991px) {
+        margin: 0 auto;
+    }
+    @media(min-width: 992px) and (max-width: 1098px) {
+        //font-size: 14px;
+        max-width: 95%;
+    }
+    li {
+        font-size: $text-small;
+        display: table-cell;
+        text-align: left;
+        &:first-child {
+            text-align: center;
+        }
+        button {
+            @include border(2px, solid, $tabs-border, 44px);
+            font-size: $text-small;
+            outline: none;
+            background-color: $white-background;
+            color: $black-color;
+            font-weight: $medium;
+            box-shadow: 0 12px 76px $tabs-shadow;
+            cursor: pointer;
+            text-align: center;
+            display: inline-block;
+            padding: 15px 40px;
+            text-decoration: none;
+            overflow: visible;
+            min-width: 150px;
+            &:hover,
+            &:focus {
+                @include border(2px, solid, $active-color, 44px);
+            }
+            &.active {
+                color: $white-background;
+                background-color: $active-color;
+                font-weight: $bold;
+                border: none;
+                position: relative;
+            }
+        }
+    }
+}
+.aboutWrapper {
+    font-size: 16px;
+    display: table-cell;
+    text-align: left;
+    &:first-child {
+      text-align: center;
+    }
+  }
+  .linkColor {
+    color: #1c81c2;
+  }
+  .contactSection {
+      h3 {
+          text-transform: uppercase;
+      }
+  }
+
+  ul{
+    a{
+        line-height: 30px; 
+    }
+  }
+
+ 

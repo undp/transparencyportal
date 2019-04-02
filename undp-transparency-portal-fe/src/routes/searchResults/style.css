@@ -1,0 +1,123 @@
+.breadCrumbWrapper{
+    display: none;
+    width:100%;
+    max-width: 1200px;
+    height: 70px;
+    margin: 0 auto;
+}
+.wrapperContainer, .contentWrapper, .footerPaginationWrapper {
+    width:100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.contentWrapper {
+    padding: 12px;
+}
+.contentWrapper ul {
+    list-style: none;
+    padding: 0;
+}
+.contentWrapper ul li {
+    box-shadow: 0 10px 60px rgba(7, 61, 125, 0.11);
+    border: 1px solid rgba(214, 226, 240, 0.54);
+    background-color: #ffffff;
+    margin-bottom: 20px;
+    padding: 15px;
+    color: #3a3a3a;
+    font-size: 18px;
+    font-weight: 400;
+}
+.contentWrapper ul li h4 {
+    margin-top: 0;
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.contentWrapper ul li span {
+    height: 79px;
+    font-size: 16px;
+    overflow: hidden;
+    display: inline-block;
+}
+.filterText {
+    color: #3a3a3a;
+    font-size: 16px;
+    font-weight: 600;
+    display: inline-block;
+    max-width: 100%;
+    padding-left: 14px;
+}
+.filterSelectBox {
+    float: none;
+}
+@media(min-width: 768px) {
+    .filterText {
+        font-size: 20px;
+        padding-left: 10px;
+    }
+    .contentWrapper ul li span {
+        height: 65px;
+        font-size: 18px;
+    }
+    .contentWrapper ul li h4 {
+        font-size: 18px;
+    }
+    .filterSelectBox {
+        float: right;
+        margin-top: -21px;
+    }
+
+    .changeSizeOuterWrapper{
+        display: table-cell;
+        vertical-align: middle;
+    }
+    .breadCrumbWrapper{
+        display: table;
+    }
+
+}
+.labelStyle {
+  display: block;
+  opacity: 0.8;
+  color: #222222;
+  font-size: 16px;
+  font-weight: 400;
+  padding-left: 18px;
+  padding-bottom: 10px;
+}
+
+.filters {
+  display: inline-block;
+  margin: 0 10px;;
+}
+.filterSection {
+    max-width: 1200px;
+    width: 100%;
+    margin: 30px auto;
+}
+.footerPaginationWrapper {
+    padding: 20px 0;
+}
+
+
+.searchItemTitle{
+    cursor: pointer;
+
+}
+.searchItemTitle a {
+    cursor: pointer;
+    color:#3a3a3a;
+}
+
+.searchItemTitle a:hover{
+    color:#1c81c2;
+}
+
+
+
+
+
+
+
+
+

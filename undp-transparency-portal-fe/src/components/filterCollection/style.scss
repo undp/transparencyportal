@@ -1,0 +1,299 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+
+.wrapper {
+    width: 100%;
+    height: auto;
+    padding-bottom: 20px;
+    margin-top: 10px;
+    display: table;
+    @media(min-width: $tablets) {
+        padding: 0 20px;
+        margin-top: 40px;
+        border-top: 5px solid $active-color;
+        background: url('#{$images}/cloud-background.png') no-repeat;
+        background-size: cover;
+        -webkit-box-shadow: 0 11px 69px rgba(7, 61, 125, 0.1);
+        box-shadow: 0 11px 69px rgba(7, 61, 125, 0.1);
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(28, 129, 194, 0.2)), to(rgba(28, 129, 194, 0)));
+        background-image: -webkit-linear-gradient(top, rgba(28, 129, 194, 0.2) 0%, rgba(28, 129, 194, 0) 100%);
+        background-image: -o-linear-gradient(top, rgba(28, 129, 194, 0.2) 0%, rgba(28, 129, 194, 0) 100%);
+        background-image: linear-gradient(180deg, rgba(28, 129, 194, 0.2) 0%, rgba(28, 129, 194, 0) 100%);
+    }
+    @media(min-width: $desktop) {
+        height: 120px;
+    }
+    .filterWrapper {
+        display: table-cell;
+        vertical-align: middle;
+        width:55%;
+        .labelStyle {
+            opacity: 0.8;
+            color: #222222;
+            font-size: 16px;
+            font-weight: 400;
+            display: inline-block;
+            @media(max-width: 767px) {
+                padding-bottom: 10px;
+                display: block;
+            }
+        }
+        .nestedDropListWrapper{
+            position: absolute;
+        }
+        .filters {
+            display: inline-block;
+            margin: 5px 20px;
+            @media screen and (max-width: 1274px) and (min-width:992px) {
+                margin: 6px 0 2px 12px;
+            }
+        }
+        .dropDownWrapper {
+            width:205px;
+        }
+    }
+    .buttonsWrapper {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: right;
+        width: 45%;
+        .sdgbuttons,
+        .buttons {
+            color: $button-text-color;
+            font-weight: $bold;
+            background-color: $button-background-color;
+            @include border(2px,
+            solid,
+            $button-text-color,
+            40px);
+            display: inline-block;
+            vertical-align: top;
+            padding: 9px 14px;
+            cursor: pointer;
+            padding-left: 45px;
+            position: relative;
+            margin: 0 5px;
+            &::after {
+                content: '';
+                position: absolute;
+                display: block;
+                top: 8px;
+                left: 15px;
+                width: 30px;
+                height: 30px;
+            }
+        }
+        .sdgbuttons {
+            padding: 9px 12px;
+            width: 100%;
+            .bold{
+                font-weight: 700 !important;
+            }
+            &::before {
+                content: '';
+                // position: absolute;
+                // display: block;
+                // top: 8px;
+                // left: 9px;
+                // width: 22px;
+                // height: 22px;
+                // @media (min-width: 1046px) {
+                //     left: 14px;
+                // }
+                width: 22px;
+                height: 22px;
+                vertical-align: text-bottom;
+                margin-right: 5px;
+                display: inline-block;
+            }
+            &:nth-of-type(1):before {
+                background: url('#{$icons}/sdg_info.png') no-repeat;
+            }
+        }
+        .buttons {
+            &:nth-of-type(1):after {
+                background: url('#{$icons}/export-icon.svg') no-repeat;
+            }
+            &:nth-of-type(2):after {
+                background: url('#{$icons}/embed-icon.svg') no-repeat;
+            }
+        }
+        @media(max-width: $tablets) {
+            display: none;
+        }
+    }
+}
+
+input[type=text]::-ms-clear {
+    display: none;
+}
+.searchContainer {
+    .searchLabel {
+        color: #2c2c2c;
+        font-size: 18px;
+        font-weight: 700;
+        padding-left: 10px;
+    }
+    .countrySearch {
+        position: relative;
+        z-index: 6;
+    }
+    .searchItems {
+        padding-top: 10px;
+        width: 400px;
+        position: relative;
+        .searchField {
+            color: #000;
+            width: 80%;
+            padding: 10px 10px 10px 20px;
+            box-sizing: border-box;
+            font-size: 16px;
+            border: 0;
+            outline: none;
+            height: 44px;
+            border-radius:0;
+            box-shadow: 0 2px 1px rgba(0, 0, 0, 0.03);
+            border-top-left-radius: 30px;
+            border-bottom-left-radius: 30px;
+            background-color: #ffffff;
+            border: 1px solid #d6d6de;
+            border-right: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            @media(min-width: $tablets) {
+                font-size: 16px;
+                width: 90%;
+            }
+        }
+        .searchIcon {
+            height: 44px;
+            box-shadow: 0 2px 1px rgba(0, 0, 0, 0.03);
+            border: 1px solid #d6d6de;
+            background-color: #ffffff;
+            border-top-right-radius: 30px;
+            border-bottom-right-radius: 30px;
+            border-left: none;
+            background-image: url('#{$icons}/icon-search.svg');
+            background-repeat: no-repeat;
+            background-position: left center;
+            background-size: auto 50%;
+            display: inline-block;
+            padding: 20px 18px 18px;
+            position: relative;
+            vertical-align: top;
+            cursor: pointer;
+            width: 20%;
+            @media(min-width: 768px) {
+                width:10%;
+            }
+            &.clearIcon {
+                background: url('#{$icons}/closeIcon.png') no-repeat;
+                background-size: 15px 15px;
+                background-position: center;
+                background-color: #ffffff;
+                cursor: pointer;
+            }
+        }
+        .dropDowncountry {
+            -webkit-box-shadow: 0px 0px 1px rgba(0, 0, 0, .5);
+            -moz-box-shadow: 0px 0px 1px rgba(0, 0, 0, .5);
+            box-shadow: 0px 0px 1px rgba(0, 0, 0, .5);
+            cursor: pointer;
+            background-color: $white-background;
+            margin:0;
+            position: absolute;
+            left: 0;
+            top: 27px;
+            right: 0;
+            padding: 12px 7px;
+            height: 230px;
+            z-index: 4;
+            padding-top: 35px;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+    }
+}
+.searchWrapper {
+    display: table-cell;
+    vertical-align: middle;
+}
+.sdgDisclaimer {
+    height: 20px;
+    min-width: 180px;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    margin-right: 10px;
+}
+.signatureDisclaimer {
+    height: 20px;
+    min-width: 236px;
+    max-width: 260px;
+    margin-right: 10px;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+.textsdg {
+    display: block;
+}
+
+.sdgDisclaimer .sdgDisclaimerText, 
+.signatureDisclaimer .sdgDisclaimerText {
+   visibility: hidden;
+   background-color: #fff;
+   border-radius: 6px;
+   padding: 5px;
+   position: absolute;
+   z-index: 7;
+   top:48px;
+   width: 410px;
+   border-radius: 6px;
+   height:auto;
+   font-size:11px;
+   color: #4f4f4f;
+   border: 1px solid #c6c6c4;
+   text-align: left;
+   left: 0;
+   line-height: 1.3;
+}
+.sdgDisclaimer:hover .sdgDisclaimerText,
+.signatureDisclaimer:hover .sdgDisclaimerText {
+    visibility: visible;
+}
+.sdgDisclaimer .sdgDisclaimerText::before,
+.signatureDisclaimer .sdgDisclaimerText::before {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    position: absolute;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #c6c6c4;
+    left:12px;
+    top: -8px;
+}
+.sdgDisclaimer .sdgDisclaimerText::after,
+.signatureDisclaimer .sdgDisclaimerText::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    position: absolute;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid white;
+    left:13px;
+    top: -6px;
+}
+
+.disclaimer {
+    font-size: 12px;
+    padding: 5px;
+    line-height: 1;
+    color: #4f4f4f;
+    padding-bottom: 20px;
+}
+

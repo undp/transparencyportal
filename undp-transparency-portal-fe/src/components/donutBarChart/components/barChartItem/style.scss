@@ -1,0 +1,143 @@
+@import '../../../../style/helpers/_variables';
+@import '../../../../style/helpers/_mixins';
+.wrapper {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    padding-bottom: 20px;
+
+    .rowLegend{
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        -webkit-flex-direction: column;
+        flex-direction: column;
+        flex: 1.3;
+        align-items: flex-start;
+        @media(min-width: $desktop) {
+            flex:1;
+        }            
+        .innerLegend{
+            margin-top: 5px;
+            width: 12px;
+            height: 12px;
+          }
+    }
+    .row {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        -webkit-flex-direction: column;
+        flex-direction: column;
+        font-size: 14px;
+        &:nth-child(2) {
+            -webkit-box-flex: 1;
+            -ms-flex: 1;
+            flex: 7;
+            text-align: left;
+        }
+        &:nth-child(3) {
+            -webkit-box-flex: 3;
+            -ms-flex: 3;
+            flex: 15;
+            margin-left: 10px;
+            @media(max-width:480px) {
+                flex: 16;
+                margin-left: 0;
+            }
+        }
+        .rowWrapper {
+            width:75%;
+            position: relative;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            .rowWrapperItem {
+                -webkit-box-orient: horizontal;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: row;
+                -webkit-flex-direction: row;
+                flex-direction: row;
+            }
+            .rowText {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: -webkit-flex;
+                display: flex;
+                text-align: left;
+                padding-left: 10px;
+            }
+            .country_percentage {
+                padding-left: 5px;
+                font-size: 12px;
+                color: #303030;
+                font-weight: 400;
+                opacity: 0.6;
+            }
+        }
+        .countryWrapper {
+            height: 25px;
+           
+        }
+        .allDonorWrapper {
+            height: 25px;
+        }
+    }
+}
+
+.labelText{
+    margin-left:5px; 
+    margin-right: 3px;
+    font-weight:400;
+    font-size: 14px;
+}
+
+.barValue{
+    margin-left:5px; 
+}
+
+
+.text{
+    position: absolute;
+    height:25px;
+}
+
+.barType{
+    font-weight:bold
+}
+
+.imageWrapper{
+    display: inline-block;
+    .sdg_image{
+        width: 30px;
+        height: 30px;
+        margin-right:10px;
+        @media(min-width:992px){
+            width: 50px;
+            height: 50px;
+            margin-right:10px;
+        }
+       
+    }
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    .imageWrapper .sdg_image {
+        margin-left: -41px;
+    }
+}

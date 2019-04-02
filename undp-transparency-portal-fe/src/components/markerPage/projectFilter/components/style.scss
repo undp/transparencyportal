@@ -1,0 +1,286 @@
+@import '../../../../style/helpers/_variables';
+@import '../../../../style/helpers/_mixins';
+
+.filterElements {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    // height: 70px;
+    display: table;
+    text-transform: capitalize;
+    padding-bottom: 20px;
+}
+.countryNames {
+    border-radius: 8px;
+    background-color: #1c81c2;
+    display: inline-block;
+    padding: 10px 15px;
+    color: #fff;
+    margin: 12px 12px 10px 14px;
+    @media(min-width: $tablets)  {
+      margin: 10px 5px 0 0;
+    }
+    .closeBtn {
+        padding: 3px;
+        text-align: center;
+        background-color: #145883;
+        height: 25px;
+        width: 25px;
+        display: inline-block;
+        border-radius: 50%;
+        margin-left: 10px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        &:hover {
+            background-color: #0a2a3e;
+        }
+    }
+}
+.filterCollection {
+  -webkit-box-shadow: 0 11px 69px rgba(7, 61, 125, 0.1);
+  box-shadow: 0 11px 69px rgba(7, 61, 125, 0.1);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(28, 129, 194, 0.2)), to(rgba(28, 129, 194, 0)));
+  background-image: -webkit-linear-gradient(top, rgba(28, 129, 194, 0.2) 0%, rgba(28, 129, 194, 0) 100%);
+  background-image: -o-linear-gradient(top, rgba(28, 129, 194, 0.2) 0%, rgba(28, 129, 194, 0) 100%);
+  background-image: linear-gradient(180deg, rgba(28, 129, 194, 0.2) 0%, rgba(28, 129, 194, 0) 100%);
+  @media screen and (max-width: 480px) {
+    margin: 0 10px;
+  }
+}
+.filterCollectionSearchResults {
+    background-color: #f4f5fa;
+    padding-top: 24px;
+    .searchWrapper {
+      display: inline-block;
+      @media(min-width:$tablets) {
+        vertical-align: top;
+        padding-top: 10px;
+      }
+      @media(min-width:1025px) {
+        width:20%;
+      }
+    }
+    @media(min-width:$tablets) {
+      padding-top: 0;
+    }
+    .searchfitlerIcon {
+      float: right;
+      padding: 10px;
+      padding-right: 30px;
+      @media(min-width:$tablets) {
+        display: none;
+      }
+    }
+}
+
+.wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  // height: 140px;
+  display: table;
+  @media screen and (max-width: $mobiles) {
+    // height: 70px;
+    margin-top: 0;
+  }
+  @media screen and (min-width: $mobiles) and (max-width: 620px) {
+    // height: 100px;
+    margin-top: 0;
+  }
+  @media screen and (min-width: $tablets) and (max-width: $desktop) {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .filterIconWrapper {
+    height: 50px;
+    @media(min-width: $tablets) {
+      display: none;
+    }
+   
+    .fitlerIcon {
+      display: none;
+      @media screen and (min-width: $mobiles) and (max-width: $tablets) {
+        cursor: pointer;
+        display: block;
+        padding: 12px;
+      }
+      @media screen and (max-width: $mobiles) {
+        cursor: pointer;
+        display: block;
+        padding: 12px;
+      }
+    }
+  }
+
+
+.dropDownWrapperSearch{
+  
+  @media(max-width: $tablets){
+    width:219px;
+  }
+  width: 150px;
+}
+
+  .filterWrapper {
+    padding-top: 14px;
+    padding-bottom:10px;
+    @media(min-width : $tablets) {
+      display: inline-block;
+      vertical-align: middle;
+      padding-top: 12px;
+      padding-bottom: 18px;
+    }
+    @media screen and (min-width: $mobiles) and (max-width: $desktop) {
+      width: 400px;
+      padding: 10px;
+    }
+    @media screen and (min-width: 992px) and (max-width: 1200px) {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+    &.filterHidden {
+      display: none;
+      @media(min-width : $tablets) {
+        display: inline-block;
+      }
+      @media screen and (min-width: $tablets) and (max-width: $desktop) {
+        display: inline-block;
+        width: 100%;
+      }
+    }
+    .labelStyle {
+      display: block;
+      opacity: 0.8;
+      color: #222222;
+      font-size: 16px;
+      font-weight: 400;
+      padding-top: 0;
+      margin-left: 0;
+      margin-right: 7px;
+      padding-right: 10px;
+      padding-bottom: 10px;
+      @media(max-width: 767px) {
+        padding-bottom: 0;
+      }
+    }
+
+    
+    .filters {
+      display: inline-block;
+      margin: 0;
+      padding-bottom: 10px;
+      @media(max-width: 767px) {
+        padding-bottom: 5px;
+        padding-left: 10px;
+      }
+    }
+
+    .dropDownWrapper {
+      width: 242px;
+      margin-left: 0;
+      margin-right: 10px;
+      @media (max-width:767px) {
+        margin-left: -1px;
+      }
+    }
+    .dropdownOverlay {
+      left:0;
+    }
+  }
+}
+input[type=text]::-ms-clear {
+  display: none;
+}
+.searchContainer {
+  .searchLabel {
+    color: #222222;
+    font-size: 16px;
+    padding-left: 10px;
+    opacity: 0.8;
+    @media screen and (max-width: 480px) {
+      display: none;
+    }
+  }
+
+  .searchItems {
+    padding-top: 10px;
+    @media screen and (max-width: 480px) {
+      padding-top: 0;
+      text-align: center;
+    }
+
+    .searchField {
+      color: #000;
+      padding: 10px 10px 10px 20px;
+      box-sizing: border-box;
+      font-size: 16px;
+      // border: 0;
+      width: 80%;
+      outline: none;
+      height: 40px;
+      border-radius:0;
+      box-shadow: 0 2px 1px rgba(0, 0, 0, 0.03);
+      border-top-left-radius: 30px;
+      border-bottom-left-radius: 30px;
+      background-color: #ffffff;
+      border: 1px solid #d6d6de;
+      border-right: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+    }
+
+    .searchIcon {
+      height: 40px;
+      box-shadow: 0 2px 1px rgba(0, 0, 0, 0.03);
+      border: 1px solid #d6d6de;
+      background-color: #ffffff;
+      border-top-right-radius: 30px;
+      border-bottom-right-radius: 30px;
+      border-left: none;
+      background-image: url('#{$icons}/icon-search.svg');
+      background-repeat: no-repeat;
+      background-position: left center;
+      background-size: auto 50%;
+      display: inline-block;
+      padding: 20px 20px 18px;
+      position: relative;
+      vertical-align: top;
+      cursor: pointer;
+    }
+    .closeIcon {
+      height: 40px;
+      box-shadow: 0 2px 1px rgba(0, 0, 0, 0.03);
+      border: 1px solid #d6d6de;
+      background-color: #ffffff;
+      border-top-right-radius: 30px;
+      border-bottom-right-radius: 30px;
+      border-left: none;
+      background-image: url('#{$icons}/closeIcon.png');
+      background-repeat: no-repeat;
+      background-position: left center;
+      background-size: auto 50%;
+      display: inline-block;
+      padding: 20px 20px 18px;
+      position: relative;
+      vertical-align: top;
+      cursor: pointer;
+    }
+  }
+}
+
+.searchWrapper {
+  @media(max-width:$tablets) {
+    // width: 60%;
+    padding-left: 18px;
+    padding-bottom: 10px;
+  }
+  @media screen and (min-width: 320px) and (max-width: 390px){
+    width: 70%;
+  }
+  @media screen and (min-width: 390px) and (max-width: 620px) {
+    width: 60%;
+  }
+  display: table-cell;
+  vertical-align: middle;
+}

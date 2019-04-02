@@ -1,0 +1,110 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+
+.legend {
+    margin: 0 auto;
+    @media(max-width:767px) {
+        margin-bottom: 12px;
+    }
+    display: table;
+}
+.textLabel {
+    position: absolute;
+    font-size: 13px;
+    left: 0%;
+    pointer-events: none;
+    font-weight: normal;
+    max-width: 100%;
+    min-width: 100%;
+    @media (max-width:767px) {
+        font-size: 12px;
+    }
+}
+
+.exportLegend {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    width: 50%;
+    .legendWrapper{
+        padding: 0;
+        text-align: left;
+        line-height: 30px;
+        .legendColor{
+            width:12px;
+            height:12px;
+            margin-right: 10px;
+            display:inline-block;
+        }
+        .legendDescription {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .legendPercentage {
+            display: inline-block;
+        }
+    }
+}
+.perc,
+.textField {
+    display: inline-block;
+    width: 100%;
+    font-weight: bold;
+}
+
+.perc {
+    color: #000000;
+    font-size: 20px;
+    margin-bottom: 5px;
+    @media(min-width:768px) {
+        font-size: 22px;
+    }
+}
+
+.dollor {
+    color: #666;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.donut {
+    display: inline-block;
+    position: relative;
+    width: 100%; // padding-bottom: 100%;
+    vertical-align: top;
+    overflow: hidden;
+}
+
+.imageWrapper{
+    display: block;
+    .sdg_image{
+        width: 30px;
+        height: 30px;
+        margin-bottom: 3px;
+        @media(min-width:992px){
+            width: 52px;
+            height: 52px;
+            margin-bottom: 10px; 
+        }
+    }
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    .svgIe {
+        width: 400px;
+        height: 456px;
+    }
+  }
+
+.regularOtherLegend {
+    width: 100%;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    .legend_wrapper {
+        width: 100%;
+        .legendText{
+            display: inline-block;
+            width: 50%;
+        }
+    }
+}

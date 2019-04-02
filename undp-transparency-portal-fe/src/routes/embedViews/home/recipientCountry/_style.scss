@@ -1,0 +1,103 @@
+@import '../../../../style/helpers/_variables';
+@import '../../../../style/helpers/_mixins';
+.map {
+    display: block;
+    vertical-align: top;
+    height: 544px;
+    @media(max-width:767px) {
+        height: 100%;
+    }
+}
+.mapContainer {
+    height: 500px;
+    min-height: 500px;
+    position: relative;
+    margin-bottom: 100px;
+}
+.disclaimer {
+    font-size: 12px;
+    padding: 5px;
+    line-height: 1;
+    color: #4f4f4f;
+    padding-bottom: 20px;
+    @media(min-width: $desktop) {
+        padding-bottom: 0;
+    }
+}
+.wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.filterTextWrapper{
+    margin-bottom:10px;
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+.filterHighlight {
+    font-weight: 700;
+}
+.filterText{
+    font-size: 16px;
+    padding: 16px;
+    width:100%;
+    background-color: #f4f5fa;
+}
+.subtitleWrapper,
+.titleWrapper{
+    color: #212121;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    margin: 15px 0 10px 0;
+    display: block;
+  }
+
+  .titleWrapper{
+    text-transform: uppercase;
+  }
+    
+  
+
+.list {
+    width: 100%;
+    margin: 40px 0 20px 0;
+    padding: 0;
+    border-top: 5px solid #1c81c2;
+    display: table;
+    height: 83px;
+    background-color: #f4f5fa;
+    li {
+        display: inline-block;
+        width: 50%;
+        font-size: 15px;
+        text-align: center;
+        padding: 10px;
+        @media(min-width: $tablets) {
+            display: table-cell;
+            width: 25%;
+            vertical-align: middle;
+        }
+        .value {
+            display: block;
+            font-size: 16px;
+            color: #454545;
+            font-weight: 700;
+        }
+        .label {
+            display: block;
+            font-size: 13px;
+            font-weight: 400;
+            @media(min-width: $tablets) {
+                padding-top: 5px;
+            }
+        }
+    }
+}
+
+.loaderWrapper{
+    position: relative;
+    height:80px;
+    width:100%;
+}

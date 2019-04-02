@@ -1,0 +1,79 @@
+@import '../../../../style/helpers/_variables';
+@import '../../../../style/helpers/_mixins';
+.wrapper {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    -webkit-justify-content: space-between;
+            justify-content: space-between;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    -webkit-flex-direction: column;
+            flex-direction: column;
+    width: 100%;
+}
+
+.list_wrapper {
+    padding: 0;
+    padding-top:30px;
+}
+
+.legendOuterWrapper{
+width:100%;
+}
+.legendInnerWrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.contributionWrapper {
+    font-size: 14px;
+    margin-bottom: 10px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    width: 60%;
+    @media(min-width: $tablets) {
+        width: 46%;
+    }     
+    padding: 10px;
+    .wrapperItem {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+         width: 50%;
+         margin-top: 5px;
+         margin-bottom: 5px;
+    }
+    .DonorContribution,
+    .allDonorContribution {
+        width: 12px;
+        margin-top: 5px;
+        height: 12px;
+    }
+    .contributionText {
+        text-indent: 5px;
+        text-align: left;
+        font-size: 14px;
+        font-weight: 400;
+    }
+    .allDonorContribution {
+        background-color: #1f76b5
+    }
+    .DonorContribution {
+        background-color: #ff7e0e;
+    }
+}

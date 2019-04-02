@@ -1,0 +1,10 @@
+.image_sizewrapper {
+    width:100%;
+    height: 400px;
+    img {
+        height:400px;
+        width: 100%;
+        object-fit: contain;
+    } 
+}
+

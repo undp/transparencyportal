@@ -1,0 +1,121 @@
+@import '../../../style/helpers/variables';
+@import '../../../style/helpers/mixins';
+.profile_page_container {
+    font-family: 'ProximaNova-Regular', arial, sans-serif;
+    line-height: 23px;
+
+    .wrapper {
+        max-width: 1200px;
+        margin: 40px auto;
+    }
+    .SDGdisclaimer {
+        color: #121212;
+        display: flex;
+        text-align: center;
+        margin: 30px auto;
+    }
+    .sunburstChartContainer{
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+    .profileBarChart {
+        width: 100%;
+        margin-bottom: 30px;
+        display: flex;
+        flex-direction: row;
+        @media(max-width: $tablets) {
+            flex-direction: column;
+        }
+    }
+    .chartHead {
+        width: 100%;
+        display: flex;
+        box-shadow: 0 2px 7px rgba(7, 61, 125, 0.18);
+        height: 70px;
+        font-size: 18px;
+        font-weight: 600;
+        padding: 23px 35px;
+        background-color: white;
+        justify-content: space-between;
+        @media(max-width: 767px) {
+            height: auto;
+        }
+    }
+    .sdgLogoChart {
+        display: flex;
+        align-items: flex-end;
+        @media(max-width: $tablets) {
+            padding-left: 15px;
+        }
+    }
+    .chartWrapper {
+        margin-top: 20px;
+        @media(min-width: $desktop) {
+            margin-top: 70px;
+        }
+        &:nth-child(1) {
+            @media(max-width: $tablets) {
+                margin-top: 100px;
+            }
+        }
+        width: 48%;
+        display: flex;
+        @media(max-width: $tablets) {
+            width:100%;
+            max-width: 100%;
+        }
+        .recipient_themes_wrapper {
+            width: 100%;
+            background-color: white;
+            display: table;
+            vertical-align: middle;
+            border: 2px solid rgba(221, 221, 221, 0.94);
+            margin-top: 70px;
+            .budget_percent {
+                opacity: 0.6;
+                color: #303030;
+                padding-left: 5px;
+                font-size: 16px;
+                font-weight: 400;
+            }
+        }
+        
+    }
+    .top_budget_sources_wrapper {
+        width: 100%;
+        background-color: white;
+        display: table;
+        vertical-align: middle;
+        border: 2px solid rgba(221, 221, 221, 0.94);
+    }
+    .chartSmall{
+        width: 100%;
+        float: left;
+    }
+    .sdgIcon{
+        width: 10%;
+        float: left;
+    }
+    .displayNone{
+        display: none !important;
+    }
+}
+.sunburstParent{
+    height: 600px;
+    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    @media (max-width: 900px){
+        height: 500px;
+        overflow-y: auto;
+    }
+
+    @media (max-width: 649px){
+        height: 450px;
+        overflow-y: auto;
+    }
+    @media (max-width: 440px){
+        height: 375px;
+        overflow-y: auto;
+    }
+}

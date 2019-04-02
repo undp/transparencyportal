@@ -1,0 +1,69 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+.medals {
+    @media(min-width: $tablets) {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
+.article {
+    display: flex;
+    padding-bottom: 40px;
+    padding-top: 40px;
+    width: 100%;
+    justify-content: center;
+    @media(min-width: $tablets) {
+        width: 33.33%;
+    }
+    &:nth-child(3) {
+        margin-bottom: 0;
+    }
+    span {
+        display: block;
+    }
+    .description {
+        width: 80%;
+        font-size: 14px;
+        @media(max-width: $tablets) {
+            font-size: 12px;
+        }
+    }
+    img {
+        width: 90px;
+        height: 90px;
+        @media(max-width: $tablets) {
+            width: 80px;
+            height: 80px;
+        }
+    }
+
+    .impactTitle {
+        display:block;
+        padding-top: 7px;
+        font-weight: bold;
+    }
+    .value {
+        font-weight: 700;
+        font-size: 28px;
+        @media(max-width: $tablets) {
+            font-size: 16px;
+        }
+    }
+    .text {
+        font-size: 16px;
+        font-weight: 700;
+        text-transform: uppercase;
+        padding-top: 1px;
+        @media(max-width: $tablets) {
+            font-size: 12px;
+        }
+    }
+}
+.impactWrapper {
+    padding-left: 20px;
+    width: 250px;
+    font-weight: bold;
+}

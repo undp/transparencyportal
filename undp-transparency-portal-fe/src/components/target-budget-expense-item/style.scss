@@ -1,0 +1,85 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+.wrapper {
+    display: block;
+    padding-bottom: 20px;
+    .row {
+        display: block;
+        font-size: 14px;
+        display: inline-block;
+        font-family: 'ProximaNova-Regular', arial, sans-serif;
+        &:nth-child(1) {
+            width: 8%;
+            @media(max-width:450px){
+                width: 25%;
+            }
+            @media screen and (min-width: 450px) and (max-width: 650px) {
+                width: 15%;
+            }
+            @media screen and (min-width: 650px) and (max-width: 768px) {
+                width: 15%;
+            }
+            text-align: left;
+            vertical-align: top;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #333;
+        }
+        &:nth-child(2) {
+            width: 75%;
+            text-align: left;
+
+        }
+        .rowWrapper {
+            display: flex;
+            
+            .rowWrapperItem {
+                display: inline-block;
+            }
+            .rowText {
+                display: inline-block;
+                text-align: left;
+                padding-left: 10px;
+                font-weight: bold;
+                font-size: 13px;
+            }
+            .country_percentage {
+                padding-left: 5px;
+                font-size: 12px;
+                color: #303030;
+                font-weight: 400;
+                opacity: 0.6;
+            }
+        }
+        .countryWrapper {
+            height: 25px;
+            border-left: 1px solid #ff7e0e;
+        }
+        .allDonorWrapper {
+            height: 25px;
+        }
+    }
+    .tooltipDonors {
+        display: inline-block;
+        position: fixed;
+        border: 1px solid #ccc;
+        padding: 10px;
+        font-size: 14px;
+        color:#3a3a3a;
+        background: #fff;
+        border-radius: 8px;
+        text-align: left;
+        z-index: 1;
+        font-weight: normal;
+        max-width: 300px;;
+    }
+    
+    .tooltipDisplay {
+        display:none;
+    }
+    .targetTitle{
+        font-weight: bold;
+        padding-right: 5px;
+    }
+}

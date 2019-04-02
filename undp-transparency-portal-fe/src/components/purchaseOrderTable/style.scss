@@ -1,0 +1,254 @@
+@import "../../style/helpers/_variables";
+@import "../../style/helpers/_mixins";
+
+.projectList {
+  position: relative;
+  max-width: 1200px;
+  margin: 41px auto 52px;
+
+  table {
+    @media (max-width: 767px) {
+      width: 1200px;
+      max-width: none;
+    }
+    box-shadow: 0 10px 60px rgba(7, 61, 125, 0.18);
+  }
+  @media (max-width: 767px) {
+    width: 1200px;
+  }
+}
+
+.loadWrapper {
+  text-align: right;
+  margin: -43px auto 6px;
+  max-width: 1200px;
+}
+.hideButtons {
+  display: none;
+}
+.buttons {
+  display: block;
+  color: #fff;
+  font-weight: $bold;
+  font-size: $text-small;
+  background-color: $active-color;
+  border-radius: 40px;
+  padding: 12px 29px;
+  margin-top: 0;
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  margin-top: 10px;
+  outline: none;
+  border: none;
+  margin-left: 16px;
+
+}
+.containerClass {
+  border-top: 3px solid #337ab7;
+}
+
+.headerContainerClass {
+  table {
+    margin-bottom: 0;
+    thead {
+      tr {
+        cursor: default;
+        @include not-last-child("th") {
+          border-right: 1px solid #dfdfdf !important;
+        }
+        th {
+          text-align: center !important;
+          // padding: 17px 30px;
+          padding: 17px 0;
+          font-size: 16px;
+          -webkit-box-shadow: 0px 1px 1px #dfdfdf;
+          -moz-box-shadow: 0px 1px 1px #dfdfdf;
+          box-shadow: 0px 1px 1px #dfdfdf;
+          background-color: #ffffff;
+          border-bottom: none !important;
+        }
+      }
+    }
+  }
+}
+.tableBodyClass {
+  font-family: "ProximaNova-Regular";
+  font-weight: 600;
+  margin-bottom: 0;
+  tbody {
+    tr {
+      cursor: default;
+      td {
+        border: 1px solid #ddd;
+        padding-right: 0;
+        padding-left: 15px;
+        outline: none;
+        color: #626262;
+        word-break: break-word;
+        font-weight: 400;
+        line-height: 60px;
+        word-break: break-word;
+        font-size: 16px;
+      }
+      // &:nth-child(1) {
+      //     border-bottom: 1px solid #ccc;
+      //     td {
+      //         color: #000;
+      //         font-weight: 700;
+      //         padding: 14px;
+      //     }
+      // }
+    }
+  }
+}
+
+.toolBarStyle {
+  .row {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+  input {
+    background-color: red;
+  }
+}
+
+.toolBar {
+  display: inline-block;
+  width: 100%;
+  display: table;
+  padding: 10px 0 10px 0;
+  @media (max-width: 991px) {
+    padding-left: 10px;
+  }
+  .searchWrapper {
+    display: inline-block;
+    width: 30%;
+    display: table-cell;
+    vertical-align: middle;
+  }
+  .insertBtnWrapper {
+    display: inline-block;
+    width: 70%;
+    display: table-cell;
+    vertical-align: bottom;
+  }
+}
+
+.priceColumn {
+  text-align: right;
+  font-family: helvetica;
+}
+.poId {
+  width: 24%;
+  display: none;
+  @media (min-width: $tablets) {
+    width: 8%;
+  }
+}
+.vendor {
+  width: 25%;
+  display: none;
+  @media (min-width: $tablets) {
+    width: 17%;
+  }
+}
+.description {
+  width: 19%;
+  display: none;
+  @media (min-width: $tablets) {
+    width: 52.5%;
+  }
+}
+.date {
+  width: 15%;
+  display: none;
+  @media (min-width: $tablets) {
+    width: 13%;
+  }
+}
+.amount {
+  width: 20%;
+  display: none;
+  @media (min-width: $tablets) {
+    width: 26%;
+  }
+}
+
+.preloaderWrapper {
+  position: relative;
+  height: 300px;
+}
+
+
+.tableOuterWrapper{
+  display: none;
+  @media(min-width: $tablets) {
+      display: block;
+  }
+}
+
+.cardListOuterWrapper{
+  display: block;
+  @media(min-width: $tablets) {
+      display: none;
+  }
+}
+
+.viewDetailsIcon{
+  width:28px;
+  height:28px;
+}
+
+.purchaseOrderDescCards{
+  font-size: 12px;
+  font-weight: 400;
+  color: #737373;
+}
+.projectId{
+  color: #626262;;
+  font-size: 12px;
+  font-weight: 400;
+  margin-bottom:20px;
+}
+.vendorWrapper{
+  display: table;
+  width:100%;
+  .docCategorylabel{
+    display: table-cell;
+    margin-right:5px;
+    color: #737373;
+    font-size: 12px;
+    font-weight: 400;
+    width: 10%;
+  }
+  .docCategorytext{
+    display: table-cell;
+    width:66%;
+    text-overflow: ellipsis;
+    font-weight:700;
+    font-size: 15px;
+    color: #303030;
+  }
+}
+
+.purchaseOrderDescription{
+  color: #737373;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+
+.amountDateWrapper{
+  display: table;
+  width:100%;
+  font-weight:600;
+  font-size: 12px;
+  color: #303030;
+  .amount{
+    display: table-cell;
+  }
+  .date{
+    display: table-cell;
+  }
+}

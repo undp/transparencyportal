@@ -1,0 +1,165 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+.percentageFill {
+    width: 70%;
+    height: 25px;
+    @include border(1px, solid, $border-fade, 20px);
+    background-color: $grey-fade;
+}
+
+.progressWrapper {
+    display: 'inline-block';
+    height: '100%';
+    vertical-align: 'middle';
+}
+
+.container {
+    padding-left: 27px;
+    padding-right: 18px;
+}
+.isInActive {
+    opacity: 0.5;
+    border-left: 8px solid transparent;
+    .row{
+        .columnLeft {
+            .theme_wrapper {
+                .theme_name {
+                    @include font($text-medium, $bold, $heading-color);
+                }
+            }
+        }
+    }
+}
+
+.isActive {
+    opacity: 1;
+    border-left: 8px solid $active-color;
+    -webkit-box-shadow: 0px 0px 15px rgba(0, 0, 0, .8);
+    -moz-box-shadow: 0px 0px 15px rgba(0, 0, 0, .8);
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, .8);
+    .row {
+        .columnLeft {
+            .theme_wrapper {
+                .theme_name {
+                    text-overflow:ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    width:100px;
+                    @include font($text-small, $bold, $heading-color);
+                        @media(min-width: $tablets) {
+                            @include font($text-medium, $bold, $heading-color);
+                        }
+                    &:hover{
+                        @include font($text-small, $bold, #3ab1fd);
+                        @media(min-width: $tablets) {
+                            @include font($text-medium, $bold, #3ab1fd);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.isActive,
+.isInActive {
+    cursor: pointer;
+    border-bottom: 1px solid $border-smooth;
+    padding-top: 14px;
+    background-color: $white-background;
+    .row,
+    .rowMiddle,
+    .rowBottom {
+        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        display: table;
+        width: 100%;
+        padding-right: 30px;
+        padding-left: 22px;
+        .columnLeft {
+            width: 100%;
+            display: table-cell;
+            .theme_wrapper {
+                padding-bottom: 15px;
+                padding-right: 15px;
+                .theme_name {
+                    padding-right: 6px;
+                }
+                .theme_point {
+                    opacity: 0.8;
+                    @include font($text-xmedium, $normal, $heading-color);
+                }
+            }
+            .all_theme_content {
+                width: 50%;
+                display: inline-block;
+                text-align: center;
+                vertical-align: top;
+                &:nth-child(1) {
+                    border-right: 2px solid $border-smooth;
+                }
+                .content_key {
+                    padding-top: 10px;
+                    @include font($text-xmedium, $normal, $theme-text);
+                }
+                .content_value {
+                    @include font($text-medium, $bold, $theme-text);
+                    text-transform: uppercase;
+                }
+            }
+        }
+        .columnRight {
+            width: 10%;
+            display: table-cell;
+
+            .theme_more,
+            .theme_next {
+                display: inline-block;
+                cursor: pointer
+            }
+            .theme_more {
+                width: 28px;
+                height: 6px;
+                background: url('#{$icons}/ellipsis_grey.svg') no-repeat;
+            }
+            .theme_next {
+                width: 30px;
+                height: 30px;
+                background: url('#{$icons}/next_blue.svg') no-repeat;
+            }
+        }
+    }
+}
+
+.rowMiddle {
+    padding-bottom: 15px;
+    .columnLeft {
+        .percentageFill {
+            width: 100%;
+        }
+        .percentText {
+            margin: 0;
+            padding-top: 10px;
+            @include font($text-small,
+            $normal,
+            $heading-color);
+        }
+    }
+    .columnRight {
+        vertical-align: middle;
+    }
+}
+
+.rowBottom {
+    padding-bottom: 15px;
+    padding-right: 0;
+    padding-left: 0;
+    .columnLeft {
+        display: table;
+        width: 100%;
+        .theme_content {
+            display: table-cell;
+            text-align: center;
+        }
+    }
+}
