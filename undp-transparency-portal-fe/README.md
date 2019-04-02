@@ -1,4 +1,3 @@
-# {{ name }}
 Codebase for UNDP Transparency Portal Front-End code
 ## CLI Commands
 

@@ -1,0 +1,333 @@
+{% load custom_filters %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Donors</title>
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    ul,
+    li {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .sectionWrapper {
+        margin-top: 30px;
+    }
+
+    .sectionWrapper .donor_heading {
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .sectionWrapper .sectionHeader {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        width: 100%;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .sectionWrapper .filterWrapper {
+        display: table;
+        width: 100%;
+        padding: 20px 0;
+        margin: 0;
+    }
+
+    /* ---------- Progress Bar style start------- */
+
+    .statsWrapper {
+        height: 125px;
+        background-color: #f4f5fa;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+
+    .contributionBarWrapper {
+        display: block;
+        margin: 0 auto;
+        width: 100%;
+        height: 30px;
+    }
+
+    .contributionBar {
+        display: inline-block;
+        position: relative;
+        text-align: center;
+        padding: 6px 0;
+        color: white;
+        height: 100%;
+        float: left;
+    }
+
+    contributionBar::after {
+        clear: both;
+        content: '';
+    }
+
+    .contributionBarleft {
+        width: 10%;
+        background-color: #16537d;
+    }
+
+    .contributionBarRight {
+        width: 90%;
+        background-color: #52abe9;
+
+    }
+
+    .barLabel {
+        position: absolute;
+        bottom: calc(100% + 5px);
+        left: 0;
+        right: 0;
+        font-size: 12px;
+        text-align: center;
+        color: #303030;
+    }
+
+    .barValue {
+        position: absolute;
+        top: calc(100% + 5px);
+        left: 0;
+        right: 0;
+        font-weight: 600;
+        text-align: center;
+        color: #303030;
+
+    }
+
+    .barValue span {
+        display: block;
+        font-weight: 400;
+        margin-left: 10px;
+        color: #303030;
+
+    }
+
+    .textLabel {
+        margin-Bottom: 5px;
+        font-size: 18px;
+        color: rgba(48, 48, 48, 0.7)
+    }
+
+    .barTextWrapper {
+        width: 100%;
+        font-size: 18px;
+        display: inline-block;
+        color: #303030;
+    }
+
+
+    .barTextLeft {
+        width: 50%;
+        display: inline-block;
+        text-align: left;
+        font-weight: 600;
+        float: left;
+    }
+
+    .barTextLeft::after {
+        clear: both;
+        content: ''
+    }
+
+    .barTextRight {
+        width: 50%;
+        display: inline-block;
+        text-align: right;
+        font-weight: 600;
+        float: left;
+    }
+
+    .barTextRight::after {
+        clear: both;
+        content: '';
+    }
+
+    .textPerc {
+        color: rgba(48, 48, 48, 0.5);
+        font-size: 16px;
+    }
+
+    .totalContributionWrapper {
+        width: 100%;
+        text-align: center;
+        font-size: 20px;
+        color: #444;
+    }
+
+    .totalContributionWrapper .label {
+        font-size: 18px;
+    }
+
+    .totalContributionWrapper .value {
+        font-weight: 600;
+    }
+
+
+    /* ---------- Progress Bar style end ------- */
+
+    /* ---------- Filter bar style start ------- */
+
+    .filterSection {
+        width: 50%;
+        display: inline-block;
+        margin-top: 20px;
+    }
+
+    .filterElement {
+        width: 50%;
+        display: inline-block;
+        float: left;
+    }
+
+    .filterElement::after {
+        clear: both;
+        content: '';
+    }
+
+    .filterElement .label {
+        color: rgba(48, 48, 48, 0.7);
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .filterElement .value {
+        font-weight: 600;
+        font-size: 18px;
+    }
+
+    /* ---------- Filter bar style end ------- */
+
+    /* ---------- Donor table style start ------- */
+
+    .donorTable {
+        width: 100%;
+        margin: 25px 0;
+        border-collapse: collapse;
+        border: 1px solid #666666;
+    }
+
+    .donorTable th,
+    .donorTable td,
+    .donorTable tr {
+        page-break-inside: avoid;
+    }
+
+    .donorTable th,
+    .donorTable td {
+        border: 1px solid #666666;
+        padding: 15px;
+    }
+
+    .donorTable th {
+        background-color: #CBCBCB;
+        font-size: 20px;
+    }
+
+    .donorTable td {
+        font-size: 18px;
+    }
+    /* ---------- Donor table style end ------- */
+</style>
+
+<body>
+
+    <!-- Page Header start -->
+    {% include "header.html" %}
+    <!-- Page Header end -->
+
+    <section class="sectionWrapper statsWrapper">
+        <div class="totalContributionWrapper">
+            <span class="label">Total Contribution: </span>
+            <span class="value">${{data.totalContribution|numberToCommaFormatter}}</span>
+        </div>
+        <div class="contributionBarWrapper">
+            <div class="barTextWrapper">
+                <div class="barTextLeft textLabel"> Regular</div>
+                <div class="barTextRight textLabel">Other</div>
+            </div>
+            <span class="contributionBar contributionBarleft"></span>
+            <span class="contributionBar contributionBarRight"></span>
+            <div class="barTextWrapper">
+                <div class="barTextLeft">
+                    <span>{{data.regularContribution|numberToCurrencyFormatter:"2"}}</span>
+                    <span class="textPerc">({{data.regularPercentage}}%)</span>
+                </div>
+                <div class="barTextRight">
+                    <span>{{data.otherContribution|numberToCurrencyFormatter:"2"}}</span>
+                    <span class="textPerc">({{data.OtherPercentage}}%)</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <section class="filterSection">
+        {% if data.donorType|length >= 1 %}
+            <div class="filterElement">
+                <div class="label">Donor Type</div>
+                <div class="value">{{data.donorType}}</div>
+            </div>
+        {% endif %}
+        {% if data.fundStreams|length >= 1 %}
+        <div class="filterElement">
+            <div class="label">Fund Category</div>
+            <div class="value">{{data.fundStreams}}</div>
+        </div>
+        {% endif %}
+    </section>
+
+
+    <section class="sectionWrapper">
+            {% if data.tabSelected|length > 1 %}
+            <p class="donor_heading">List of Donors contributing in UNDP regular and other resources</p>
+            {% elif data.tabSelected.0 == "Regular" %}
+            <p class="donor_heading">List of Donors contributing in UNDP regular resources</p>
+            {% elif data.tabSelected.0 == "Others" %}
+            <p class="donor_heading">List of Donors contributing in UNDP other resources</p>
+            {% endif %}
+
+        <table class="donorTable">
+            <tr>
+                <th>Donors</th>
+                {% for tabs in data.tabSelected %}
+                    <th>{{tabs}}</th>
+                {% endfor %}
+            </tr>
+            {% for donor in data.aggerateSummary %}
+            <tr>
+                {% for item in data.tabMapper %}
+                    {% if item == "country" %}
+                        <td>{{donor.country}}</td>
+                    {% elif item == "regular_contribution" %}
+                        <td style="text-align: right">${{donor.regular_contribution.amount|numberToCommaFormatter}}</td>
+                    {% elif item == "other_contribution" %}
+                        <td style="text-align: right">${{donor.other_contribution.amount|numberToCommaFormatter}}</td>
+                    {% elif item == "total_contribution" %}
+                        <td style="text-align: right">${{donor.total_contribution|numberToCommaFormatter}}</td>
+                    {% endif %} 
+                {% endfor %} 
+            </tr>
+            {% endfor %}
+        </table>
+    </section>
+</body>
+
+</html>

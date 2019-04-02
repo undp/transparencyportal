@@ -1,0 +1,1038 @@
+{% load custom_filters %}
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+        crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" crossorigin=""
+    />
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
+        crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js" crossorigin=""></script>
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    ul,
+    li {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+    .sectionWrapper {
+        /* margin-top: 30px; */
+        margin: 20px auto;
+        max-width: 1200px;
+    }
+
+    .sectionWrapper .sectionHeader {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        width: 100%;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .sectionWrapper .filterWrapper {
+        display: table;
+        width: 100%;
+        padding: 20px 0;
+        margin: 0;
+    }
+
+    .sectionWrapper .filterWrapper .filterItem {
+        display: inline-block;
+        /* float: left; */
+        width: 33.3333%;
+    }
+
+    .sectionWrapper .themesWrapper {
+        width: 100%;
+        height: auto;
+        border: 1px solid #666666;
+        background-color: #fff;
+        padding: 16px;
+        margin-bottom: 10px;
+    }
+
+    .sectionWrapper .themesWrapper .budgetDigit {
+        font-size: 20px;
+        vertical-align: top;
+        padding-left: 10px;
+        font-weight: 700;
+    }
+
+    .themesName {
+        width: 100%;
+        text-align: center;
+        display: block;
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    .sectionWrapper .year {
+        text-align: center;
+        display: block;
+    }
+
+    .sectionWrapper .themesWrapper .themesName {
+        width: 100%;
+        text-align: left;
+        display: block;
+        font-size: 20px;
+        /* padding-bottom: 10px; */
+    }
+
+    .sectionWrapper .themesWrapper .aggregateWrapper {
+        font-weight: 600;
+        border-radius: 7px;
+    }
+
+    .sectionWrapper .themesWrapper .aggregateWrapper span {
+        width: 33.33%;
+        display: inline-block;
+    }
+
+    .sectionWrapper .themesWrapper .themesList {
+        width: 100%;
+        display: table;
+    }
+
+    .sectionWrapper .aggregateWrapper .summary {
+        display: table-cell;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .sectionWrapper .aggregateWrapper .summary .summary_label {
+        display: block;
+        font-size: 18px;
+    }
+
+    .sectionWrapper .aggregateWrapper .summary .summary_label b {
+        margin-top: 5px;
+        font-size: 20px;
+        display: block
+    }
+
+    .sectionWrapper .themesWrapper .themesList .themesBudget {
+        width: 50%;
+        display: table-cell;
+        vertical-align: bottom;
+    }
+
+    .sectionWrapper .filterWrapper .filterItem:nth-of-type(1) {
+        text-align: left;
+    }
+
+    .sectionWrapper .filterWrapper .filterItem:nth-of-type(2) {
+        text-align: center;
+    }
+
+    .sectionWrapper .filterWrapper .filterItem:nth-of-type(3) {
+        text-align: right;
+    }
+
+    .sectionWrapper .filterWrapper .filterValue {
+        display: block;
+        font-size: 18px;
+        font-weight: 600;
+        margin-top: 5px;
+    }
+
+    .sectionWrapper .contentWrapper {
+        display: table;
+        width: 100%;
+    }
+
+    .sectionWrapper .themeMap {
+        display: table-cell;
+        width: 40%;
+        height: 200px;
+        border: 2px solid #e7e7e7;
+        /* background-color: #dcdcdc; */
+    }
+
+    .sectionWrapper .themeSummary {
+        display: table-cell;
+        width: 40%;
+        height: 200px;
+        background-color: #dcdcdc;
+        padding: 20px;
+    }
+
+    .sectionWrapper .themeSummary span {
+        display: block;
+    }
+
+    .aggregateWrapper {
+        background-color: #F2F2F2;
+        padding: 20px;
+        display: table;
+        width: 100%;
+    }
+
+    .aggregateWrapper .aggregateHeader {
+        font-size: 20px;
+        font-weight: 600;
+        display: block;
+    }
+
+    .aggregateWrapper .aggregateSubTitle {
+        font-size: 18px;
+        font-weight: 600;
+        display: table-cell;
+        width: 33.33%;
+        text-align: center;
+    }
+
+    .sectionWrapper .sdgWrapper {
+        width: 90%;
+        display: inline-block;
+        vertical-align: top;
+        padding-left: 5px;
+    }
+
+    /*Chart Styles */
+
+    .sectionWrapper.chartWrapper {
+        display: table;
+        width: 100%;
+    }
+
+    .sectionWrapper.chartWrapper .chartSmall {
+        width: 49%;
+        vertical-align: top;
+        text-align: center;
+        background-color: #fff;
+        display: inline-block;
+        border: 2px solid #cbcbcb;
+    }
+
+    .sectionWrapper.chartWrapper .chartSmall:nth-child(1) {
+        width: calc(49% - 10px);
+        margin-right: 10px;
+    }
+
+    .sectionWrapper.chartWrapper .chartSmall .chartHead {
+        width: 100%;
+        display: block;
+        box-shadow: 0 2px 7px rgba(7, 61, 125, 0.18);
+        height: 70px;
+        font-size: 18px;
+        font-weight: 600;
+        padding: 23px 35px;
+        background-color: white;
+    }
+
+    .legend {
+        margin: 0 auto;
+        display: table;
+    }
+
+    @media(max-width:767px) {
+        .legend {
+            margin-bottom: 12px;
+        }
+    }
+
+    .textLabel {
+        position: absolute;
+        font-size: 9px;
+        left: -1px;
+        pointer-events: none;
+        font-weight: normal;
+        max-width: 100%;
+        min-width: 100%;
+        bottom: 54%;
+        text-align: center;
+    }
+
+    .exportLegend {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        width: 50%;
+    }
+
+    .legendWrapper {
+        padding: 0;
+        text-align: left;
+        line-height: 20px;
+    }
+
+    .legendWrapper.modality-contribution-legend {
+        display: inline-block;
+        background: rgb(244, 244, 244);
+        padding: 10px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: rgb(204, 204, 204);
+    }
+
+    .legendWrapper .legendItem {
+        /* display: table; */
+    }
+
+    .legendPercentage {
+        display: inline-block;
+        font-size: 11px;
+    }
+
+    .legendDescription {
+        display: inline-block;
+        margin-right: 10px;
+        font-size: 11px;
+    }
+
+    .legendColor {
+        width: 8px;
+        height: 8px;
+        margin-right: 10px;
+        display: inline-block;
+    }
+
+    .perc,
+    .textField {
+        display: inline-block;
+        width: 100%;
+        font-weight: bold;
+    }
+
+    .perc {
+        color: #000000;
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+
+    @media(min-width: 768px) {
+        .perc {
+            font-size: 22px;
+        }
+    }
+
+    .dollor {
+        color: #666;
+        font-weight: 600;
+        font-size: 12px;
+    }
+
+    .donut {
+        display: inline-block;
+        position: relative;
+        width: 100%;
+        vertical-align: top;
+        overflow: hidden;
+    }
+
+    .imageWrapper {
+        display: block;
+    }
+
+    .sdg_image {
+        width: 30px;
+        height: 30px;
+        margin-bottom: 3px;
+    }
+
+    @media(min-width: 992px) {
+        .sdg_image {
+            width: 52px;
+            height: 52px;
+            margin-bottom: 10px;
+        }
+    }
+
+    @media screen and (-ms-high-contrast: active),
+    (-ms-high-contrast: none) {
+        .svgIe {
+            width: 400px;
+            height: 456px;
+        }
+    }
+
+    /* Chart Styles Ends */
+
+    .donorsList .donorItem {
+        padding: 20px;
+        border: 1px solid #666666;
+        margin-top: 15px;
+        display: table;
+        width: 100%;
+        page-break-inside: avoid;
+    }
+
+    .donorsList .donorItem .donorTitle {
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .donorsList .donorItem .aggregateWrapper {
+        font-weight: 600;
+        border-radius: 17px;
+    }
+
+    .donorsList .donorItem .aggregateWrapper span {
+        display: table-cell;
+        width: 33.333%;
+        text-align: center;
+    }
+
+    .donorsList .donorItem .column {
+        display: table-cell;
+        width: 50%;
+    }
+
+    .sectionWrapper .sdgImage {
+        width: 80px;
+        height: 80px;
+    }
+
+    .summaryText {
+        display: block;
+        font-size: 14px;
+    }
+
+    .sectionWrapper .aggregateWrapper {
+        padding: 20px 0;
+    }
+
+    .sectionWrapper .sectionHeaderWrapper {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        width: 100%;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .chartSectionWrapper {
+        border: 1px solid #dcdcdc;
+        padding: 20px;
+    }
+
+    /* Vertical Bar Chart Styles */
+
+    .legend_container {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        -webkit-justify-content: space-between;
+        justify-content: space-between;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -ms-grid-row-align: center;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+    }
+
+    .legend_container .legend_item {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+    }
+
+    .budget_legend_block {
+        border: 1px solid #42689b;
+        background-color: #42689b;
+    }
+
+    .expense_legend_block {
+        border: 1px solid #42689b;
+        background-color: #cae1f7
+    }
+
+    .legend_container .legend_item:nth-child(1) {
+        margin-right: 20px;
+    }
+
+    .legend_text {
+        color: #2d2d2d;
+        margin-left: 5px;
+        font-size: 18px;
+        vertical-align: top;
+        font-weight: 400;
+        /* Text style for "Budget" */
+        letter-spacing: 0.13px;
+    }
+
+    .budget_legend_block,
+    .expense_legend_block {
+        display: inline-block;
+        width: 16px;
+        height: 15px;
+    }
+
+    #budget-sources-chart .xaxis .domain,
+    #recipient-offices-chart .xaxis .domain {
+        fill: none;
+        display: none;
+    }
+
+    #budget-sources-chart .xaxis line,
+    #recipient-offices-chart .xaxis line {
+        fill: none;
+        stroke: white;
+        shape-rendering: crispEdges;
+    }
+
+    #budget-sources-chart .yaxis path,
+    #recipient-offices-chart .yaxis path {
+        fill: none;
+        stroke: white;
+        shape-rendering: crispEdges;
+    }
+
+    #budget-sources-chart .yaxis line,
+    #recipient-offices-chart .yaxis line {
+        fill: none;
+        stroke: #cbcbcb;
+        stroke-dasharray: 5;
+    }
+
+    /* Project Table   */
+
+    .projectTable {
+        width: 100%;
+        margin: 25px 0;
+        border-collapse: collapse;
+        border: 1px solid #666666;
+    }
+
+    .projectTable th,
+    .projectTable td {
+        border: 1px solid #666666;
+        padding: 15px;
+        font-size: 14px;
+    }
+
+    .projectTable th {
+        background-color: #CBCBCB;
+        font-size: 20px;
+    }
+
+    .projectTable td {
+        font-size: 18px;
+    }
+
+    .projectTable th,
+    .projectTable td,
+    .projectTable tr {
+        page-break-inside: avoid;
+    }
+
+    /* Vertical Bar Chart Styles Ends */
+
+    .mapCluster{
+        width: 40px;
+        height: 40px;
+        display: inline-block;
+        background-color: rgba(110,204,57,.6);
+        text-align: center;
+        border-radius: 20px;
+        font: 12px Helvetica Neue,Arial,Helvetica,sans-serif;
+    }
+
+    .mapCluster div {
+        padding-top: 7px;
+        width: 30px;
+        height: 30px;
+        margin-left: 5px;
+        margin-top: 5px;
+        text-align: center;
+        border-radius: 15px;
+        font: 12px Helvetica Neue,Arial,Helvetica,sans-serif;
+        background-color: rgba(110,204,57,.6);
+    }
+</style>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+
+<body>
+    {% include "header.html" %}
+    <section class="sectionWrapper">
+        <section class="sectionWrapper">
+            <div class="aggregateWrapper" style="background-color:#b9daf1;">
+                <span class="summary">
+
+                    <span class="summary_label">Budget</span>
+                    <span class="summary_label summary_value">
+                        <b>{{data.aggregate.budget_amount|numberToCurrencyFormatter}}</b>
+                    </span>
+                </span>
+                <span class="summary">
+
+
+                    <span class="summary_label">Expense</span>
+                    <span class="summary_label summary_value">
+                        <b>{{data.aggregate.expense_amount|numberToCurrencyFormatter}}</b>
+                    </span>
+                </span>
+                <span class="summary">
+
+
+                    <span class="summary_label">Projects</span>
+                    <span class="summary_label summary_value">
+                        <b>{{data.aggregate.projects|numberToCommaFormatter}}</b>
+                    </span>
+                </span>
+                <span class="summary">
+
+                    <span class="summary_label">Donors</span>
+                    <span class="summary_label summary_value">
+                        <b>{{data.aggregate.budget_sources|numberToCommaFormatter}}</b>
+                    </span>
+                </span>
+            </div>
+        </section>
+    </section>
+    <section class="sectionWrapper chartSectionWrapper">
+        <div class="sectionHeaderWrapper">
+            <span>Top 10 Donors</span>
+            <div class="legend_container">
+                <span class="legend_item">
+                    <span class="budget_legend_block"></span>
+                    <span class="legend_text">Budget</span>
+                </span>
+                <span class="legend_item">
+                    <span class="expense_legend_block"></span>
+                    <span class="legend_text">Expense</span>
+                </span>
+            </div>
+        </div>
+        <div class="grouped_chart" id="budget-sources-chart" style="display: table;width:100%;height: 400px">
+        </div>
+    </section>
+    <section class="sectionWrapper chartSectionWrapper">
+        <div class="sectionHeaderWrapper">
+            <span>Top 10 Recipient Offices</span>
+            <div class="legend_container">
+                <span class="legend_item">
+                    <span class="budget_legend_block"></span>
+                    <span class="legend_text">Budget</span>
+                </span>
+                <span class="legend_item">
+                    <span class="expense_legend_block"></span>
+                    <span class="legend_text">Expense</span>
+                </span>
+            </div>
+        </div>
+        <div class="grouped_chart" id="recipient-offices-chart" style="display: table;width:100%;height: 400px">
+        </div>
+    </section>
+    {% if data.mapData|length == 1 %}
+    <section class="sectionWrapper mapSectionWrapper" >
+        <div style="width:876px;height:300px" id="export-map"></div>
+    </section>
+    {% endif %}
+    {% if data.projectList.data|length > 0 %}
+    <section class="sectionWrapper" style="page-break-before:always;">
+        <span class="sectionHeader"> Top 10 projects</span>
+        <table class="projectTable">
+            <tr>
+                <th>ID</th>
+                <th>Project Title</th>
+                <th>Country Office / Operating Unit</th>
+                <th>Budget</th>
+                <th>Expense</th>
+            </tr>
+            {% for project in data.projectList.data %}
+            <tr>
+                <td>{{project.project_id}}</td>
+                <td>{{project.title}}</td>
+                <td>{{project.country}}</td>
+                <td style="text-align: right;">${{project.budget|numberToCommaFormatter}}</td>
+                <td style="text-align: right;">${{project.expense|numberToCommaFormatter}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </section>
+    {% endif %}
+
+    {% include "common_script.html" %}
+    <script>
+
+
+
+        /*Overall Contribution Chart */
+        const EDGE = window.navigator.userAgent.indexOf("Edge") > -1,
+            IE = false || !!document.documentMode,
+            EDGE_IE = EDGE || IE;
+        /* Vertical Bar Chart Script */
+
+        var data = {{data.budget_sources|safe}}
+        label = 'short_name';
+        var margin = { top: 40, right: 20, bottom: 40, left: 40 },
+            width = 1250,
+            height = 700 - margin.top - margin.bottom;
+
+        var y0 = d3.scale.ordinal()
+            .rangeRoundBands([height, 0], .1);
+
+        var y1 = d3.scale.ordinal();
+
+        var x = d3.scale.linear()
+            .range([0, width - 200])
+
+        var color = d3.scale.ordinal()
+            .range(['#16537d', '#cae1f7']);
+
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom")
+            .ticks(6)
+            .tickFormat('')
+            .tickFormat(
+             function (d) {
+                return numberToCurrencyFormatter(d, 0);
+             })
+            .innerTickSize(-height)
+            .outerTickSize(0)
+            .tickPadding(10);
+
+
+        var yAxis = d3.svg.axis()
+            .scale(y0)
+            .orient("left");
+
+        var actualHeight = height + margin.top + margin.bottom;
+
+        var svg = d3.select('#budget-sources-chart').append("svg")
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "0 0 " + width + " " + actualHeight)
+            .classed("svg-content", true)
+            .classed("style.svgIe", true)
+
+        var ageNames = d3.keys(data[0]).filter(function (key) { return (key == "total_expense" || key == "total_budget"); });
+
+        data.forEach(function (d) {
+            d.ages = ageNames.map(function (name) { return { name: name, value: +d[name] }; });
+        });
+        data = data.slice(0, 10)
+        data.sort(function (a, b) { return (a.total_budget - b.total_budget) })
+        y0.domain(data.map(function (d) { return d[label]; }));
+        y1.domain(ageNames).rangeRoundBands([0, y0.rangeBand()]);
+        x.domain([0, d3.max(data, function (d) { return d3.max(d.ages, function (d) { return d.value; }); })]);
+
+        var alteredHeight = height + 20;
+        var translate_xaxis = 200,
+            translate_yaxis = 160,
+            translate_graph = 200;
+
+        svg.append("g")
+            .attr("class", "xaxis")
+            .attr("transform", "translate(" + translate_yaxis + "," + 10 + ")")
+            .call(yAxis)
+            .selectAll('text')
+            .call(wrap, 200)
+            .selectAll('tspan')
+            .attr("font-size", '20px')
+
+
+
+        svg.append("g")
+            .attr("class", "yaxis")
+            .call(xAxis)
+            .attr("transform", "translate(" + translate_xaxis + "," + (alteredHeight + 10) + ")")
+            .selectAll('text').attr("font-size", '20px')
+
+        var wrap = svg.append("g")
+            .attr("transform", "translate(" + translate_graph + "," + 20 + ")")
+
+        var state = wrap.selectAll(".state")
+            .data(data)
+            .enter().append("g")
+            .attr("class", "state")
+            .attr("transform", function (d) {
+                return "translate(0," + y0(d[label]) + ")";
+            });
+
+        state.selectAll("rect")
+            .data(function (d) { return d.ages; })
+            .enter().append("rect")
+            // .attr("width", Math.min(x1.rangeBand() - 2, 100))
+            .attr("height", y1.rangeBand())
+            .attr("x", function (d, i) {
+                return 0
+
+            })
+            .attr("y", function (d) { return y1(d.name); })
+            .attr("width", function (d) { return Math.abs(x(d.value)); })
+            .style("fill", function (d) {
+                return d.name === "total_budget" ?
+                    '#16537d' : '#cae1f7'
+            });
+
+
+        function wrap(text, width) {
+            text.each(function () {
+                var text = d3.select(this),
+                    words = text.text().split(/\s+/).reverse(),
+                    word,
+                    line = [],
+                    lineNumber = 0,
+                    lineHeight = 0.35, // ems
+                    y = text.attr("y"),
+                    dy = 0.6,
+                    tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em").attr("font-size", 12);
+                while (word = words.pop()) {
+                    line.push(word);
+                    tspan.text(line.join(" "));
+                    if (tspan.node().getComputedTextLength() > width) {
+                        line.pop();
+                        tspan.text(line.join(" "));
+                        line = [word];
+                        tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word).attr("font-size", 12);
+                    }
+                }
+            });
+        }
+
+        /* End of Vertical Bar Chart */
+        // var that = this
+        /* Vertical Bar Chart Script */
+
+        var data = {{data.top_recipient_offices|safe}}
+        label = 'iso3';
+        var margin = { top: 40, right: 20, bottom: 40, left: 40 },
+            width = 1250,
+            height = 700 - margin.top - margin.bottom;
+
+        var y0 = d3.scale.ordinal()
+            .rangeRoundBands([height, 0], .1);
+
+        var y1 = d3.scale.ordinal();
+
+        var x = d3.scale.linear()
+            .range([0, width - 200])
+
+        var color = d3.scale.ordinal()
+            .range(['#16537d', '#cae1f7']);
+
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom")
+            .ticks(6)
+            .tickFormat('')
+            .tickFormat(
+             function (d) {
+                return numberToCurrencyFormatter(d, 0);
+             })
+            .innerTickSize(-height)
+            .outerTickSize(0)
+            .tickPadding(10);
+
+
+        var yAxis = d3.svg.axis()
+            .scale(y0)
+            .orient("left");
+
+        var actualHeight = height + margin.top + margin.bottom;
+
+        var svg = d3.select('#recipient-offices-chart').append("svg")
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "0 0 " + width + " " + actualHeight)
+            .classed("svg-content", true)
+            .classed("style.svgIe", true)
+
+        var ageNames = d3.keys(data[0]).filter(function (key) { return (key == "total_expense" || key == "total_budget"); });
+
+        data.forEach(function (d) {
+            d.ages = ageNames.map(function (name) { return { name: name, value: +d[name] }; });
+        });
+        data = data.slice(0, 10)
+        data.sort(function (a, b) { return (a.total_budget - b.total_budget) })
+        y0.domain(data.map(function (d) { return d[label]; }));
+        y1.domain(ageNames).rangeRoundBands([0, y0.rangeBand()]);
+        x.domain([0, d3.max(data, function (d) { return d3.max(d.ages, function (d) { return d.value; }); })]);
+
+        var alteredHeight = height + 20;
+        var translate_xaxis = 200,
+            translate_yaxis = 160,
+            translate_graph = 200;
+
+        svg.append("g")
+            .attr("class", "xaxis")
+            .attr("transform", "translate(" + translate_yaxis + "," + 10 + ")")
+            .call(yAxis)
+            .selectAll('text')
+            // .call(wrap, 200)
+            // .selectAll('tspan')
+            .attr('dy',15)
+            .attr("font-size", '20px;')
+
+
+
+        svg.append("g")
+            .attr("class", "yaxis")
+            .call(xAxis)
+            .attr("transform", "translate(" + translate_xaxis + "," + (alteredHeight + 10) + ")")
+            .selectAll('text').attr("font-size", '20px;');
+
+
+        var wrap = svg.append("g")
+            .attr("transform", "translate(" + translate_graph + "," + 20 + ")")
+
+        var state = wrap.selectAll(".state")
+            .data(data)
+            .enter().append("g")
+            .attr("class", "state")
+            .attr("transform", function (d) {
+                return "translate(0," + y0(d[label]) + ")";
+            });
+
+        state.selectAll("rect")
+            .data(function (d) { return d.ages; })
+            .enter().append("rect")
+            // .attr("width", Math.min(x1.rangeBand() - 2, 100))
+            .attr("height", y1.rangeBand())
+            .attr("x", function (d, i) {
+                return 0
+
+            })
+            .attr("y", function (d) { return y1(d.name); })
+            .attr("width", function (d) { return Math.abs(x(d.value)); })
+            .style("fill", function (d) {
+                return d.name === "total_budget" ?
+                    '#16537d' : '#cae1f7'
+            });
+        {% if data.mapData|length == 1 %}
+        /* Map Script */
+        function generateIcon(iconUrl) {
+            var icon = new L.icon()
+            icon.options.iconSize = [24, 33.33]
+            icon.options.popupAnchor = [1, -24]
+            icon.options.iconAnchor = [13, 28.33]
+            icon.options.shadowSize = [68, 95]
+            icon.options.shadowAnchor = [22, 94]
+            icon.options.iconUrl = iconUrl
+            return icon
+        }
+
+        function getMarkerIcon(colorCode) {
+            switch (colorCode) {
+                case 'Administrative Region':
+                    return generateIcon(administrative); break;
+                case 'Populated Place':return generateIcon(populated); break;
+                case 'Structure': return generateIcon(structure); break;
+                case 'Other Topographical Feature': return generateIcon(otherTopo); break;
+                default: return generateIcon(other);
+            }
+        }
+        var mapData = {{data.mapData|safe}}
+        var mymap = L.map('export-map', { zoomControl: false }).setView([51.505, -0.09], 3);
+        L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2VldGh1ZGFzIiwiYSI6ImNqZm1qcHpnMDBmZmczM280dm9zdzR5bjcifQ.zRivs5JkUZzTzUU_OpYXPw')
+            .addTo(mymap);
+
+        var markers = L.markerClusterGroup({
+            showCoverageOnHover: false,
+            removeOutsideVisibleBounds: false,
+            iconCreateFunction: function(cluster) {
+                return L.divIcon({ html: '<div>'+cluster.getChildCount()+'</div>', className: 'mapCluster', iconSize: L.point(40, 40) });
+            }
+        });
+        var layers = L.layerGroup();
+
+        if (mapData.length == 1) {
+            mapData[0].outputs.map(function (feature, index) {
+                var marker = L.marker([
+                    parseFloat(feature.output_latitude),
+                    parseFloat(feature.output_longitude)
+                ], {
+                        icon: getMarkerIcon(feature.output_location_class)
+                    })
+                markers.addLayer(marker)
+            })
+            mymap.addLayer(this.markers)
+
+            if (
+                mapData[0].boundaries != null &&
+                mapData[0].boundaries.geometry.type == "Polygon"
+            ) {
+                var coord = mapData[0].boundaries.geometry.coordinates[0];
+                var bounds = L.polyline(coord).getBounds();
+                layers.addLayer(L.polygon(coord, { stroke: false, fillColor: '#bbb' }))
+                layers.addTo(mymap)
+                mymap.fitBounds(bounds)
+            } else if (
+                mapData[0].boundaries != null &&
+                mapData[0].boundaries.geometry.type == "MultiPolygon"
+            ) {
+                var modifiedCoord = mapData[0].boundaries.geometry.coordinates;
+                var modifiedCoord = [].concat.apply([], modifiedCoord);
+                var modifiedCoord = [].concat.apply([], modifiedCoord);
+                var bounds = L.polyline(modifiedCoord).getBounds();
+                mymap.fitBounds(bounds)
+                var polygons = [];
+                mapData[0].boundaries.geometry.coordinates.forEach(
+                    function (item) {
+                        layers.addLayer(L.polygon(item[0], { stroke: false, fillColor: '#bbb' }))
+                    }
+                );
+                layers.addTo(mymap)
+            }
+        }
+
+        else {
+            var min = d3.min(mapData, function (d) { return parseInt(d.total_budget) })
+            var max = d3.max(mapData, function (d) { return parseInt(d.total_budget) })
+            var scale = d3.scale.linear()
+                .domain([min, max])
+                .range([10, 50])
+            mapData.forEach(function (location, index) {
+                var circleMarker = L.circleMarker([
+                    parseFloat(location.latitude),
+                    parseFloat(location.longitude)
+                ], {
+                        radius: scale(location.total_budget),
+                        weight: 2
+                    })
+
+                layers.addLayer(circleMarker)
+            })
+            layers.addTo(mymap)
+        }
+        {% endif %}
+        /* Map Script Ends */
+    </script>
+</body>
+
+</html>

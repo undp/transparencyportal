@@ -1,0 +1,282 @@
+[
+
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 1,
+    "fields": {
+      "category": "A01",
+      "title": "Social and Environmental Standards (SES) Report or Impact Appraisal",
+      "priority": 5
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 2,
+    "fields": {
+      "category": "A02",
+      "title": "Project Document",
+      "priority": 1
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 3,
+    "fields": {
+      "category": "A03",
+      "title": "Intended Ultimate Beneficiaries",
+      "priority": 7
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 4,
+    "fields": {
+      "category": "A04",
+      "title": "Conditions",
+      "priority": 8
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 5,
+    "fields": {
+      "category": "A05",
+      "title": "Budget",
+      "priority": 2
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 6,
+    "fields": {
+      "category": "A06",
+      "title": "Summary Information About Contract",
+      "priority": 10
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 7,
+    "fields": {
+      "category": "A07",
+      "title": "Evaluation Report",
+      "priority": 4
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 8,
+    "fields": {
+      "category": "A08",
+      "title": "Project Report",
+      "priority": 3
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 9,
+    "fields": {
+      "category": "A09",
+      "title": "Memorandum of Understanding (If agreed by all parties)",
+      "priority": 9
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 10,
+    "fields": {
+      "category": "A10",
+      "title": "Tender",
+      "priority": 6
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 11,
+    "fields": {
+      "category": "A11",
+      "title": "Contract",
+      "priority": 11
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 12,
+    "fields": {
+      "category": "A12",
+      "title": "Activity Web Page",
+      "priority": 12
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 13,
+    "fields": {
+      "category": "B01",
+      "title": "Annual Report",
+      "priority": 13
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 14,
+    "fields": {
+      "category": "B02",
+      "title": "Institutional Strategy Paper",
+      "priority": 14
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 15,
+    "fields": {
+      "category": "B03",
+      "title": "Country Strategy Paper",
+      "priority": 15
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 16,
+    "fields": {
+      "category": "B04",
+      "title": "Aid Allocation Policy",
+      "priority": 16
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 17,
+    "fields": {
+      "category": "B05",
+      "title": "Procurement Policy and Procedure",
+      "priority": 17
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 18,
+    "fields": {
+      "category": "B06",
+      "title": "Institutional Audit Report",
+      "priority": 18
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 19,
+    "fields": {
+      "category": "B07",
+      "title": "Country Audit Report",
+      "priority": 19
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 20,
+    "fields": {
+      "category": "B08",
+      "title": "Exclusions Policy",
+      "priority": 20
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 21,
+    "fields": {
+      "category": "B09",
+      "title": "Institutional Evaluation Report",
+      "priority": 21
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 22,
+    "fields": {
+      "category": "B10",
+      "title": "Country Evaluation Report",
+      "priority": 22
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 23,
+    "fields": {
+      "category": "B11",
+      "title": "Sector Strategy",
+      "priority": 23
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 24,
+    "fields": {
+      "category": "B12",
+      "title": "Thematic Strategy",
+      "priority": 24
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 25,
+    "fields": {
+      "category": "B13",
+      "title": "Country-level Memorandum of Understanding",
+      "priority": 25
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 26,
+    "fields": {
+      "category": "B14",
+      "title": "Evaluations Policy",
+      "priority": 26
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 27,
+    "fields": {
+      "category": "B15",
+      "title": "General Terms and Conditions",
+      "priority": 27
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 28,
+    "fields": {
+      "category": "B16",
+      "title": "Organisation Web Page",
+      "priority": 28
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 29,
+    "fields": {
+      "category": "B17",
+      "title": "Country/Region Web Page",
+      "priority": 29
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 30,
+    "fields": {
+      "category": "B18",
+      "title": "Sector Web Page",
+      "priority": 30
+    }
+  },
+  {
+    "model": "master_tables.documentcategory",
+    "pk": 31,
+    "fields": {
+      "category": "UNDAF",
+      "title": "United Nations Development Assistance Framework (UNDAF) country document",
+      "priority": 31
+    }
+  }
+]
