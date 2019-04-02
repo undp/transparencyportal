@@ -1,0 +1,68 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+
+.buttonsWrapper {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: right;
+  padding-right: 20px;
+
+  .buttons {
+    color: $button-text-color;
+    font-weight: $bold;
+    background-color: $button-background-color;
+    @include border(2px,solid,$button-text-color,40px);
+    padding: 9px 14px;
+    cursor: pointer;
+    padding-left: 50px;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      display: block;
+      top: 8px;
+      left: 15px;
+      width: 30px;
+      height: 30px;
+    }
+
+    &:nth-of-type(1):after {
+      background: url('#{$icons}/embed-icon.svg') no-repeat;
+    }
+  }
+
+  .dropDownWrapper {
+    box-shadow: 0 2px 1px $drop-down-shadow;
+    @include border(1px,solid,$drop-down-border-color,30px);
+    background-color: $white-background;
+    margin-right: 10px;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    height: 40px;
+    padding: 8px 42px 8px 19px;
+
+    ul {
+      background-color: $white-background;
+      position: absolute;
+      top: 100%;
+      z-index: 5;
+      margin: 0;
+      padding: 0;
+      left: 0;
+      right: 0;
+    }
+
+    &::after {
+      content: '';
+      background: url('#{$icons}/drop-down-arrow.png') no-repeat;
+      position: absolute;
+      right: -5px;
+      top: 12px;
+      display: block;
+      width: 30px;
+      height: 30px;
+    }
+  }
+}

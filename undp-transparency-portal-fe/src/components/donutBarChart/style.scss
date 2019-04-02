@@ -1,0 +1,133 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+.wrapper{
+    height: auto;
+    width: 90%;
+    margin: 0 auto;
+    display: block;
+
+    @media(min-width: $tablets) {
+
+    }
+    @media(min-width: $tablets) {
+        display: table;
+    }
+    .donutChartWrapper{
+        display: block;
+        width:100%;
+        margin:0 auto;
+        @media(min-width: $tablets) {
+            display:table-cell;
+            width:50%;
+            vertical-align: top;
+        }
+
+    }
+    .donuttopWrapper {
+        top:-66px;
+        left:-56px;
+        position: relative;
+        @media(max-width:767px) {
+            top:0;
+            left:0;
+        }
+        @media screen and (max-width:991px) and (min-width:768px) {
+            top:-36px;
+        }
+    }
+    .barChartWrapper{
+        display: block;
+        width:100%;
+        margin:0 auto;
+
+        @media(min-width: $tablets) {
+            display: table-cell;
+            width:50%;
+            vertical-align: top;
+        }
+
+    }
+}
+
+
+.preLoaderWrapper{
+    position: relative;
+    height: 250px;
+    display:block;
+    width:100%;
+    @media(min-width: $tablets) {
+        display:inline-block;
+        width:50%;
+    }
+}
+
+.noDataTemplateWrapper{
+    display:block;
+    width:100%;
+    @media(min-width: $tablets) {
+        display:inline-block;
+        width:50%;
+    }
+}
+
+.textWrapperStyle {
+    bottom:43%;
+    text-align: center;
+}
+
+.headerWrapper{
+    margin-top: 20px;
+    margin-bottom: 5px;
+    font-weight: 400;
+    font-size: 16px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    font-weight: 700;
+}
+
+.recipientProfileChartHeaderInfo{
+    display: block !important;
+    /* text-align: center; */
+    margin: 0 auto;
+    word-wrap: break-word;
+    position: absolute;
+    left: 55px;
+    top: 55px;
+    
+    @media (max-width:1050px) {
+        top: 90%;
+        text-align: center;
+        left: 0;
+    }
+}
+
+.textFieldStyle{
+    display: block !important;
+    // width: 48% !important;
+    // height: 18px;
+    text-align: center;
+    margin: 0 auto;
+    word-wrap: break-word;
+    @media(max-width:991px) {
+        // width: 44% !important;
+        margin-top: 50px;
+        line-height: 1.1;
+    }
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    .textWrapperStyle {
+        bottom:50%!important;
+        left: -12%!important;
+    }
+    .recipientProfileChartHeaderInfo{
+        width:30%!important;
+    }
+    .donuttopWrapper {
+        top:-46px!important;
+    }
+  }

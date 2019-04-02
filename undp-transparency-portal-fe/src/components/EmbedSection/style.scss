@@ -1,0 +1,578 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+.markerYearFilter {
+    padding-top: 10px;
+    display: block;
+    @media(max-width:1035px ) {
+        margin-top:13px
+    }
+    @media(max-width:991px ) {
+        margin-top:18px;
+    }
+    @media(max-width:767px ) {
+        margin-top:14px;
+    }
+    @media(max-width:699px ) {
+        margin-left:4px;
+    }
+    .yearWrapper {
+        display: inline-block;
+        position: relative;
+        top: -13px;
+        padding-left: 10px;
+        @media(min-width: $tablets) {
+            float: none;
+            padding-left: 0;
+        }
+        @media(min-width:1035px) {
+            top:0;
+        }
+        .pageSizeModal {
+            -webkit-box-shadow: 0px 0px 1px rgba(0, 0, 0, .5);
+            -moz-box-shadow: 0px 0px 1px rgba(0, 0, 0, .5);
+            box-shadow: 0px 0px 1px rgba(0, 0, 0, .5);
+            z-index: 6;
+            position: absolute;
+            left: 0;
+            top: 16px;
+            padding-top: 25px;
+
+            border: 1px solid #d6d6de;
+            background-color: #ffffff;
+            border-radius: 10px;
+            @media(max-width: 767px) {
+                left: 9px;
+            }
+            ul {
+                padding: 0;
+                margin-top: 0;
+                margin-bottom: 0;
+                cursor: pointer;
+                li {
+                    border: none;
+                    padding: 3px 0;
+                    text-align: left;
+                    padding-left: 10px;
+                    width: 116px;
+                    font-weight: 700;
+                    outline: none;
+                    &:hover, &:focus {
+                        background-color: #ebf5ff;
+                    }
+                    &:last-child {
+                        border-bottom-left-radius: 10px;
+                        border-bottom-right-radius: 10px;
+                      }
+                }
+            }
+        }
+    }
+    .dropDownWrapper {
+        box-shadow: 0 2px 1px $drop-down-shadow;
+        @include border(1px,
+        solid,
+        $drop-down-border-color,
+        30px);
+        background-color: $white-background;
+        margin-right: 10px;
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        height: 40px;
+        padding: 8px 51px 8px 21px;
+        font-weight: 700;
+        font-size: 18px;
+        z-index: 7;
+        width: 117px;
+        &::after {
+            content: '';
+            background: url('#{$icons}/drop-down-arrow.png') no-repeat;
+            position: absolute;
+            right: -5px;
+            top: 12px;
+            display: block;
+            width: 30px;
+            height: 30px;
+        }
+        span {
+            @media(max-width:767px) {
+                font-size: 16px;
+            }
+        }
+        @media(max-width:991px) {
+            margin-right: 25px;
+        }
+        @media(max-width:699px) {
+            padding-left: 25px;
+        }
+
+    }
+}
+.markerButtonsWrapper {
+    display: table-cell;
+    vertical-align: middle;
+    font-family: 'ProximaNova-Regular';
+    line-height: 23px;
+    text-align: right;
+    width: 32%;
+    
+    @media (max-width: 1190px) {
+
+        padding-top: 15px;
+        padding-left: 1px; 
+        width: 52%;
+    }
+    
+    @media (max-width: 583px) {
+        width:100%;
+        margin-top:5px;
+        display: block;
+        width: 100%;
+        text-align: right;
+    }
+    .buttons {
+        display: inline-block;
+        color: $button-text-color;
+        font-weight: $bold;
+        font-size: $text-small;
+        background-color: $button-background-color;
+        @include border(2px, solid, $button-text-color, 40px);
+        padding: 8px 10px;
+        cursor: pointer;
+        padding-left: 44px;
+        position: relative;
+        @media screen and (max-width: 1035px) {
+            border-radius: 50%;
+            padding: 20px 40px 15px 0;
+            margin-left: 10px;
+            // float: right;
+        }
+        b {
+            @media screen and (max-width: 1035px) {
+                display: none;
+            }
+        }
+        &::after {
+            content: '';
+            position: absolute;
+            display: block;
+            top: 8px;
+            left: 15px;
+            width: 30px;
+            height: 30px;
+            @media screen and (max-width: 1035px) {
+                left: 8px;
+                top: 6px;
+            }
+        }
+        &:nth-of-type(2):after {
+            background: url('#{$icons}/embed-icon.svg') no-repeat;
+        }
+        &:nth-of-type(1),
+        &:nth-of-type(2) {
+            margin-right: 12px;
+            @media screen and (max-width: 400px) {
+                margin-right: 0;
+            }
+        }
+        &:after {
+            background: url('#{$icons}/export-icon.svg') no-repeat;
+        }
+
+    }
+    
+
+    .yearWrapper {
+        display: inline-block;
+        position: relative;
+        top: -13px;
+        padding-left: 10px;
+        @media(min-width: $tablets) {
+            float: none;
+            padding-left: 0;
+        }
+        @media(min-width:1035px) {
+            top:0;
+        }
+        .pageSizeModal {
+            -webkit-box-shadow: 0px 0px 1px rgba(0, 0, 0, .5);
+            -moz-box-shadow: 0px 0px 1px rgba(0, 0, 0, .5);
+            box-shadow: 0px 0px 1px rgba(0, 0, 0, .5);
+            z-index: 6;
+            position: absolute;
+            left: 0;
+            top: 16px;
+            padding-top: 25px;
+
+            border: 1px solid #d6d6de;
+            background-color: #ffffff;
+            border-radius: 10px;
+            @media(max-width: 767px) {
+                left: 9px;
+            }
+            ul {
+                padding: 0;
+                margin-top: 0;
+                margin-bottom: 0;
+                cursor: pointer;
+                li {
+                    border: none;
+                    padding: 3px 0;
+                    text-align: left;
+                    padding-left: 10px;
+                    width: 116px;
+                    font-weight: 700;
+                    outline: none;
+                    &:hover, &:focus {
+                        background-color: #ebf5ff;
+                    }
+                    &:last-child {
+                        border-bottom-left-radius: 10px;
+                        border-bottom-right-radius: 10px;
+                      }
+                }
+            }
+        }
+    }
+    .dropDownWrapper {
+        box-shadow: 0 2px 1px $drop-down-shadow;
+        @include border(1px,
+        solid,
+        $drop-down-border-color,
+        30px);
+        background-color: $white-background;
+        margin-right: 10px;
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        height: 42px;
+        padding: 8px 51px 8px 21px;
+        font-weight: 700;
+        font-size: 18px;
+        z-index: 7;
+        width: 117px;
+        &::after {
+            content: '';
+            background: url('#{$icons}/drop-down-arrow.png') no-repeat;
+            position: absolute;
+            right: -5px;
+            top: 12px;
+            display: block;
+            width: 30px;
+            height: 30px;
+        }
+        span {
+            @media(max-width:767px) {
+                font-size: 16px;
+            }
+        }
+    }
+}
+
+.sscButtonsWrapper {
+    display: table-cell;
+    vertical-align: middle;
+    font-family: 'ProximaNova-Regular';
+    line-height: 23px;
+    text-align: right;
+    width: 31%;
+    margin-top:13px;
+    @media screen and (max-width: 1035px) {
+        width: 52%;
+    }
+    @media (max-width: 400px) {
+        width:100%;
+        margin-top:5px;
+    }
+    .buttons {
+        display: inline-block;
+        color: $button-text-color;
+        font-weight: $bold;
+        font-size: $text-small;
+        background-color: $button-background-color;
+        @include border(2px, solid, $button-text-color, 40px);
+        padding: 8px 10px;
+        cursor: pointer;
+        padding-left: 44px;
+        position: relative;
+        @media screen and (max-width: 1035px) {
+            border-radius: 50%;
+            padding: 20px 40px 15px 0;
+            margin-left: 10px;
+            // float: right;
+        }
+        b {
+            @media screen and (max-width: 1035px) {
+                display: none;
+            }
+        }
+        &::after {
+            content: '';
+            position: absolute;
+            display: block;
+            top: 8px;
+            left: 15px;
+            width: 30px;
+            height: 30px;
+            @media screen and (max-width: 1035px) {
+                left: 8px;
+                top: 6px;
+            }
+        }
+        &:nth-of-type(2):after {
+            background: url('#{$icons}/embed-icon.svg') no-repeat;
+        }
+        &:nth-of-type(1),
+        &:nth-of-type(2) {
+            margin-right: 12px;
+            @media screen and (max-width: 767px) {
+                margin-right: 0;
+            }
+        }
+        &:after {
+            background: url('#{$icons}/export-icon.svg') no-repeat;
+        }
+
+    }
+    
+
+    .yearWrapper {
+        display: inline-block;
+        position: relative;
+        top: -13px;
+        padding-left: 10px;
+        @media(min-width: $tablets) {
+            float: none;
+            padding-left: 0;
+        }
+        @media(min-width:1035px) {
+            top:0;
+        }
+        .pageSizeModal {
+            -webkit-box-shadow: 0px 0px 1px rgba(0, 0, 0, .5);
+            -moz-box-shadow: 0px 0px 1px rgba(0, 0, 0, .5);
+            box-shadow: 0px 0px 1px rgba(0, 0, 0, .5);
+            z-index: 6;
+            position: absolute;
+            left: 0;
+            top: 16px;
+            padding-top: 25px;
+
+            border: 1px solid #d6d6de;
+            background-color: #ffffff;
+            border-radius: 10px;
+            @media(max-width: 767px) {
+                left: 9px;
+            }
+            ul {
+                padding: 0;
+                margin-top: 0;
+                margin-bottom: 0;
+                cursor: pointer;
+                li {
+                    border: none;
+                    padding: 3px 0;
+                    text-align: left;
+                    padding-left: 10px;
+                    width: 116px;
+                    font-weight: 700;
+                    outline: none;
+                    &:hover, &:focus {
+                        background-color: #ebf5ff;
+                    }
+                    &:last-child {
+                        border-bottom-left-radius: 10px;
+                        border-bottom-right-radius: 10px;
+                      }
+                }
+            }
+        }
+    }
+    .dropDownWrapper {
+        box-shadow: 0 2px 1px $drop-down-shadow;
+        @include border(1px,
+        solid,
+        $drop-down-border-color,
+        30px);
+        background-color: $white-background;
+        margin-right: 10px;
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        height: 42px;
+        padding: 8px 51px 8px 21px;
+        font-weight: 700;
+        font-size: 18px;
+        z-index: 7;
+        width: 117px;
+        &::after {
+            content: '';
+            background: url('#{$icons}/drop-down-arrow.png') no-repeat;
+            position: absolute;
+            right: -5px;
+            top: 12px;
+            display: block;
+            width: 30px;
+            height: 30px;
+        }
+        span {
+            @media(max-width:767px) {
+                font-size: 16px;
+            }
+        }
+    }
+}
+
+
+.buttonsWrapper {
+    display: table-cell;
+    vertical-align: middle;
+    font-family: 'ProximaNova-Regular';
+    line-height: 23px;
+    text-align: right;
+    width: 35%;
+    @media screen and (max-width: 1035px) {
+        width: 52%;
+    }
+    @media (max-width: 400px) {
+        width:100%;
+        margin-top:5px;
+    }
+    .buttons {
+        display: inline-block;
+        color: $button-text-color;
+        font-weight: $bold;
+        font-size: $text-small;
+        background-color: $button-background-color;
+        @include border(2px, solid, $button-text-color, 40px);
+        padding: 8px 10px;
+        cursor: pointer;
+        padding-left: 44px;
+        position: relative;
+        @media screen and (max-width: 1035px) {
+            border-radius: 50%;
+            padding: 20px 40px 15px 0;
+            margin-left: 10px;
+            // float: right;
+        }
+        b {
+            @media screen and (max-width: 1035px) {
+                display: none;
+            }
+        }
+        &::after {
+            content: '';
+            position: absolute;
+            display: block;
+            top: 8px;
+            left: 15px;
+            width: 30px;
+            height: 30px;
+            @media screen and (max-width: 1035px) {
+                left: 8px;
+                top: 6px;
+            }
+        }
+        &:nth-of-type(2):after {
+            background: url('#{$icons}/embed-icon.svg') no-repeat;
+        }
+        &:nth-of-type(1),
+        &:nth-of-type(2) {
+            margin-right: 12px;
+            @media screen and (max-width: 767px) {
+                margin-right: 0;
+            }
+        }
+        &:after {
+            background: url('#{$icons}/export-icon.svg') no-repeat;
+        }
+
+    }
+    
+
+    .yearWrapper {
+        display: inline-block;
+        position: relative;
+        top: -13px;
+        padding-left: 10px;
+        @media(min-width: $tablets) {
+            float: none;
+            padding-left: 0;
+        }
+        @media(min-width:1035px) {
+            top:0;
+        }
+        .pageSizeModal {
+            -webkit-box-shadow: 0px 0px 1px rgba(0, 0, 0, .5);
+            -moz-box-shadow: 0px 0px 1px rgba(0, 0, 0, .5);
+            box-shadow: 0px 0px 1px rgba(0, 0, 0, .5);
+            z-index: 6;
+            position: absolute;
+            left: 0;
+            top: 16px;
+            padding-top: 25px;
+
+            border: 1px solid #d6d6de;
+            background-color: #ffffff;
+            border-radius: 10px;
+            @media(max-width: 767px) {
+                left: 9px;
+            }
+            ul {
+                padding: 0;
+                margin-top: 0;
+                margin-bottom: 0;
+                cursor: pointer;
+                li {
+                    border: none;
+                    padding: 3px 0;
+                    text-align: left;
+                    padding-left: 10px;
+                    width: 116px;
+                    font-weight: 700;
+                    outline: none;
+                    &:hover, &:focus {
+                        background-color: #ebf5ff;
+                    }
+                    &:last-child {
+                        border-bottom-left-radius: 10px;
+                        border-bottom-right-radius: 10px;
+                      }
+                }
+            }
+        }
+    }
+    .dropDownWrapper {
+        box-shadow: 0 2px 1px $drop-down-shadow;
+        @include border(1px,
+        solid,
+        $drop-down-border-color,
+        30px);
+        background-color: $white-background;
+        margin-right: 10px;
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        height: 42px;
+        padding: 8px 51px 8px 21px;
+        font-weight: 700;
+        font-size: 18px;
+        z-index: 7;
+        width: 117px;
+        &::after {
+            content: '';
+            background: url('#{$icons}/drop-down-arrow.png') no-repeat;
+            position: absolute;
+            right: -5px;
+            top: 12px;
+            display: block;
+            width: 30px;
+            height: 30px;
+        }
+        span {
+            @media(max-width:767px) {
+                font-size: 16px;
+            }
+        }
+    }
+}

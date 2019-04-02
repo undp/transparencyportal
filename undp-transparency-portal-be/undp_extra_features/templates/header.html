@@ -1,0 +1,167 @@
+<html>
+
+<head>
+
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    ul,
+    li {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+    .header {
+        position: relative;
+        height: 120px;
+        margin-bottom: 20px;
+    }
+
+    .header_section_basic_wrapper {
+        display: inline-block;
+        vertical-align: top;
+
+    }
+
+    .header span {
+        display: block;
+    }
+
+    .header span.title {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 700;
+        text-align: center;
+    }
+
+    .header span.subTitle {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 700;
+        text-align: center;
+    }
+
+    .undp_report_logo_wrapper {
+       /* position: absolute;*/
+        top: 5px;
+        left: 0;
+        /* right: 10px; */
+        margin-bottom: 10px;
+
+    }
+
+    .date_wrapper {
+        display: inline-block;
+        padding-right: 10px;
+        vertical-align: top;
+        font-size: 10px;
+        position: absolute;
+        right: 0;
+        top:0;
+    }
+
+   .date_wrapper span {
+        display: inline-block;
+    }
+
+    .undp_report_logo_wrapper .undp_report_logo {
+        height: 120px;
+        width: auto;
+    }
+
+    .header .filterWrapper {
+        max-width: 800px;
+        margin: 0 auto;
+        margin-top: -30px;
+        margin-bottom: 45px;
+        text-align: center;
+        display:table;
+        width:80%;
+    }
+
+    .header .filterWrapper span {
+        display:table-cell;
+    }
+
+    .header .filterWrapper .filterItem {
+        display:table-cell;
+    }
+
+
+</style>
+
+<body>
+    <header>
+        <section class="header" {% if data.selected %} style="margin-bottom:50px;" {% endif %}>
+            <div class="header_section_basic_wrapper undp_report_logo_wrapper" style="width:10%;">
+                <img src="http://undptr.qburst.build/assets/images/logo.png" class="undp_report_logo" alt="UNDP Logo" />
+            </div>
+            <div class="header_section_basic_wrapper" style="width:75%; text-align:center;">
+                <span class="title">{{data.title}}</span>
+                <span class="subTitle">{{data.year}} Summary Report </span>
+                <span class="subTitle">
+                    {% if data.selected %} {{data.selected}} {% endif %}
+                    {% if data.project_id %} (ID: {{data.project_id}}) {% endif %}
+                </span>
+            </div>
+            {% if data.selected or not data.selected and data.title != "Projects" %}
+            <ul class="filterWrapper">
+                {% if data.donorSelected and data.title != "Donors" %}
+                <li class="filterItem">
+                    <span class="filterTitle">
+                        Donors:
+                    </span>
+                    <span class="filterValue">
+                        <strong>{{data.donorSelected}} &nbsp;</strong>
+                    </span>
+                </li>
+                {% endif %}
+                {% if data.unitSelected %}
+                <li class="filterItem">
+                    <span class="filterTitle">
+                        Recipient Country / Region:
+                    </span>
+                    <span class="filterValue">
+                        <strong> {{data.unitSelected}} </strong>
+                    </span>
+                </li>
+                {% endif %}
+                {% if data.title == "Donors" %}
+                    {% if data.sdgSelected  %}
+                    <li class="filterItem">
+                        <span class="filterTitle">
+                            SDG:
+                        </span>
+                        <span class="filterValue">
+                            <strong>Goal {{data.sdgNumber}}: {{data.sdgSelected}} </strong>
+                        </span>
+                    </li>
+                    {% endif %}
+                    {% if data.sectorSelected %}
+                    <li class="filterItem">
+                        <span class="filterTitle">
+                            Our Focus:
+                        </span>
+                        <span class="filterValue">
+                            <strong>{{data.sectorSelected}}</strong>
+                        </span>
+                    </li>
+                    {% endif %}
+                {% endif %}
+            </ul>
+            {% endif %}
+
+            <div class="date_wrapper" style="width:15%; text-align:right;">
+            <span>Data as of: </span>
+            <span>{{data.lastUpdatedDate}}</span>
+            </div>
+
+        </section>
+
+    </header>
+</body>
+
+</html>

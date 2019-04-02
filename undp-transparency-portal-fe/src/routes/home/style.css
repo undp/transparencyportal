@@ -1,0 +1,59 @@
+.heading {
+    display: none;
+}
+
+.sideBar,
+.map {
+    display: block;
+    vertical-align: top;
+}
+
+@media only screen and (min-width: 1024px) {
+    .wrapper {
+        display: block
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .wrapper {
+        margin-top: 60px;
+    }
+}
+
+#sankey {
+    height: 500px;
+    width: 100%;
+}
+
+.makeImpact {
+    background: url('/../assets/images/making_impact_bg.jpg') no-repeat;
+    background-size: cover;
+    padding-bottom: 0;
+}
+
+.financial_flow {
+    display: none;
+}
+.mainDescription {
+    color: #121212;
+    font-size: 12px;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+    line-height: 26px;
+    padding-bottom: 26px;
+   
+}
+@media(min-width: 768px) {
+    .mainDescription {
+        font-size: 17px;
+    }
+}
+@media only screen and (min-width: 992px) {
+    .financial_flow {
+        display: block;
+    }
+    .makeImpact {
+        padding-bottom: 80px;
+    }
+}

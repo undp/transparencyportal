@@ -1,0 +1,70 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+.legend_container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -ms-grid-row-align: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    .legend_item {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+        &:nth-child(1) {
+            margin-right: 20px;
+        }
+        .budget_legend_block,
+        .expense_legend_block {
+            width: 16px;
+            height: 15px;
+        }
+        .budget_legend_block {
+            border: 1px solid #42689b;
+            background-color: #42689b;
+        }
+        .expense_legend_block {
+            border: 1px solid #42689b;
+            background-color: #cae1f7
+        }
+        .legend_text {
+            color: #2d2d2d;
+            margin-left: 5px;
+            font-size: 12px;
+            font-weight: 400;
+            /* Text style for "Budget" */
+            letter-spacing: 0.13px;
+            @media(min-width:768px) {
+                font-size: 14px;
+            }
+        }
+    }
+}

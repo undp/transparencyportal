@@ -1,0 +1,37 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+.acheivements {
+    padding: 30px;
+    @media(min-width: $tablets) {
+        padding: 10px;
+    }
+    .heading {
+        @include font($heading-small, $bold, $heading-color, $heading);
+        text-align: center;
+        margin: 0;
+        margin-bottom: 10px;
+        @media(min-width: $tablets) {
+            font-size: $heading-normal;
+        }
+    }
+    .mainDescription {
+        color: $primary-description-color;
+        font-size: $text-lmobile;
+        text-align: center;
+        max-width: 900px;
+        margin: 0 auto;
+        line-height: 26px;
+        padding-top: 10px;
+        padding-bottom: 26px;
+        @media(min-width: $tablets) {
+            padding: 40px 0;
+            font-size: $text-medium;
+        }
+    }
+    @media(min-width: $tablets) {
+        padding: 0 20px 10px 20px;
+    }
+    @media(min-width: $desktop) {
+        padding: 100px 20px 10px 20px;
+    }
+}

@@ -1,0 +1,71 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+.wrapper {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    -webkit-justify-content: space-between;
+            justify-content: space-between;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    -webkit-flex-direction: column;
+            flex-direction: column;
+    width: 100%;
+}
+
+.list_wrapper {
+    padding: 30px;
+}
+
+.contributionWrapper {
+    background: #f4f4f4;
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    /* display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex; */
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+            flex-wrap: wrap;
+    width: 85%;
+    padding: 10px;
+    .wrapperItem {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+         width: 100%;
+         margin-top: 5px;
+         margin-bottom: 5px;
+    }
+    .DonorContribution,
+    .AllDonorContribution,
+    .allDonorContribution {
+        width: 25px;
+        margin-top: 5px;
+        height: 15px;
+    }
+    .contributionText {
+        text-indent: 5px;
+        text-align: left;
+        font-size: 14px;
+        font-weight: 400;
+        padding-top: 2px;
+    }
+    .DonorContribution {
+        background-color: #9ea0a2;
+    }
+    .AllDonorContribution {
+        background-color: #9ea0a2;
+        border: 1px solid #9ea0a2;
+        background: repeating-linear-gradient( 45deg, #fff, #fff 2px,#fff 2px, #9ea0a2 4px );
+    }
+}

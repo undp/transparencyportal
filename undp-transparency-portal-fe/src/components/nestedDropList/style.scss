@@ -1,0 +1,296 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+
+.markerPageFilter{
+    display: inline-block;
+    font-size: 15px;
+    @media screen and (max-width:991px) and (min-width:768px){
+        padding-bottom: 10px;
+        padding-top: 5px;
+    }
+    @media(max-width: 767px) {
+        margin: 2px 12px;
+        margin-right: 0px;
+    }
+    
+    .labelStyle{
+        opacity: 0.8;
+        color: #222222;
+        font-size: 16px;
+        font-weight: 400;
+        display: inline-block;
+        vertical-align: top;
+        padding-top: 10px;
+        margin-left: 7px;
+        padding-right: 5px;
+        @media(max-width: $tablets) {
+            padding-bottom:10px;
+        }
+    }
+    .filterOption {
+        font-size: 16px;
+    }
+    .dropDownOuterWrapper{
+        display: inline-block;
+        position: relative;
+        font-family: 'ProximaNova-Regular';
+        @media(max-width:767px) {
+            margin-right: 0px !important;
+        }
+        .dropdownOverlay {
+            width: 242px;
+            left: 0px;
+            background: #ffffff;
+            height: 30px;
+            position: absolute;
+            margin-top: 13px;
+            border-left: 1px solid #dddfe1;
+            border-right: 1px solid #dddfe1;
+            @media(max-width:767px) {
+                margin-top: 16px;
+                height: 25px;
+            }
+        }
+        .dropdownhidden {
+            display:none;
+        }
+    }
+    .dropDownlistWrapper{
+        @media(max-width:767px) {
+            margin-left: 1px !important;
+        }
+    }
+    .dropDownWrapper {
+        box-shadow: 0 2px 1px $drop-down-shadow;
+        @include border(1px,solid,$drop-down-border-color,30px);
+        background-color: $white-background;
+        margin-left:0;
+        min-width: 175px;
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        max-width: 400px;
+        height: 40px;
+        padding: 8px 0px 8px 26px;
+        z-index: 5;
+        .dropDownItem{
+            color: #2c2c2c;
+            font-size: 18px;
+            font-weight: 700;
+            display: inline-block;
+            width: 80%;
+            height: 100%;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            vertical-align: top;
+            @media(max-width: $tablets) {
+                font-size: 16px;
+            }
+        }
+        .select {
+            background-color: $white-background;
+            position: absolute;
+            top: 100%;
+            z-index: 5;
+            margin: 0;
+            padding: 0;
+            left: 0;
+            right: 0;
+            input {
+                padding: 0;
+            }
+        }
+        .updownArrow {
+            background: url('#{$icons}/drop-down-arrow.png') no-repeat center;
+            display: inline-block;
+            height: 100%;
+            padding: 5px;
+            padding-right: 10px;
+        }
+        .closetab {
+            background: url('/assets/images/closeCard.png') no-repeat center;
+            display: inline-block;
+            height: 100%;
+            padding: 5px;
+            padding-right: 10px;
+            background-size: 10px 10px;
+        }
+    }
+    .sscWrapper {
+        width: 292px;
+    }
+}
+
+.filters {
+    display: inline-block;
+    font-size: 15px;
+    @media screen and (max-width:991px) and (min-width:767px){
+        padding-bottom: 10px;
+        padding-top: 5px;
+    }
+    @media(max-width: 767px) {
+        margin: 2px 12px;
+    }
+    
+    .labelStyle{
+        opacity: 0.8;
+        color: #222222;
+        font-size: 16px;
+        font-weight: 400;
+        display: inline-block;
+        vertical-align: top;
+        padding-top: 10px;
+        margin-left: 7px;
+        padding-right: 5px;
+        @media(max-width: $tablets) {
+            padding-bottom:10px;
+        }
+    }
+    .filterOption {
+        font-size: 16px;
+    }
+    .dropDownOuterWrapper{
+        display: inline-block;
+        position: relative;
+        font-family: 'ProximaNova-Regular';
+        .dropdownOverlay {
+            width: 242px;
+            left: 0px;
+            background: #ffffff;
+            height: 30px;
+            position: absolute;
+            margin-top: 13px;
+            border-left: 1px solid #dddfe1;
+            border-right: 1px solid #dddfe1;
+            @media(max-width:767px) {
+                left: -1px;
+                margin-top: 16px;
+                height: 25px;
+            }
+        }
+        .dropdownhidden {
+            display:none;
+        }
+    }
+    .dropDownWrapper {
+        box-shadow: 0 2px 1px $drop-down-shadow;
+        @include border(1px,solid,$drop-down-border-color,30px);
+        background-color: $white-background;
+        margin-left:0;
+        min-width: 175px;
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        max-width: 400px;
+        height: 40px;
+        padding: 8px 0px 8px 26px;
+        z-index: 5;
+        @media(max-width: 767px) {
+            margin-left: -1px;
+        }
+        .dropDownItem{
+            color: #2c2c2c;
+            font-size: 18px;
+            font-weight: 700;
+            display: inline-block;
+            width: 80%;
+            height: 100%;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            vertical-align: top;
+            @media(max-width: $tablets) {
+                font-size: 16px;
+            }
+        }
+        .select {
+            background-color: $white-background;
+            position: absolute;
+            top: 100%;
+            z-index: 5;
+            margin: 0;
+            padding: 0;
+            left: 0;
+            right: 0;
+            input {
+                padding: 0;
+            }
+        }
+        .updownArrow {
+            background: url('#{$icons}/drop-down-arrow.png') no-repeat center;
+            display: inline-block;
+            height: 100%;
+            padding: 5px;
+            padding-right: 10px;
+        }
+        .closetab {
+            background: url('/assets/images/closeCard.png') no-repeat center;
+            display: inline-block;
+            height: 100%;
+            padding: 5px;
+            padding-right: 10px;
+            background-size: 10px 10px;
+        }
+    }
+    .sscWrapper {
+        width: 292px;
+    }
+}
+
+.searchBar{
+    height: 40px;
+    border-radius: 6px;
+    background-color:#ebe9e9;
+    outline: none;
+    position: relative;
+    background-image: url(/assets/icons/searchdrop.png);
+    background-position: 10px 10px;
+    padding: 12px 20px 12px 33px;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    font-size: 16px;
+}
+
+.dropDownlistWrapper{
+    -webkit-box-shadow: 0px 1px 1px rgba(0, 0, 0, .5);
+    -moz-box-shadow: 0px 1px 1px rgba(0, 0, 0, .5);
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, .5);
+    margin-left: 1px;
+    z-index: 6;
+    position: absolute;
+    cursor: pointer;
+    background-color: #fffcfc;
+    width: 239px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    @media(max-width:767px) {
+        margin-left:0;
+    }
+    @media(max-width:1007px) {
+        z-index: 10;
+    }
+    .searchWrapper{
+        padding-top: 12px;
+    }
+    input{
+        border:1px solid #ccc;
+        font-size: 14px;
+        -webkit-appearance: none;
+    }
+}
+
+.dropDownUl{
+
+    background-color: $white-background;
+    margin:0;
+    padding-left: 0px;
+    height: 230px;
+    z-index: 5;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    @media(max-width:767px) {
+        padding: 12px 18px;
+        height: 150px;
+    }
+}

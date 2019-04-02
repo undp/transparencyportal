@@ -1,0 +1,28 @@
+<script>
+        var administrative = 'http://undptr.qburst.build/assets/icons/map-topo-icons/administrative.svg';
+        var populated = 'http://undptr.qburst.build/assets/icons/map-topo-icons/populated.svg';
+        var otherTopo = 'http://undptr.qburst.build/assets/icons/map-topo-icons/other-topo.svg';
+        var structure = 'http://undptr.qburst.build/assets/icons/map-topo-icons/structure.svg';
+        var other = 'http://undptr.qburst.build/assets/icons/map-topo-icons/other.png';
+        var unknownTheme = 'http://undptr.qburst.build/assets/icons/map-topo-icons/climate.png';
+        var map_key = 'pk.eyJ1IjoiZ2VldGh1ZGFzIiwiYSI6ImNqZm1qcHpnMDBmZmczM280dm9zdzR5bjcifQ.zRivs5JkUZzTzUU_OpYXPw';
+        var None = "";
+        function numberToCurrencyFormatter(input, decimals) {
+            var exp, rounded, suffixes = ['K', 'M', 'B', 'T', 'P', 'E'], prefix = '$';
+            if( input < 0 ) {
+            prefix = '-$'
+            }
+            input = Math.abs(input);
+            if (window.isNaN(input)) {
+            return null;
+            }
+            if (input < 1000) {
+            return prefix + input;
+            }
+            exp = Math.floor(Math.log(input) / Math.log(1000));
+            if (exp > 2) exp = 2;
+            rounded = (input / Math.pow(1000, exp)).toFixed(decimals);
+            return (prefix + rounded.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + suffixes[exp - 1]);
+        }
+
+</script>

@@ -1,0 +1,17 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+
+.container{
+    max-width: 1200px;
+    padding:0;
+    margin-top:15px;
+    @media(min-width: $desktop) {
+        padding:0;
+    }
+}
+
+
+
+
+
+

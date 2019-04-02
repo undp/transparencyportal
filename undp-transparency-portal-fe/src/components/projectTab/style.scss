@@ -1,0 +1,225 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+
+.tabSwitch {
+    padding-top: 60px;
+}
+.list {
+    width: 100%;
+    max-width: 900px;
+    font-size: 0;
+    display: table;
+    margin: 0 auto;
+    li {
+        font-size: $text-small;
+        display: table-cell;
+        button {
+            @include border(2px, solid, $tabs-border, 44px);
+            background-color: $white-background;
+            text-transform: uppercase;
+            outline: none;
+            font-weight: $bold;
+            color: $black-color;
+            font-weight: $medium;
+            box-shadow: 0 12px 76px $tabs-shadow;
+            cursor: pointer;
+            text-align: center;
+            display: inline-block;
+            padding: 15px 40px;
+            text-decoration: none;
+            overflow: visible;
+            &:hover, &:focus {
+                @include border(2px, solid,$active-color, 44px);
+            }
+            &.active {
+                color: $white-background;
+                background-color: $active-color;
+                font-weight: $bold;
+                border: none;
+                position: relative;
+                &::after {
+                    width: 0;
+                    content: '';
+                    height: 0;
+                    position: absolute;
+                    bottom: -45px;
+                    left: 50%;
+                    border-bottom: 10px solid $active-color;
+                    border-right: 10px solid transparent;
+                    border-left: 10px solid transparent;
+                }
+            }
+        }
+    }
+}
+
+.POWrapper,
+.accordionItem {
+    position: relative;
+    .tooltipPO {
+        visibility: hidden;
+        position:absolute;
+        border: 1px solid #ccc;
+        padding: 4px;
+        font-size: 12px;
+        color:#3a3a3a;
+        background: #fff;
+        border-radius: 8px;
+        text-align: left;
+        z-index: 1;
+        font-weight: normal;
+        top: 64px;
+        width: 800px;
+        // left: 0;
+        right:67px;
+        line-height: 1.2;
+        @media (max-width:767px) {
+           width:100%;
+           right: 0;
+           top: 66px;
+        }
+        @media (max-width:991px) and (min-width:768px){
+            width: 700px;
+            right: 25px;
+         }
+        &:before {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            position: absolute;
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            border-bottom: 7px solid #c6c6c4;
+            right: 15%;
+            top: -8px;
+            @media (max-width:767px) {
+                right:50%;
+                top: -7px;
+            }
+            
+        }
+        &:after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            position: absolute;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 6px solid white;
+            right: 15.2%;
+            top: -6px;
+            @media (max-width:767px) {
+                right:50.3%;
+                top: -6px;
+            }
+        }
+    }
+    &:hover {
+        .tooltipPO {
+            visibility: visible;
+        }
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .mobile {
+        display: block;
+    }
+    .desktop {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .desktop {
+        display: block;
+    }
+    .mobile {
+        display: none;
+    }
+}
+.accordionScroll {
+    @media(max-width:767px) {
+    overflow: hidden;
+    height: 100%;
+    position: fixed;
+    }
+}
+.mobile {
+    .accordion {
+        padding: 10px;
+        .accordionItem {
+            &.accordionPosition {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: $white-background;
+                z-index: 3;
+            }
+        }
+        .scrollWrapper {
+            height:calc(100% - 30px);
+        }
+        .accordionContent {
+            height:calc(100% - 46px);
+        }
+        .accordionHead {
+            font-size: 18px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+        .accordionTitle {
+            color: #000;
+            padding-left: 8px;
+            margin-bottom: 8px;
+            box-shadow: 0 12px 76px rgba(7, 61, 125, 0.1);
+            border: 2px solid #cbcbcb;
+            background-color: #ffffff;
+            position: relative;
+            cursor: pointer;
+            &:after {
+                display: block;
+                content: '';
+                position: absolute;
+                top: 46%;
+                left: 90%;
+                right: 0;
+                bottom: 0;
+                background: url('#{$icons}/accordion-arrow.png') no-repeat;
+            }
+            &.accordionSelected {
+                background-color: #1c81c2;
+                color: #fff;
+                padding-left: 8px;
+                margin-bottom: 8px;
+                border: 1px solid transparent;
+                position: relative;
+                &:after {
+                    display: block;
+                    content: '';
+                    position: absolute;
+                    top: 46%;
+                    left: 90%;
+                    right: 0;
+                    bottom: 0;
+                    background: url('#{$icons}/uparrow.png') no-repeat;
+                }
+            }
+        }
+        .filterIcon,
+        .mapIcon {
+            padding: 10px;
+        }
+        .embedSection {
+            text-align: right;
+        }
+        .exportSection {
+            float: right;
+        }
+    }
+}

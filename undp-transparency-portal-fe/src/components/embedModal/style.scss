@@ -1,0 +1,264 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+
+.modal{
+    width: 70%;
+    margin: 0 auto;
+    top: 90px;
+    z-index: 999;
+    background-color:white;
+    border:1px solid rgba(181, 181, 181, 1);
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.34901);
+}
+
+.outerContainer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 999;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    -webkit-transition: opacity 0.15s linear;
+    -moz-transition: opacity 0.15s linear;
+    -o-transition: opacity 0.15s linear;
+    transition: opacity 0.15s linear;
+}
+
+.modalContainer {
+    max-width: 70%;
+    min-width: 70%;
+    margin: 0px 15px 0 15px;
+    background-color: #ffffff;
+    height:90%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    border-radius: 7px;
+
+    @media (max-width: 991px) {
+        font-size: 18px;
+        max-width: 90%;
+        min-width: 90%;
+        margin: 0px auto;
+    }
+
+    .srcollBarWrapper{
+        height: calc(100% - 136px);
+        width: 100%;
+        padding:0 20px;
+    }
+    .headerWrapper {
+        height: 50px;
+        background-color: #F6F6F6;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        position: relative;
+        .resultsHeader {
+            color: #212121;
+            height: 100%;
+            padding: 12px 0;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+            text-align: center;
+            display: inline-block;
+            width: 100%;
+            @media (min-width: $tablets) {
+                font-size: 24px;
+                
+            }
+        }
+        .closeBtn {
+            position: absolute;
+            right: 0;
+            top: 12px;
+            right: 10px;
+            text-align: right;
+            background: url("#{$icons}/closeIcon.png") no-repeat;
+            margin: 0;
+            width: 17px;
+            height: 15px;
+            display: inline-block;
+            background-size: 15px 15px;
+            padding: 0;
+            border: none;
+            cursor: pointer;
+            border: 0;
+            -webkit-appearance: none;
+            width: 30px;
+            display: inline-block;
+            height: 24px;
+            cursor: pointer;
+            background: url(/assets/icons/closeBtn.svg) no-repeat 50%;
+        }
+    }
+}
+
+.selectionText{
+    display: table-cell;
+    vertical-align: middle;
+    text-align: left;
+    padding-bottom: 5px;
+    color: #212121;
+    font-size: 14px;
+    font-weight: 600;
+    @media (max-width:767px) {
+        font-size: 12px;
+        padding-bottom: 0;
+        line-height: 1;
+    }
+}
+ .modalContent {
+    height:100%;
+    .innerContentWrapper {
+        height: 100%;
+        @media(max-width:767px) {
+            height: calc(100% - 12px);
+        }
+    }
+    .selctionListWrapper{
+        margin-top:10px;
+        background-color: #f6f6f6;
+        border-radius: 6px;
+        display:block;
+        width:100%;
+        height:auto;
+        padding: 10px;
+        @media(max-width:767px) {
+            margin-top: 5px;
+            padding:5px;
+        }
+        @media (min-width: $desktop) {
+            display: inline-block;
+            height: auto;
+        }
+        .list{
+            display: inline-block;
+            line-height: 1;
+            margin-right: 10px;
+            input{
+                &:checked{
+                    margin:0;
+                }
+            }
+            label{
+                font-weight: 400;
+                margin-left: 5px;
+                display:inline-block;
+                font-size: 12px;
+                margin-bottom: 0;
+                @media (min-width: $tablets) {
+                    display:inline-block;
+                    font-size:14px;
+                }
+            }
+        }
+    }
+}
+
+
+.embedUrlBox{
+    border-radius: 6px;
+    height: 78px;
+    border: 2px solid #e7e7e7;
+    background-color: #ffffff;
+    margin: 0 20px;
+    padding: 0 10px 10px;
+    @media (max-width:767px) {
+        height: 70px;
+    }
+    &::after{
+        clear: both;
+        content:'';
+        display: block;
+    }
+
+    .copyImage{
+        display: inline-block;
+        width:33px;
+        height: 33px;
+        background: url('#{$icons}/copyIcon.png')  no-repeat center;
+    }
+    .embedUrl{
+        color: #666;
+        border: none;
+        outline: none;
+        padding: 2px;
+        display: block;
+        width: 100%;
+        height: auto;
+        overflow-x: hidden;
+        float: right;
+        text-decoration: none;
+        white-space: nowrap;
+        font-size:14px;
+        @media (max-width: 767px) {
+            display: block;
+            word-break: break-all;
+
+        }
+    }
+    .copyWrapper{
+        text-align: right;
+        display: table;
+        float:right;
+        padding-right: 10px;
+        cursor: pointer;
+
+        &::after{
+            clear: both;
+            content:'';
+            display: block;
+        }
+        .copyImage{
+            display: table-cell;
+
+        }
+        .copyLabel{
+            display: table-cell;
+            color: #1c81c2;
+            vertical-align: middle;
+            font-weight:600;
+            font-size: 12px;
+        }
+    }
+}
+
+.childrenWrapper{
+    height:calc(100% - 98px);
+    margin:10px 0;
+    border: 2px solid #e7e7e7;
+    padding: 5px;
+    @media (max-width:767px) {
+        margin:5px 0;
+    }
+    .noOptionsMsg{
+        text-align: center;
+        span{
+            padding-left:5px;
+            color: #666;
+            font-weight:600;
+            font-size: 14px;
+        }
+    }
+}
+
+.copyOuterWrapper{
+    display: table;
+    width: 100%;
+}
+
+.iframeWrapper {
+    width: 100%;
+    height: 100%;
+}
+@supports (-webkit-overflow-scrolling: touch) {
+    .iframeWrapper {
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+  }

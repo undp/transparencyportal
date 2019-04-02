@@ -1,0 +1,218 @@
+@import "../../style/helpers/_variables";
+@import "../../style/helpers/_mixins";
+.outerContainer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index:12;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    -webkit-transition: opacity 0.15s linear;
+    -moz-transition: opacity 0.15s linear;
+    -o-transition: opacity 0.15s linear;
+    transition: opacity 0.15s linear;
+    .innerContainer {
+        max-width: 70%;
+        min-width: 70%;
+        margin: 0 15px;
+        background-color: #fff;
+        padding-bottom: 20px;
+        height: 80%;
+        position: absolute;
+        top: 50%;
+        display: block;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        border-radius: 15px;
+        font-size: 16px;
+        @media (max-width: 991px) {
+            font-size: 18px;
+            max-width: 80%;
+            min-width: 80%;
+            margin: 0px auto;
+        }
+        .headerWrapper {
+            height: 50px;
+            background-color: #F6F6F6;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            position: relative;
+            .resultsHeader {
+                color: #212121;
+                height: 100%;
+                padding: 12px 0;
+                font-size: 18px;
+                font-weight: 600;
+                margin: 0;
+                text-align: center;
+                display: inline-block;
+                width: 100%;
+                @media (min-width: $tablets) {
+                    font-size: 24px;
+                }
+            }
+            .closeBtn {
+                position: absolute;
+                right: 0;
+                top: 12px;
+                right: 10px;
+                text-align: right;
+                background: url("#{$icons}/closeIcon.png") no-repeat;
+                margin: 0;
+                width: 17px;
+                height: 15px;
+                display: inline-block;
+                background-size: 15px 15px;
+                padding: 0;
+                border: none;
+                cursor: pointer;
+                border: 0;
+                -webkit-appearance: none;
+                width: 30px;
+                display: inline-block;
+                height: 24px;
+                cursor: pointer;
+                background: url(/assets/icons/closeBtn.svg) no-repeat 50%;
+            }
+        }
+        .modalContent {
+            height: calc(100% - 50px);
+            padding: 15px;
+            .containerColumn{
+                display: block;
+                &.previewSection {
+                 margin-top: 10px;
+                 height: calc(100% - 40px);
+                 @media (max-width:767px) {
+                     height: calc(100% - 80px);
+                 }
+                 .noPreviewWrapper {
+                     display: table;
+                     background-color:#666666;
+                     width: 100%;
+                     height: 100%;
+                     span{
+                         display: table-cell;
+                         vertical-align: middle;
+                         text-align: center;
+                         color: #fff;
+                         font-size: 22px;
+                     }
+                 }
+                  }
+                &.optionSection {
+                 height: 40px;
+                 vertical-align: top;
+                 @media (max-width:767px) {
+                    height: auto;
+                }
+                 .optionList {
+                     &::after{
+                         content: '';
+                         display: block;
+                         clear: both;
+                     }
+                     .optionContainer {
+                         display: inline-block;
+                         position: relative;
+                         margin-right: 10px;
+                         webkit-user-select: none;
+                         font-size: 20px;
+                         -moz-user-select: none;
+                         -ms-user-select: none;
+                         user-select: none;
+                         padding-left: 31px;
+                         @media (max-width:767px) {
+                             font-size: 16px;
+                             display: block;
+                             margin-bottom: 4px;
+                         }
+                         input {
+                             position: absolute;
+                             opacity: 0;
+                             cursor: pointer;
+                             left: 0;
+                             right: 0;
+                             &:checked ~ .customRadioButton {
+                                 background-color: #fff;
+                             }
+                             &:checked ~ .customRadioButton::after {
+                                 display: block;
+                             }
+                         }
+                         .customRadioButton {
+                             position: absolute;
+                             top: 0;
+                             left: 0;
+                             cursor: pointer;
+                             height: 25px;
+                             border: 1px solid #666666;
+                             width: 25px;
+                             border-radius: 50%;
+                             @media (max-width:767px) {
+                                width: 16px;
+                                height: 16px;
+                            }
+                             &::after {
+                                 content: "";
+                                 position: absolute;
+                                 display: none;
+                                 top: 6px;
+                                 left: 6px;
+                                 width: 11px;
+                                 height: 11px;
+                                 border-radius: 50%;
+                                 background: #666666;
+                                 @media (max-width:767px) {
+                                    top: 4px;
+                                    left: 4px;
+                                    width: 6px;
+                                    height: 6px;
+                                 }
+                             }
+                         }
+                         .optionDescription {
+                             display: block;
+                             font-size: 18px;
+                             padding-top: 10px;
+                         }
+                     }
+                     .exportButton {
+                         color: #fff;
+                         float: right;
+                         font-weight: 700;
+                         font-size: 16px;
+                         background-color: #1c81c2;
+                         border-radius: 40px;
+                         padding: 12px 29px;
+                         margin-top: 0;
+                         cursor: pointer;
+                         position: relative;
+                         display: inline-block;
+                         outline: none;
+                         border: none;
+                         @media (max-width:767px) {
+                            float: none;
+                            padding: 10px;
+                         }
+                     }
+                 }
+                }
+            }
+        }
+      
+    }
+}
+.iframeWrapper {
+    width: 100%;
+    height: 100%;
+}
+@supports (-webkit-overflow-scrolling: touch) {
+    .iframeWrapper {
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+  }
