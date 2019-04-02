@@ -1,0 +1,462 @@
+[
+
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 1,
+    "fields": {
+      "sdg_code": 1,
+      "count": 1,
+      "color": "a01720"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 2,
+    "fields": {
+      "sdg_code": 1,
+      "count": 2,
+      "color": "ea435b"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 3,
+    "fields": {
+      "sdg_code": 1,
+      "count": 3,
+      "color": "ef808d"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 4,
+    "fields": {
+      "sdg_code": 2,
+      "count": 1,
+      "color": "a77d2e"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 5,
+    "fields": {
+      "sdg_code": 2,
+      "count": 2,
+      "color": "ca9223"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 6,
+    "fields": {
+      "sdg_code": 2,
+      "count": 3,
+      "color": "daa946"
+    }
+  },
+    {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 7,
+    "fields": {
+      "sdg_code": 3,
+      "count": 1,
+      "color": "376b25"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 8,
+    "fields": {
+      "sdg_code": 3,
+      "count": 2,
+      "color": "588f49"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 9,
+    "fields": {
+      "sdg_code": 3,
+      "count": 3,
+      "color": "59a948"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 10,
+    "fields": {
+      "sdg_code": 4,
+      "count": 1,
+      "color": "88242d"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 11,
+    "fields": {
+      "sdg_code": 4,
+      "count": 2,
+      "color": "a82535"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 12,
+    "fields": {
+      "sdg_code": 4,
+      "count": 3,
+      "color": "bb4f5c"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 13,
+    "fields": {
+      "sdg_code": 5,
+      "count": 1,
+      "color": "e1351f"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 14,
+    "fields": {
+      "sdg_code": 5,
+      "count": 2,
+      "color": "ff543e"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 15,
+    "fields": {
+      "sdg_code": 5,
+      "count": 3,
+      "color": "fc806f"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 16,
+    "fields": {
+      "sdg_code": 6,
+      "count": 1,
+      "color":"1198b9"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 17,
+    "fields": {
+      "sdg_code": 6,
+      "count": 2,
+      "color": "17bce4"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 18,
+    "fields": {
+      "sdg_code": 6,
+      "count": 3,
+      "color": "5fdffd"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 19,
+    "fields": {
+      "sdg_code": 7,
+      "count": 1,
+      "color": "fdba00"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 20,
+    "fields": {
+      "sdg_code": 7,
+      "count": 2,
+      "color": "ffc81e"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 21,
+    "fields": {
+      "sdg_code": 7,
+      "count": 3,
+      "color": "ffd414"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 22,
+    "fields": {
+      "sdg_code": 8,
+      "count": 1,
+      "color": "ff719b"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 23,
+    "fields": {
+      "sdg_code": 8,
+      "count": 2,
+      "color": "a53557"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 24,
+    "fields": {
+      "sdg_code": 8,
+      "count": 3,
+      "color": "8b2141"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 25,
+    "fields": {
+      "sdg_code": 9,
+      "count": 1,
+      "color": "ea4900"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 26,
+    "fields": {
+      "sdg_code": 9,
+      "count": 2,
+      "color": "e86d36"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 27,
+    "fields": {
+      "sdg_code": 9,
+      "count": 3,
+      "color": "ff8f5d"
+    }
+  },
+    {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 28,
+    "fields": {
+      "sdg_code": 10,
+      "count": 1,
+      "color": "cc1c65"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 29,
+    "fields": {
+      "sdg_code": 10,
+      "count": 2,
+      "color": "af3869"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 30,
+    "fields": {
+      "sdg_code": 10,
+      "count": 3,
+      "color": "d1457f"
+    }
+  },
+   {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 31,
+    "fields": {
+      "sdg_code": 11,
+      "count": 1,
+      "color": "bd6c07"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 32,
+    "fields": {
+      "sdg_code": 11,
+      "count": 2,
+      "color": "d18b31"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 33,
+    "fields": {
+      "sdg_code": 11,
+      "count": 3,
+      "color": "e28d1e"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 37,
+    "fields": {
+      "sdg_code": 12,
+      "count": 1,
+      "color": "c5820e"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 38,
+    "fields": {
+      "sdg_code": 12,
+      "count": 2,
+      "color": "d4931e"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 39,
+    "fields": {
+      "sdg_code": 12,
+      "count": 3,
+      "color": "eca21d"
+    }
+  },
+    {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 40,
+    "fields": {
+      "sdg_code": 13,
+      "count": 1,
+      "color": "24772d"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 41,
+    "fields": {
+      "sdg_code": 13,
+      "count": 2,
+      "color": "3a8441"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 42,
+    "fields": {
+      "sdg_code": 13,
+      "count": 3,
+      "color": "429a4a"
+    }
+  },
+    {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 43,
+    "fields": {
+      "sdg_code": 14,
+      "count": 1,
+      "color": "005984"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 44,
+    "fields": {
+      "sdg_code": 14,
+      "count": 2,
+      "color": "0687c1"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 45,
+    "fields": {
+      "sdg_code": 14,
+      "count": 3,
+      "color": "2499d0"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 46,
+    "fields": {
+      "sdg_code": 15,
+      "count": 1,
+      "color": "3d861e"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 47,
+    "fields": {
+      "sdg_code": 15,
+      "count": 2,
+      "color": "57bf28"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 48,
+    "fields": {
+      "sdg_code": 15,
+      "count": 3,
+      "color": "519c33"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 49,
+    "fields": {
+      "sdg_code": 16,
+      "count": 1,
+      "color": "075882"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 50,
+    "fields": {
+      "sdg_code": 16,
+      "count": 2,
+      "color": "2477a5"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 51,
+    "fields": {
+      "sdg_code": 16,
+      "count": 3,
+      "color": "147cb1"
+    }
+  },
+   {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 52,
+    "fields": {
+      "sdg_code": 17,
+      "count": 1,
+      "color": "04324f"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 53,
+    "fields": {
+      "sdg_code": 17,
+      "count": 2,
+      "color": "115588"
+    }
+  },
+  {
+    "model": "undp_outputs.sdgchartcolor",
+    "pk": 54,
+    "fields": {
+      "sdg_code": 17,
+      "count": 3,
+      "color": "2b6fa0"
+    }
+  }
+]

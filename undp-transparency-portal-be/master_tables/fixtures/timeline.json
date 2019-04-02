@@ -1,0 +1,59 @@
+[
+
+  {
+    "model": "master_tables.projecttimeline",
+    "pk": 1,
+    "fields": {
+      "is_active": true,
+      "year": 2012
+    }
+  },
+  {
+    "model": "master_tables.projecttimeline",
+    "pk": 2,
+    "fields": {
+      "is_active": true,
+      "year": 2013
+    }
+  },
+  {
+    "model": "master_tables.projecttimeline",
+    "pk": 3,
+    "fields": {
+      "is_active": true,
+      "year": 2014
+    }
+  },
+  {
+    "model": "master_tables.projecttimeline",
+    "pk": 4,
+    "fields": {
+      "is_active": true,
+      "year": 2015
+    }
+  },
+  {
+    "model": "master_tables.projecttimeline",
+    "pk": 5,
+    "fields": {
+      "is_active": true,
+      "year": 2016
+    }
+  },
+  {
+    "model": "master_tables.projecttimeline",
+    "pk": 6,
+    "fields": {
+      "is_active": true,
+      "year": 2017
+    }
+  },
+  {
+    "model": "master_tables.projecttimeline",
+    "pk": 7,
+    "fields": {
+      "is_active": false,
+      "year": 2018
+    }
+  }
+]

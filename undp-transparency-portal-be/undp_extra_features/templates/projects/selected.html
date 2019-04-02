@@ -1,0 +1,771 @@
+{% load custom_filters %}
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+        crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" crossorigin=""
+    />
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
+        crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js" crossorigin=""></script>
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    ul,
+    li {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .sectionWrapper {
+        /* margin-top: 30px; */
+        margin: 20px auto;
+        max-width: 1200px;
+    }
+
+    .sectionWrapper .sectionHeader {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        width: 100%;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .sectionWrapper .filterWrapper {
+        display: table;
+        width: 100%;
+        padding: 20px 0;
+        margin: 0;
+    }
+
+    .sectionWrapper .filterWrapper .filterItem {
+        display: inline-block;
+        /* float: left; */
+        width: 33.3333%;
+    }
+
+    .sectionWrapper .themesWrapper {
+        width: 100%;
+        height: auto;
+        border: 1px solid #666666;
+        background-color: #fff;
+        padding: 16px;
+        margin-bottom: 10px;
+    }
+
+    .sectionWrapper .themesWrapper .budgetDigit {
+        font-size: 20px;
+        vertical-align: top;
+        padding-left: 10px;
+    }
+
+    .themesName {
+        width: 100%;
+        text-align: center;
+        display: block;
+        font-size: 20px;
+        padding-bottom: 10px;
+    }
+
+    .sectionWrapper .year {
+        text-align: center;
+        display: block;
+    }
+
+    .sectionWrapper .themesWrapper .themesName {
+        width: 100%;
+        text-align: left;
+        display: block;
+        font-size: 20px;
+        padding-bottom: 10px;
+    }
+
+    .sectionWrapper .themesWrapper .aggregateWrapper {
+        font-weight: 600;
+        border-radius: 17px;
+    }
+
+    .sectionWrapper .themesWrapper .aggregateWrapper span {
+        width: 33.33%;
+        display: inline-block;
+    }
+
+    .sectionWrapper .themesWrapper .themesList {
+        width: 100%;
+        display: table;
+    }
+
+    .sectionWrapper .aggregateWrapper .summary {
+        display: table-cell;
+    }
+
+    .sectionWrapper .themesWrapper .themesList .themesBudget {
+        width: 50%;
+        display: table-cell;
+    }
+
+    .sectionWrapper .filterWrapper .filterItem:nth-of-type(1) {
+        text-align: left;
+    }
+
+    .sectionWrapper .filterWrapper .filterItem:nth-of-type(2) {
+        text-align: center;
+    }
+
+    .sectionWrapper .filterWrapper .filterItem:nth-of-type(3) {
+        text-align: right;
+    }
+
+    .sectionWrapper .filterWrapper .filterValue {
+        display: block;
+        font-size: 18px;
+        font-weight: 600;
+        margin-top: 5px;
+    }
+
+    .sectionWrapper .contentWrapper {
+        display: table;
+        width: 100%;
+    }
+
+    .sectionWrapper .themeMap {
+        display: table-cell;
+        width: 40%;
+        height: 200px;
+        border: 2px solid #e7e7e7;
+        /* background-color: #dcdcdc; */
+    }
+
+    .sectionWrapper .themeSummary {
+        display: table-cell;
+        width: 40%;
+        height: 200px;
+        background-color: #dcdcdc;
+        padding: 20px;
+    }
+
+    .sectionWrapper .themeSummary span {
+        display: block;
+    }
+
+    .aggregateWrapper {
+        background-color: #F2F2F2;
+        padding: 20px;
+        display: table;
+        width: 100%;
+    }
+
+    .aggregateWrapper .aggregateHeader {
+        font-size: 20px;
+        font-weight: 600;
+        display: block;
+    }
+
+    .aggregateWrapper .aggregateSubTitle {
+        font-size: 18px;
+        font-weight: 600;
+        display: table-cell;
+        width: 33.33%;
+        text-align: center;
+    }
+
+    /*Chart Styles */
+
+    .sectionWrapper.chartWrapper {
+        display: table;
+        width: 100%;
+    }
+
+    .sectionWrapper.chartWrapper .chartSmall {
+        width: 49%;
+        vertical-align: top;
+        text-align: center;
+        background-color: #fff;
+        display: inline-block;
+        border: 2px solid #cbcbcb;
+    }
+
+    .sectionWrapper.chartWrapper .chartSmall:nth-child(1) {
+        width: calc(49% - 10px);
+        margin-right: 10px;
+    }
+
+    .sectionWrapper.chartWrapper .chartSmall .chartHead {
+        width: 100%;
+        display: block;
+        box-shadow: 0 2px 7px rgba(7, 61, 125, 0.18);
+        height: 70px;
+        font-size: 18px;
+        font-weight: 600;
+        padding: 23px 35px;
+        background-color: white;
+    }
+
+    .legend {
+        margin: 0 auto;
+        display: table;
+    }
+
+    @media(max-width:767px) {
+        .legend {
+            margin-bottom: 12px;
+        }
+    }
+
+    .textLabel {
+        position: absolute;
+        font-size: 9px;
+        left: -1px;
+        pointer-events: none;
+        font-weight: normal;
+        max-width: 100%;
+        min-width: 100%;
+        bottom: 54%;
+        text-align: center;
+    }
+
+    .exportLegend {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        width: 50%;
+    }
+
+    .legendWrapper {
+        padding: 0;
+        text-align: left;
+        line-height: 20px;
+    }
+
+    .legendWrapper.modality-contribution-legend {
+        display: inline-block;
+        background: rgb(244, 244, 244);
+        padding: 10px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: rgb(204, 204, 204);
+    }
+
+    .legendWrapper .legendItem {
+        /* display: table; */
+    }
+
+    .legendPercentage {
+        display: inline-block;
+        font-size: 11px;
+    }
+
+    .legendDescription {
+        display: inline-block;
+        margin-right: 10px;
+        font-size: 11px;
+    }
+
+    .legendColor {
+        width: 8px;
+        height: 8px;
+        margin-right: 10px;
+        display: inline-block;
+    }
+
+    .perc,
+    .textField {
+        display: inline-block;
+        width: 100%;
+        font-weight: bold;
+    }
+
+    .perc {
+        color: #000000;
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+
+    @media(min-width: 768px) {
+        .perc {
+            font-size: 22px;
+        }
+    }
+
+    .dollor {
+        color: #666;
+        font-weight: 600;
+        font-size: 12px;
+    }
+
+    .donut {
+        display: inline-block;
+        position: relative;
+        width: 100%;
+        vertical-align: top;
+        overflow: hidden;
+    }
+
+    .imageWrapper {
+        display: block;
+    }
+
+    .sdg_image {
+        width: 30px;
+        height: 30px;
+        margin-bottom: 3px;
+    }
+
+    @media(min-width: 992px) {
+        .sdg_image {
+            width: 52px;
+            height: 52px;
+            margin-bottom: 10px;
+        }
+    }
+
+    @media screen and (-ms-high-contrast: active),
+    (-ms-high-contrast: none) {
+        .svgIe {
+            width: 400px;
+            height: 456px;
+        }
+    }
+
+    /* Chart Styles Ends */
+
+    .donorsList .donorItem {
+        padding: 20px;
+        border: 1px solid #666666;
+        margin-top: 15px;
+        display: table;
+        width: 100%;
+        page-break-inside: avoid;
+    }
+
+    .donorsList .donorItem .donorTitle {
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .donorsList .donorItem .aggregateWrapper {
+        font-weight: 600;
+        border-radius: 17px;
+    }
+
+    .donorsList .donorItem .aggregateWrapper span {
+        display: table-cell;
+        width: 33.333%;
+        text-align: center;
+    }
+
+    .donorsList .donorItem .column {
+        display: table-cell;
+        width: 50%;
+    }
+
+    .tableHeading {
+        font-weight: 700;
+        font-size: 20px;
+    }
+
+    .projectTitle {
+        font-size: 22px;
+        font-weight: 700;
+        width: 60%;
+        padding: 10px;
+        margin: 0 auto
+    }
+
+
+/* Project Table   */
+
+    .projectTable {
+        width: 100%;
+        margin: 25px 0;
+        border-collapse: collapse;
+        border: 1px solid #666666;
+    }
+
+    .projectTable th,
+    .projectTable td,
+    .projectTable tr {
+        page-break-inside: avoid;
+    }
+
+    .projectTable th,
+    .projectTable td {
+        border: 1px solid #666666;
+        padding: 15px;
+        font-size: 14px;
+    }
+
+    .projectTable th {
+        background-color: #CBCBCB;
+        font-size: 20px;
+    }
+
+    .projectTable td {
+        font-size: 18px;
+    }
+    .projectDescription {
+        width: 100%;
+        line-height: 1.5;
+        font-size: 18px;
+    }
+
+    .projectSection {
+
+        box-sizing: border-box;
+
+        vertical-align: top;
+    }
+
+    .implementingOrganisation {
+        display: inline-block;
+        width: 39%;
+    }
+
+    .projectTimeline {
+        display: inline-block;
+        width: 60%;
+    }
+
+    .timelineSection {
+        width: 100%;
+        height: 32px;
+        border: 1px solid #ddd;
+        background-color: #ededed;
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .timeline {
+        height: 30px;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+        background-color: #65a51e;
+    }
+
+    .dateWrapper {
+        width: 100%;
+        display: inline-block;
+        margin-top: 8px;
+        padding-bottom: 20px;
+    }
+
+    .dateWrapper span {
+        color: #4a4b4c;
+        font-size: 14px;
+    }
+
+    .dateWrapper span:last-child {
+        display: inline-block;
+        width: 50%;
+        text-align: right;
+    }
+
+    .dateWrapper span:first-child {
+        display: inline-block;
+        width: 49%;
+    }
+
+    .label_line {
+        background-color: #4a4b4c;
+        opacity: .5;
+        width: 1px;
+        height: 7px;
+        float: right;
+    }
+
+    .barstep {
+        position: absolute;
+        bottom: 0;
+        margin-left: 0;
+        z-index: 1;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    .timelineWrapper {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .currency {
+        text-align: right;
+    }
+
+    .mapCluster{
+        width: 40px;
+        height: 40px;
+        display: inline-block;
+        background-color: rgba(110,204,57,.6);
+        text-align: center;
+        border-radius: 20px;
+        font: 12px Helvetica Neue,Arial,Helvetica,sans-serif;
+    }
+
+    .mapCluster div {
+        padding-top: 7px;
+        width: 30px;
+        height: 30px;
+        margin-left: 5px;
+        margin-top: 5px;
+        text-align: center;
+        border-radius: 15px;
+        font: 12px Helvetica Neue,Arial,Helvetica,sans-serif;
+        background-color: rgba(110,204,57,.6);
+    }
+</style>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+
+<body>
+    {% include "header.html" %}
+    <section class="sectionWrapper">
+        <p class="projectDescription">
+            {{data.project.description}}
+        </p>
+    </section>
+    <section class="sectionWrapper">
+        <div class="timelineWrapper">
+            <div class="projectSection implementingOrganisation">
+                <p class="tableHeading">Implementing Organisation</p>
+                <span style="font-size: 18px;">{{data.project.organisation.org_name}}</span>
+            </div>
+            <div class="projectSection projectTimeline">
+                <p class="tableHeading">Project Timeline</p>
+                <div class="timelineSection">
+                    <div class="timeline" style="width:{{data.time_line.timeline_completed}}%;">
+                        <div class="barstep" style="left:0%">
+                            <div class="label_line"></div>
+                        </div>
+                        <div class="barstep" style="left:33.33%">
+                            <div class="label_line"></div>
+                        </div>
+                        <div class="barstep" style="left:66.66%">
+                            <div class="label_line"></div>
+                        </div>
+                        <div class="barstep" style="left:100%">
+                            <div class="label_line"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dateWrapper">
+                    <span>{{data.time_line.start_date}}</span>
+                    <span>{{data.time_line.end_date}}</span>
+                </div>
+
+            </div>
+        </div>
+        <div>
+            <div style="width:876px;height:300px" id="export-map"></div>
+        </div>
+        {% if data.budget_utilization|length > 0 %}
+        <p class="tableHeading">Budget Utilization</p>
+        <table class="projectTable">
+                <tr>
+                    <th>Year</th>
+                    <th>Budget</th>
+                    <th  style="width:435px;">Expense</th>
+                </tr>
+                {% for utitlization in data.budget_utilization|slice:":5"%}
+                <tr>
+                    <td>{{utitlization.year}}</td>
+                    <td class="currency">${{utitlization.budget | numberToCommaFormatter}}</td>
+                    <td class="currency">${{utitlization.expense | numberToCommaFormatter}}</td>
+                </tr>
+                {% endfor %}
+        </table>
+        {% endif %}
+    </section>
+    {% if data.budget_source|length > 0 %}
+    <section class="sectionWrapper">
+        {% if data.budget_source|length < 5 %}
+        <p class="tableHeading">Top {{data.budget_source|length}} Donors</p>
+        {% else %}
+        <p class="tableHeading">Top 5 Donors</p>
+        {% endif %}
+        <table class="projectTable">
+                <tr>
+                    <th>Donors</th>
+                    <th  style="width:435px;">Budget Utilization</th>
+                </tr>
+                {% for donor in data.budget_source|slice:":5"%}
+                <tr>
+                    <td>{{donor.organisation_name}}</td>
+                    <td class="currency">${{donor.expense | numberToCommaFormatter}}</td>
+                </tr>
+                {% endfor %}
+        </table>
+    </section>
+    {% endif %}
+
+    <section class="sectionWrapper">
+        {% if data.output_list|length > 0 %}
+            {% if data.output_list|length < 5 %}
+            <p class="tableHeading">Top {{data.output_list|length}} Outputs</p>
+            {% else %}
+            <p class="tableHeading">Top 5 Outputs</p>
+            {% endif %}
+            <table class="projectTable">
+                    <tr>
+                        <th>ID</th>
+                        <th>Output Title</th>
+                        <th>Theme</th>
+                        <th>Output Description</th>
+                        <th>Gender Equality</th>
+                    </tr>
+                    {% for output in data.output_list|slice:":5"%}
+                    <tr>
+                        <td>{{output.output_id}}</td>
+                        <td>{{output.title}}</td>
+                        <td>{{output.sector}}</td>
+                        <td>{{output.description}}</td>
+                        <td>{{output.policy_significance}}</td>
+                    </tr>
+                    {% endfor %}
+            </table>
+        {% endif %}
+        {% if data.purchase_orders|length > 0 %}
+            {% if data.purchase_orders|length < 5 %}
+            <p class="tableHeading">Top {{data.purchase_orders|length}} Purchase Orders</p>
+            {% else %}
+            <p class="tableHeading">Top 5 Purchase Orders</p>
+            {% endif %}
+            <table class="projectTable">
+                    <tr>
+                        <th>PO ID</th>
+                        <th>Vendor</th>
+                        <th>Description</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                    </tr>
+                    {% for order in data.purchase_orders|slice:":5"%}
+                    <tr>
+                        <td>{{order.order_id}}</td>
+                        <td>{{order.vendor_name}}</td>
+                        <td>{{order.description}}</td>
+                        <td>{{order.order_date|formatDate}}</td>
+
+                        <td class="currency">${{order.amount | numberToCommaFormatter}}</td>
+                    </tr>
+                    {% endfor %}
+            </table>
+        {% endif %}
+
+    </section>
+
+    {% include "common_script.html" %}
+    <script>
+        {% if data.mapData|length == 1 %}
+        /* Map Script */
+        function generateIcon(iconUrl) {
+            var icon = new L.icon()
+            icon.options.iconSize = [24, 33.33]
+            icon.options.popupAnchor = [1, -24]
+            icon.options.iconAnchor = [13, 28.33]
+            icon.options.shadowSize = [68, 95]
+            icon.options.shadowAnchor = [22, 94]
+            icon.options.iconUrl = iconUrl
+            return icon
+        }
+
+        function getMarkerIcon(colorCode) {
+            switch (colorCode) {
+                case 'Administrative Region':
+                    return generateIcon(administrative); break;
+                case 'Populated Place':return generateIcon(populated); break;
+                case 'Structure': return generateIcon(structure); break;
+                case 'Other Topographical Feature': return generateIcon(otherTopo); break;
+                default: return generateIcon(other);
+            }
+        }
+        var mapData = {{ data.mapData| safe}}
+        var mymap = L.map('export-map', { zoomControl: false }).setView([51.505, -0.09], 3);
+        L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2VldGh1ZGFzIiwiYSI6ImNqZm1qcHpnMDBmZmczM280dm9zdzR5bjcifQ.zRivs5JkUZzTzUU_OpYXPw')
+            .addTo(mymap);
+
+        var markers = L.markerClusterGroup({
+            showCoverageOnHover: false,
+            removeOutsideVisibleBounds: false,
+            iconCreateFunction: function(cluster) {
+                return L.divIcon({ html: '<div>'+cluster.getChildCount()+'</div>', className: 'mapCluster', iconSize: L.point(40, 40) });
+            }
+        });
+        var layers = L.layerGroup();
+
+        if (mapData.length == 1) {
+            mapData[0].outputs.map(function (feature, index) {
+                var marker = L.marker([
+                    parseFloat(feature.output_latitude),
+                    parseFloat(feature.output_longitude)
+                ], {
+                        icon: getMarkerIcon(feature.output_location_class)
+                    })
+                markers.addLayer(marker)
+            })
+            mymap.addLayer(this.markers)
+
+            if (
+                mapData[0].boundaries != null &&
+                mapData[0].boundaries.geometry.type == "Polygon"
+            ) {
+                var coord = mapData[0].boundaries.geometry.coordinates[0];
+                var bounds = L.polyline(coord).getBounds();
+                layers.addLayer(L.polygon(coord, { stroke: false, fillColor: '#bbb' }))
+                layers.addTo(mymap)
+                mymap.fitBounds(bounds)
+            } else if (
+                mapData[0].boundaries != null &&
+                mapData[0].boundaries.geometry.type == "MultiPolygon"
+            ) {
+                var modifiedCoord = mapData[0].boundaries.geometry.coordinates;
+                var modifiedCoord = [].concat.apply([], modifiedCoord);
+                var modifiedCoord = [].concat.apply([], modifiedCoord);
+                var bounds = L.polyline(modifiedCoord).getBounds();
+                mymap.fitBounds(bounds)
+                var polygons = [];
+                mapData[0].boundaries.geometry.coordinates.forEach(
+                    function (item) {
+                        layers.addLayer(L.polygon(item[0], { stroke: false, fillColor: '#bbb' }))
+                    }
+                );
+                layers.addTo(mymap)
+            }
+        }
+
+        else {
+            var min = d3.min(mapData, function (d) { return parseInt(d.total_budget) })
+            var max = d3.max(mapData, function (d) { return parseInt(d.total_budget) })
+            var scale = d3.scale.linear()
+                .domain([min, max])
+                .range([10, 50])
+            mapData.forEach(function (location, index) {
+                var circleMarker = L.circleMarker([
+                    parseFloat(location.latitude),
+                    parseFloat(location.longitude)
+                ], {
+                        radius: scale(location.total_budget),
+                        weight: 2
+                    })
+
+                layers.addLayer(circleMarker)
+            })
+            layers.addTo(mymap)
+        }
+
+            /* Map Script Ends */
+            {% endif %}
+    </script>
+</body>
+
+</html>
