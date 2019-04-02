@@ -1,0 +1,97 @@
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.bar {
+  fill: steelblue;
+}
+.nameDisplay{
+  display: block;
+  text-align: left;
+  width:50%;
+  font-size:14px;
+}
+.xaxis{ 
+  line-height: 1;
+  path{
+    fill: none;
+    stroke: transparent;
+    shape-rendering: crispEdges;
+  }
+  line {
+      fill: none;
+      stroke: transparent;
+      shape-rendering: crispEdges;
+  }
+}
+.tooltip {
+  display: block;
+}
+.Countrycontainer {
+  width: 120px;					
+  border-radius: 2px;
+  border: 1px solid #42689b;
+  background-color: #ffffff;
+  pointer-events: none;	
+  color: #4b4b4b;
+  padding:10px;	
+  z-index: 3;
+  cursor: pointer;
+}
+.yaxis{ 
+  path{
+    fill: none;
+    stroke:white;
+    shape-rendering: crispEdges;
+  }
+  line {
+      fill: none;
+      stroke: #cbcbcb;
+      stroke-dasharray: 5;
+      shape-rendering: crispEdges;
+  }
+}
+
+
+
+.x.axis{
+    path {
+      fill:none;
+      display: none;
+    }
+    line {
+      fill: none;
+      stroke: white;
+      shape-rendering: crispEdges;
+  }
+}
+
+.svgIe{
+  @media(min-width: 768px) {
+    padding-left: 10px;
+  }
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .svgIe {
+      width: 100%;
+      height: 500px;
+  }
+}
+
+.grouped_chart{
+  height: 100%;
+  width: 100%;
+  padding-top: 15px;
+}
+#grouped_chart svg{
+  height: 100%;
+  width: 100%;
+}
+.legend{
+display:  table
+}
+

@@ -1,0 +1,287 @@
+@import "../../style/helpers/_variables";
+@import "../../style/helpers/_mixins";
+.outerContainer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 15;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    -webkit-transition: opacity 0.15s linear;
+    -moz-transition: opacity 0.15s linear;
+    -o-transition: opacity 0.15s linear;
+    transition: opacity 0.15s linear;
+    
+    .satelliteSection{
+        margin: 2% 2rem;
+        background-color: #fff;
+        padding: 15px 15px 45px 15px;
+        border-radius: 15px;
+        height: 90%;
+        .satellite{
+            
+            border: none;
+            width: 100%;
+            height: 90%;
+        }
+        .closeBtn2{
+            float: right;
+            background: url("#{$icons}/closeIcon.png") no-repeat;
+            margin: 5px;
+            width: 17px;
+            height: 15px;
+            display: inline-block;
+            background-size: 15px 15px;
+            padding: 0;
+            border: none;
+            cursor: pointer;
+            border: 0;
+            -webkit-appearance: none;
+            width: 10%;
+            display: inline-block;
+            height: 24px;
+            cursor: pointer;
+            background: url(/assets/icons/closeBtn.svg) no-repeat 50%;
+            max-width: 28px;
+            margin-top: 0px;
+            margin-bottom: 15px;
+            margin-right: 5px;
+        }
+    }
+    .mapSection{
+        margin: 2% 2rem;
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 15px;
+        position: relative;
+        height: 90%;
+
+        .closeBtn2{
+            float: right;
+            background: url("#{$icons}/closeIcon.png") no-repeat;
+            margin: 5px;
+            width: 17px;
+            height: 15px;
+            display: inline-block;
+            background-size: 15px 15px;
+            padding: 0;
+            border: none;
+            cursor: pointer;
+            border: 0;
+            -webkit-appearance: none;
+            width: 10%;
+            display: inline-block;
+            height: 24px;
+            cursor: pointer;
+            background: url(/assets/icons/closeBtn.svg) no-repeat 50%;
+            max-width: 28px;
+            margin-top: 0px;
+            margin-bottom: 15px;
+            margin-right: 5px;
+        }
+    }
+    
+    .innerContainer {
+        max-width: 70%;
+        min-width: 70%;
+        margin: 0 15px;
+        background-color: #fff;
+        padding-bottom: 20px;
+        height: 500px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        border-radius: 15px;
+        font-size: 16px;
+        @media (max-width: 991px) {
+            font-size: 18px;
+            max-width: 80%;
+            min-width: 80%;
+            margin: 0px auto;
+        }
+        .detailsWrapper {
+          padding: 0px 16px 0;
+
+            @media (min-width: $tablets) {
+                width: 100%;
+                padding: 30px 30px 0;
+            }
+            &:last-child {
+                margin-bottom: 20px;
+            }
+            span {
+                @media (max-width: 767px) {
+                    font-size:16px;
+                }
+            }
+        }
+        .modalContent {
+            height: 400px;
+            .description {
+                margin: 0;
+                font-size: 16px;
+                display: inline-block;
+                padding-left: 16px;
+                padding-right: 16px;
+                padding-top: 20px;
+                @media (min-width: $tablets) {
+                    margin: 30px 30px 0;
+                    display: inline-block;
+                    font-size: 18px;
+                    padding-left: 0;
+                    padding-right: 10px;
+                }
+            }
+            .urlList {
+                color: #666;
+                line-height: 20px;
+                padding: 0;
+                @media (max-width: 767px) {
+                    padding: 0;
+                }
+                margin: 0;
+                li{
+                    line-height: 1.5;
+                    padding: 0;
+                }
+                .urlTitle {
+                    font-weight: 600;
+                    @media (max-width: 767px) {
+                        display: block;
+                        margin: 5px 0;
+                        font-size:16px;
+                    }
+                }
+                .urlContent {
+                    @media (max-width: 767px) {
+                        display: block;
+                        word-break: break-all;
+                        font-size:16px;
+                    }
+                }
+            }
+            .subHeading {
+                font-size: 16px;
+                display: block;
+                font-weight: 600;
+                margin: 10px 0;
+                @media (min-width: $tablets) {
+                    font-size: 25px;
+                }
+            }
+            a {
+                color: $active-color;
+                word-break: break-all;
+                font-size: 16px;
+            }
+        }
+        .headerWrapper {
+            display: inline-block;
+            width: 100%;
+            padding: 20px 0;
+            background-color: #fbfbfb;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            .closeBtn {
+                text-align: right;
+                background: url("#{$icons}/closeIcon.png") no-repeat;
+                margin: 0;
+                width: 17px;
+                height: 15px;
+                display: inline-block;
+                background-size: 15px 15px;
+                padding: 0;
+                border: none;
+                cursor: pointer;
+                border: 0;
+                -webkit-appearance: none;
+                width: 10%;
+                display: inline-block;
+                height: 24px;
+                width: 24px;
+                cursor: pointer;
+                background: url(/assets/icons/closeBtn.svg) no-repeat 50%;
+            }
+            .resultsHeader {
+                color: #212121;
+                font-size: 18px;
+                font-weight: 700;
+                text-align: center;
+                margin: 0;
+                width: 90%;
+                display: inline-block;
+                @media (min-width: $tablets) {
+                    font-size: 32px;
+                    width: 94%;
+                }
+            }
+        }
+    }
+    .accordion__arrow__left {
+        border: solid #e5e5e5;
+        border-width: 0 3px 3px 0;
+        display: inline-block;
+        padding: 6px;
+        margin-top: 3px;
+        transform: rotate(135deg);
+        -webkit-transform: rotate(135deg);
+        vertical-align: top;
+        margin-left: 3px;
+        cursor: pointer;
+    }
+    .accordion__arrow__right {
+        border: solid #e5e5e5;
+        border-width: 0 3px 3px 0;
+        display: inline-block;
+        padding: 6px;
+        margin-top: 3px;
+        transform: rotate(315deg);
+        -webkit-transform: rotate(315deg);
+        vertical-align: top;
+        margin-right: 3px;
+        cursor: pointer;
+    }
+    .locationText{
+        color: #e5e5e5;
+        width:32.4%;
+    }
+    .satellite_btn_container{
+        width: 100%;
+        background-color: #807e7e;
+        padding: 10px 10px 10px 10px;
+        margin-top: -8px;
+    }
+    .rightBtn{
+        float: left;
+        text-align:right;
+    }
+    .leftBtn{
+        float: left;
+        text-align: left;
+    }
+    .centerBtn{
+        float: left;
+        text-align: center;
+        font-weight: bold;
+        cursor: default;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    .buttonMode{
+        cursor: pointer;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 89%;
+    }
+}

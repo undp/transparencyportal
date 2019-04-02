@@ -1,0 +1,30 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+
+.container{
+    max-width: 767px;
+    padding: 12px;
+    margin: 10px;
+    background-color: #fbfbfb;
+    border: 1px solid #eeeeee;
+    border-radius:3%; 
+    font-family: 'ProximaNova-Regular', arial, sans-serif;
+    
+.cardDetails{
+    margin-bottom:3px;
+    .label{
+        color: #303030;
+        font-size: 10px;        
+        font-weight: 700;
+        margin-bottom:5px;
+    }
+    .value{
+        color: #303030;;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom:5px;
+        
+    }
+
+}
+}

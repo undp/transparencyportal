@@ -1,0 +1,64 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+.breadCrumbWrapper {
+  display: table;
+  width: 100%;
+  max-width: 1200px;
+  height: 70px;
+  margin: 0 auto;
+}
+.wrapper{
+  font-family: 'ProximaNova-Regular';
+  line-height: 23px;
+}
+.mapWrapper {
+  width: 100%;
+  height: 500px;
+  position: relative;
+
+}
+.projectListWrapper {
+  margin: 20px auto;
+}
+
+@media screen and (max-width: 582px) {
+  .mapWrapper {
+    margin: 0 10px;
+    width: auto;
+    height: 400px;
+    position: relative;
+    margin-bottom: 100px;
+  }
+}
+
+@media screen and (max-width: 768px) and (min-width: 583px)  {
+  .mapWrapper {
+    margin: 0 10px;
+    width: auto;
+    position: relative;
+    margin-bottom: 50px;
+
+  }
+}
+@media screen and (max-width: 768px) {
+  .projectListWrapper {
+    margin: 0 auto;
+  }
+}
+@media(max-width: 767px) {
+  .projectListWrapper {
+    width: 100%;
+  }
+}
+@media(min-width: 992px) {
+  .disclaimer {
+    padding-bottom: 0;
+  }
+}
+.disclaimer {
+  font-size: 12px;
+  padding: 5px;
+  line-height: 1;
+  color: #4f4f4f;
+  padding-bottom: 20px;
+}

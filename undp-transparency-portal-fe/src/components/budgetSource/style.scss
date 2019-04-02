@@ -1,0 +1,43 @@
+.budgetComponentWrapper {
+  padding: 0 15px;
+  @media screen and (min-width: 992px) {
+    padding: 65px 12px 0;
+  }
+}
+
+.budgetHeading {
+  margin: 0;
+  color: #303030;
+  box-shadow: 0 2px 7px rgba(7, 61, 125, 0.18);
+  padding: 12px;
+  font-size: 20px;
+}
+
+.budgetWrapper {
+  border: 2px solid rgba(221, 221, 221, 0.94);
+}
+
+.projectWrapper {
+  color: #406db7;
+  padding: 12px;
+  line-height: 42px;
+  text-align: center;
+  @media screen and (max-width: 480px) {
+    font-size: 8px;
+  }
+  span {
+    word-break: break-word;
+  }
+  .projectPrice {
+    margin: 0 7px;
+    padding-right:15px;
+    font-weight: bold;
+  }
+}
+
+.project{
+  cursor: pointer;
+  &:hover{
+    font-weight: 700;
+  }
+}

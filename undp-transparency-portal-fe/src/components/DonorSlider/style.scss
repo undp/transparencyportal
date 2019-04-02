@@ -1,0 +1,269 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+.donorSlider {
+    height: auto;
+    margin: 0 auto;
+    max-width: 1200px;
+    .closeSlider {
+        width: 15px;
+        height: 15px;
+        display: inline-block;
+        background: url('#{$icons}/closeIcon.png') no-repeat;
+        background-size: contain;
+        cursor: pointer;
+        float: right;
+    }
+    .budgetList {
+        padding-left: 0;
+        width: 100%;
+        height: 100%;
+        .tableRow {
+            padding: 10px;
+            width: 100%;
+            font-size: 15px;
+            .projectName {
+                width: 70%;
+                display: inline-block;
+                padding-right: 5px;
+                color: #444;
+                &:hover{
+                    color: $active-color;
+                }
+            }
+            .expense {
+                width: 30%;
+                display: inline-block;
+                text-align: right;
+                font-family: helvetica;
+            }
+        }
+    }
+    .rowClass {
+        &:nth-child(even) {
+            background-color: #f4f5fa;
+        }
+        &:nth-child(odd) {
+            background-color: #fff;
+        }
+    }
+    .headingWrapper {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        .dataSection{
+            display: flex;
+            .countryName {
+
+                @include font(20px,
+                $bold,
+                #444);
+        
+                width: 80%;
+                margin: auto 20px;
+                display: inline-block;
+                cursor: pointer;
+                &:hover{
+                    @include font(20px,
+                    $bold,
+                    $active-color);
+                }
+            }
+        }
+    }
+    .year {
+        font-weight: 600;
+    }
+    .countryName {
+        @include font(20px,
+        $bold,
+        #444);
+
+        width: 80%;
+        margin: 0;
+        display: inline-block;
+        cursor: pointer;
+        &:hover{
+            @include font(20px,
+            $bold,
+            $active-color);
+        }
+    }
+    .listHead {
+        font-weight: 700;
+        font-size: 18px;
+    }
+    .donorDetails {
+        display: inline-block;
+        width: 100%;
+        vertical-align: top;
+        p {
+            font-weight: 700;
+        }
+    }
+    .contributionDetails {
+        width: 50%;
+        display: table-cell;
+        margin-right: 0; 
+    }
+    .summarySection {
+        display: table;
+        text-align: center;
+        width: 100%;
+        height: 70px;
+        background-color: $button-background-color;
+        padding: 15px;
+        .summaryDetails {
+            position: relative;
+            display: table-cell;
+            .summaryHeading {
+                font-weight: 700;
+            }
+            span {
+                display: block;
+                padding: 5px;
+            }
+            &:after {
+                display: block;
+                content: '';
+                position: absolute;
+                top: 0px;
+                bottom: 0;
+                left: -10px;
+                right: 0;
+                width: 2px;
+                height: 50px;
+                background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), color-stop(rgba(255, 255, 255, 0.5)), to(rgba(255, 255, 255, 0)));
+                background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+                background-image: -o-linear-gradient(top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+                background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+            }
+            &:first-child:after {
+                background-image: none;
+            }
+        }
+    }
+    .dummyDonor {
+        background-color: #f1f1f1;
+        width: 80%;
+        height: 110px;
+        text-align: center;
+        padding-top: 39px;
+        margin: 0 10px;
+    }
+    .scrollSection {
+        height: 460px;
+    }
+}
+.contributionSplitup{
+    margin-right: 10px;
+    border: 2px solid rgba(221, 221, 221, 0.94);
+    margin-bottom: 20px;
+    font-weight: 600;
+    .contributionSplitupTitle{
+        min-height: 50px;
+        display: block;
+        width: 100%;
+        -webkit-box-shadow: 0 2px 7px rgba(7, 61, 125, 0.18);
+        box-shadow: 0 2px 7px rgba(7, 61, 125, 0.18);
+        font-size: 16px;
+        font-weight: 600;
+        padding: 10px;
+        background-color: white;
+    }
+}
+.donorWrapper {
+    width: 100%;
+    display:table;
+    margin-top: 10px;
+    padding-right: 10px;
+    position: relative;
+    .donorDetails {
+        border: 2px solid rgba(221, 221, 221, 0.94);
+        margin-bottom: 20px;
+        margin-right: 0px;
+        .donor_slider_title_bar {
+            min-height: 50px;
+            display: block;
+            width: 100%;
+            -webkit-box-shadow: 0 2px 7px rgba(7, 61, 125, 0.18);
+            box-shadow: 0 2px 7px rgba(7, 61, 125, 0.18);
+            font-size: 16px;
+            font-weight: 600;
+            padding: 10px;
+            background-color: white;
+        }
+        .donor_slider_title_wrapper {
+            background-color: #F2F2F2;
+            padding: 10px;
+            height: 40px;
+            font-size: 16px;
+        }
+        .budgetSources {
+            display: inline-block;
+            width: 70%;
+        }
+        .budget {
+            display: inline-block;
+            width: 30%;
+            text-align: right;
+        }
+        .donor_chart_wrapper {
+            width: 95%;
+            margin: 0 auto;
+            padding: 10px 0;
+            height: 88%;
+           
+        }
+        .donorGraph {
+            padding-top: 75px
+        }
+    }
+}
+.textWrapperStyleOther,
+.textWrapperStyle {
+    font-size:12px!important;
+    .perc {
+        font-size: 18px !important;
+    }
+    text-align: center;
+    top: 43%;
+}
+.textWrapperStyleOther{
+    top: 46%;
+}
+.dollor{
+    font-size: 12px !important;
+}
+.donutCenterOther{
+    font-size: 14px !important;
+}
+.donutCenterText{
+    font-size: 18px;
+}
+.donor_wrapper_styles {
+    display: table;
+    width:100%;
+}
+.legend_styles,
+.donut_styles {
+    display: table-cell!important;
+    width: 62%!important;
+    vertical-align: middle;
+}
+.contributionSliderWrapper {
+    padding-top: 32%;
+}
+.donorLogo{
+    max-width: 63px;
+    height: 43px;
+}
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    .donor_chart_wrapper.donor_country_contribution svg {
+        width: 200px;
+        height:200px;
+        margin-top: 20px;
+    }
+    .donor_chart_wrapper.donor_resources_modality svg {
+        width: 350px;
+        height:200px;
+    }
+  }

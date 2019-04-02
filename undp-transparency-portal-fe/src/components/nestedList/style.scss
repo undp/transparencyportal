@@ -1,0 +1,31 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+
+.dropDownUl{
+    cursor: pointer;
+    background-color: $white-background;
+    margin:0;
+    padding: 12px 5px;
+    height: 230px;
+    z-index: -1;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    top: 70px;
+    @media(max-width:767px) {
+        height: 150px;
+    }
+}
+
+
+.noResultWrapper{
+   height: 100%;
+   width:100%;
+   display:table;
+   div{
+       margin: 0 auto;
+       width: 100%;
+       text-align: center;
+       display: table-cell;
+       vertical-align: middle;
+    }
+}

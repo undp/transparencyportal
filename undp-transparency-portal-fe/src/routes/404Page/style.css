@@ -1,0 +1,28 @@
+.container {
+    display: table;
+    margin: 170px auto 130px;
+    text-align: center;
+}
+.errorText {
+    font-size:20px;
+    font-weight: 700;
+}
+.errorSection {
+    margin: 34px auto;
+    background-color: #f7f7f7;
+    width: 400px;
+    display: table-cell;
+    height: 300px;
+    vertical-align: middle;
+}
+.backLink {
+    color: #0167ce;
+    font-weight: 400;
+    text-decoration: underline;
+    
+}
+.backLink:hover,
+.backLink:focus,
+.backLink:active {
+    color: #0167ce;
+}

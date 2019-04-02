@@ -1,0 +1,565 @@
+@import '../../style/helpers/_variables';
+@import '../../style/helpers/_mixins';
+.innerHeadersection {
+    width: 100%;
+}
+.unscrolledDropBtn{
+    height: 95px !important;
+}
+.scrolledDropBtn{
+    height: 90px !important;
+}
+.dropbtn {
+	background-color: transparent;
+	color: white;
+	padding: 16px;
+	font-size: 16px;
+	border: none;
+	cursor: pointer;
+	min-width: 135px;
+    padding-left: 15px !important;
+	&::after{
+		content: '\00A0\00A0\25be';
+	}
+  }
+  .scrolledDropDown{
+	border:none;
+	
+  }
+  /* The container <div> - needed to position the dropdown content */
+  .dropdown {
+	position: relative;
+	display: inline-block;
+  }
+  
+  /* Dropdown Content (Hidden by Default) */
+  .dropdown_content {
+	display: none;
+    position: absolute;
+	background-color: #f9f9f9 !important;
+	border: 1px solid white;
+    min-width: 135px;
+    -webkit-box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+	padding-left: 5px;
+	padding-right: 5px;
+    border-bottom-left-radius: 5%;
+    border-bottom-right-radius: 5%;
+    padding-bottom: 10px;
+	.dropDownItems{
+        padding: 8px 8px 2px 8px !important;
+        margin-bottom: 11px;
+        font-size: 15px !important;
+	}
+  }
+  
+  /* Links inside the dropdown */
+  .dropdown_content a {
+	color: black;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+	border-bottom: 1px solid white;
+  }
+  
+//   /* Change color of dropdown links on hover */
+//   .dropdown_content a:hover {
+// 	//   background-color: #f1f1f1
+// 	border-bottom: 1px solid white;
+//   }
+  
+  /* Show the dropdown menu on hover */
+  .dropdown:hover .dropdown_content {
+	display: block;
+  }
+  //abcde
+  /* Change the background color of the dropdown button when the dropdown content is shown */
+  .dropdown:hover .dropbtn {
+	background-color: transparent;
+  }
+.download{
+    display: block !important;
+}
+.header {
+    width: 100%;
+    position: fixed;
+    height: 95px;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 11;
+    background-color: $white-background;
+    box-shadow: 0 10px 60px rgba(7, 61, 125, 0.18);
+    @media (max-width: 991px) {
+        height: 80px;
+    }
+    @media(min-width: $desktop) {
+        &.scrolled {
+            height: 90px;
+            .mainNav {
+                display: flex;
+                justify-content: space-between;
+                @media(max-width:991px){
+                    justify-content: start;
+                }
+                img {
+                    height: 100px;
+                }
+                .navBar {
+                    @media(min-width: $desktop) {
+                        height: 90px;
+                    }
+                        a {
+                            color: $black-color;
+                            outline: none;
+                            &.active {
+                                font-family: ProximaNova-bold;
+                                color: $active-color;
+                                border-bottom: 5px solid $active-color;
+                            }
+                            &:not(.active):hover {
+                                border-bottom: none;
+                                color: $active-color;
+                                @media(min-width: $desktop) {
+                                    color:$active-color;
+                                    border-bottom: 5px solid $active-color;
+                                }
+                            }
+                        }
+
+                }
+            }
+        }
+    }
+    .hamburger {
+        color: $black-color;
+        position: absolute;
+        top: 18px;
+        right: 16px;
+        font-size: $title-big;
+        background: none;
+        border: 0;
+        padding: 5px 10px;
+        outline: none;
+        cursor: pointer;
+        @media(min-width: $desktop) {
+            display:none;
+        }
+    }
+}
+
+.headerContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.searchBar {
+    outline: none;
+    border: none;
+    background: transparent;
+    width: 400px;
+    padding-left: 10px;
+    font-size: 16px;
+    @media(max-width: 320px) {
+        width: 180px;
+    }
+    @media screen and (max-width: 991px) and (min-width: 321px) {
+        width: 208px;
+        display: inline-block;
+        font-size: 17px;
+    }
+}
+
+.closeWrapper {
+    display: inline-block;
+    width: 100%;
+    @media(min-width: $desktop) {
+        display: none;
+    }
+    .menuClose {
+        background: url('/assets/icons/closeIcon.png') no-repeat center;
+        border: none;
+        outline: none;
+        width: 15px;
+        height: 15px;
+        padding: 20px;
+        float: right;
+        background-size: 15px;
+        @media(min-width: $desktop) {
+            display: none;
+        }
+    }
+}
+
+.mainNav {
+    height: auto;
+    max-height: 95px;
+    display: flex;
+    justify-content: space-between;
+    background-color: $white-background;
+    @media(max-width:991px){
+        justify-content: start;
+    }
+    @media(min-width: $desktop) {
+        background-color:transparent;
+    }
+    img {
+        height: 74px;
+        padding-left: 6px;
+        padding-top: 6px;
+        @include transition (height,
+        .9s);
+        @media(min-width: $desktop) {
+            padding-left: 0;
+            padding-top: 0;
+            height: 110px;
+        }
+    }
+    .headerLogo {
+        @media(max-width: 991px) {
+            width: 10%;
+            display: inline-block;
+            height: 100%;
+        }
+    }
+    .projectTitle {
+        width: 80%;
+        height: 100%;
+        display: inline-block;
+        vertical-align: top;
+        text-align: center;
+        padding-top: 26px;
+        vertical-align: top;
+        text-align: center;
+        font-size: 20px;
+        font-family: lora-bold;
+        @media(max-width: 320px) {
+            font-size: 18px;
+        }
+        @media screen and (max-width:991px) and (min-width:$tablets) {
+            font-size: 40px;
+            padding-top: 10px;
+        }
+        @media(min-width: $desktop) {
+            display: none;
+        }
+    }
+    .navBar {
+        padding: 0;
+        background-color: $white-background;
+        &.menuactiveClose {
+            display: block;
+            @media(max-width: 991px) {
+                left: 0;
+                animation-fill-mode: forwards;
+                -webkit-animation: mymove 500ms;
+                /* Safari 4.0 - 8.0 */
+                animation: mymove 500ms;
+            }
+        }
+        &.menuinactiveClose {
+            display: block;
+            @media(max-width: 991px) {
+                animation-fill-mode: forwards;
+                left: -100%;
+                -webkit-animation: reversemove 500ms;
+                /* Safari 4.0 - 8.0 */
+                animation: reversemove 500ms;
+            }
+        }
+        @media(max-width: 991px) {
+            position: fixed;
+            display: none;
+            top: 0;
+            margin: 0;
+            left: -100%;
+            z-index: 16;
+            bottom: 0;
+            width: 250px;
+        }
+        @media(min-width: $desktop) {
+            display: table-cell;
+            vertical-align: middle;
+            list-style: none;
+            margin-top: 0px;
+            margin-bottom: 0;
+            height: 95px;
+            margin-right: 0;
+            float: right;
+            background-color: transparent;
+        }
+        .search {
+            background: url('#{$icons}/search.png') no-repeat;
+        }
+        .navbarsearchLInk {
+            display: none;
+            @media(min-width: 991px) {
+                display: block;
+            }
+        }
+        .navbarLink {
+            cursor: pointer;
+            outline: none;
+            transition: padding 0.75s linear;
+            // &:not(.active):hover {
+            //     background: $active-color;
+            //     a {
+            //         color: $white-background;
+            //     }
+            // }
+            &.searchCentered {
+                display: none;
+                @media (min-width: 992px) {
+                    padding: 0;
+                    display: inline-block;
+                    position: absolute;
+                    left: 38%;
+                    top: 28%;
+                }
+            }
+            &.searchMobile {
+                display: block;
+                padding-bottom: 10px;
+                padding-left: 10px;
+                &:not(.active):hover {
+                    background: transparent;
+                }
+                @media(min-width:992px) {
+                    display: none;
+                }
+            }
+            @media(min-width: $desktop) {
+                &:not(.active):hover {
+                    background: transparent;
+                    a {
+                        color: $active-color;
+                    }
+                }
+            }
+            a {
+                @include font($text-small,
+                $normal,
+                $black-color);
+                text-shadow: none;
+                text-decoration: none;
+                text-transform: uppercase;
+                width: 100%;
+                padding: 12px 10px;
+                display: block;
+                cursor: pointer;
+                &.active {
+                    font-family: ProximaNova-bold;
+                    border-bottom: none;
+                    color: $active-color;
+                    @media(min-width: $desktop) {
+                        color: $active-color;
+                        border-bottom: 5px solid $active-color; 
+                    }
+                }
+                &:not(.active):hover {
+                    font-family: ProximaNova-regular;
+                    color: $white-background;
+                    border-bottom: none;
+                    @media(min-width: $desktop) {
+                        color: $active-color;
+                        border-bottom: 5px solid $active-color;
+                    }
+                }
+                @media(min-width: $tablets) {
+                    font-size: $text-small;
+                }
+                @media(min-width: $desktop) {
+                    font-size: 17px;
+                    padding: 2px;
+                    padding-top: 40px;
+                    display: inline-block;
+                    height: 100%;
+                }
+            }
+            @media(min-width: $desktop) {
+                display: inline-block;
+                padding-left: 20px;
+                height: 100%;
+            }
+            &:last-child {
+                @media(max-width: 991px) {
+                    display: none;
+                }
+            }
+        }
+        .addPadding{
+
+            padding-left: 35px !important;  
+            @media(max-width: 1060px) {
+                padding-left: 20px !important;
+            }
+        }
+    }
+}
+
+.searchMobileWrapper {
+    display: inline-block;
+    @media (min-width: 992px) {
+        display: none;
+    }
+}
+
+.backgroundLayer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .8);
+    transition: opacity .15s linear;
+    @media(min-width: 992px) {
+        display: none;
+    }
+}
+.hide{
+    display: none;
+}
+
+@-webkit-keyframes mymove {
+    from {
+        left: -100%;
+    }
+    to {
+        left: 0;
+    }
+}
+
+@keyframes mymove {
+    from {
+        left: -100%;
+    }
+    to {
+        left: 0;
+    }
+}
+
+@-webkit-keyframes reversemove {
+    from {
+        left: 0;
+    }
+    to {
+        left: -100%;
+    }
+}
+
+@keyframes reversemove {
+    from {
+        left: 0;
+    }
+    to {
+        left: -100%;
+    }
+}
+
+.linkHidden {
+    display: none;
+}
+
+.searchIcon {
+    background: url('#{$icons}/search.png') no-repeat center;
+    width: 37px;
+    height: 24px;
+    display: inline-block;
+    position: relative;
+    top: 6px;
+    @media(max-width: 991px) {
+        width: 20px;
+        height: 20px;
+        background-size: 20px;
+    }
+}
+
+.innerBanner {
+    background: url('#{$images}/innerbanner.png');
+    background-size: cover;
+    height: 160px;
+    position: relative;
+    margin-top: 95px;
+    @media (max-width: 991px) {
+        margin-top: 80px;
+    }
+    .linkHeading {
+        position: absolute;
+        line-height: 1.25;
+        text-transform: capitalize;
+        top: 50%;
+        left: 0;
+        right: 0;
+        color: #fff;
+        transform: translateY(-50%);
+        text-align: center;
+        font-family: Lora-bold;
+        font-size: 22px;
+        font-weight: 700;
+        z-index: 2;
+        @media screen and (max-width: 991px) and (min-width:$tablets) {
+            font-size: 30px;
+        }
+        @media(min-width: $desktop) {
+            font-size: 40px;
+        }
+
+        .subTitle{
+            font-size: 15px;
+            display: block;
+            margin-top: 23px;
+            font-family: sans-serif;
+            text-transform: none;
+        }
+    }
+    &:after {
+        position: absolute;
+        content: '';
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(46, 46, 46, 0.7);
+    }
+}
+
+.sdg_image {
+    width: 74px;
+    height: 74px;
+    margin: 10px;
+}
+
+.dateUpdated {
+    position: absolute;
+    top: 10px;
+    right: 42px;
+    width: 235px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: right;
+    font-size: 12px;
+    color: #a5a5a5;
+    @media(max-width: 991px) {
+        display: none;
+    }
+}
+.dateUpdatedMobile {
+    display: none;
+    @media(max-width: 991px) {
+        display: block;
+        position: absolute;
+        top: 5px;
+        right: 26px;
+        width: 235px;
+        max-width: 1200px;
+        margin: 0 auto;
+        text-align: right;
+        font-size: 10px;
+        color: #a5a5a5;
+    }
+}
+
+.downloadsItem {
+    position: relative;
+}
