@@ -2,6 +2,9 @@ Codebase for UNDP Transparency Portal Front-End code
 ## CLI Commands
 
 ``` bash
+#Prerequisite
+Node.js > V6.x
+
 # install dependencies
 npm install
 
@@ -17,6 +20,5 @@ npm run serve
 # build
 preact build --no-prerender
 ```
-NB: Code optimization is in progress
 
 For detailed explanation on how things work, checkout the [CLI Readme](https://github.com/developit/preact-cli/blob/master/README.md).
