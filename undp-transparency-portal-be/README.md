@@ -1,13 +1,13 @@
-#Features
-***
+Features
+=============
 - Django 1.11
 - Uses [pip](https://www.pypa.io/en/latest/) and [Virtualenv](https://pypi.org/project/virtualenv)
 - HTTPS and other security related settings on Staging and Production.
 - PostgreSQL database support with psycopg2.
 
 
-###How to Install
-___
+How to Install
+---------------
 
 Activate Virtual Env
 >$ source venv/bin/activate
