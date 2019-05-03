@@ -70,7 +70,7 @@ export default class SdgSlider extends Component {
                     <div class={style.themeSlider}>
                         <div class={style.headingWrapper}>
                             <div>
-                               {data.aggregate.sdg && <div class={style.imageWrapper}><img class={style.sdg_image} src={`./../assets/icons/${sdg_src}`} alt="sdg icon"/></div>}
+                               {data.aggregate.sdg && <div class={style.imageWrapper}><img class={style.sdg_image} src={this.props.baseURL+`/assets/icons/${sdg_src}`} alt="sdg icon"/></div>}
 
                                     <a href={`/sdg/${data.aggregate.sdg}/${data.aggregate.sdg_name}`}
                                         class={style.countryName}>{data.aggregate.sdg_name}</a>

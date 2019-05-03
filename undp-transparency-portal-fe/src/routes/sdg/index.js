@@ -11,13 +11,14 @@ import EmbedModal from '../../components/embedModal';
 import Footer from '../../components/footer';
 import ExportPopup from '../../components/exportPopup';
 import  commonConstants  from '../../utils/constants';
+
 /****************** Third Party Components  ********************/
 import Helmet from 'preact-helmet';
 
 /************************* Redux Action Files ************************/
 import { setPageHeader } from '../../components/urlBreadCrumb/data/actions';
 import { onChangeRoute } from '../../shared/actions/routerActions';
-import {downLoadProjectListCsv} from '../../shared/actions/downLoadCSV';
+import { downLoadProjectListCsv } from '../../shared/actions/downLoadCSV';
 import { getFormmattedDate } from '../../utils/dateFormatter';
 
 
@@ -174,11 +175,11 @@ class Sdg extends Component {
 	renderExportPopup() {
 
 		const source = '',
-		year = this.props.mapCurrentYear,
-		units = '',
-		keyword = '',
-		sectors = '',
-		sdgs = this.props.code;	
+			year = this.props.mapCurrentYear,
+			units = '',
+			keyword = '',
+			sectors = '',
+			sdgs = this.props.code;
 
 
 		let data, loading, templateType;
@@ -190,7 +191,8 @@ class Sdg extends Component {
 			mapData: this.props.outputData.data,
 			title: 'Goal ' + (this.props.sdgSliderData.data.aggregate.sdg) + ': ' + (this.props.sdgSliderData.data.aggregate.sdg_name),
 			projectList: this.props.projectList.projectList,
-			lastUpdatedDate: getFormmattedDate(this.props.lastUpdatedDate.data.last_updated_date)
+			lastUpdatedDate: getFormmattedDate(this.props.lastUpdatedDate.data.last_updated_date),
+			targetChartData: this.props.targetChartData.data.percentage ?  this.props.targetChartData.data.percentage: []
 		};
 
 		loading = this.props.projectList.loading || this.props.sdgSliderData.loading || this.props.outputData.loading ;
@@ -224,13 +226,13 @@ class Sdg extends Component {
 						{ property: 'twitter:description', content: description }
 					]}
 				/>
-				<CommonHeader title={this.props.type} enableSearch enableBanner/>
+				<CommonHeader title={this.props.type} enableSearch enableBanner />
 				<div class={style.breadCrumbWrapper}>
 					<UrlBreadCrumb />
 					<EmbedSection
 						showExportModal={() => this.showExportModal()}
 						onClickEmbed={this.openEmbedModal}
-						startYear = {commonConstants.SDG_YEAR}
+						startYear={commonConstants.SDG_YEAR}
 					/>
 					<div class={style.sdgDisclaimer}>
 						<span class={style.sdgbuttons}><b>About SDG Data</b></span>
@@ -263,18 +265,17 @@ const mapStateToProps = (state) => ({
 	countryList: state.countryList,
 	currentYear: state.yearList.currentYear,
 	sdgSliderData: state.sdgSliderData,
-	outputData: state.mapData.outputData,
+	outputData: state.mapData.sdgMapData,
 	projectList: state.projectList,
-	mapCurrentYear:state.mapData.yearTimeline.mapCurrentYear,
-	lastUpdatedDate:state.lastUpdatedDate
-	
-
+	mapCurrentYear: state.mapData.yearTimeline.mapCurrentYear,
+	lastUpdatedDate: state.lastUpdatedDate,
+	targetChartData: state.sdgTargetSliderData
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	onChangeRoute: (url) => dispatch(onChangeRoute(url)),
 	setPageHeader: data => dispatch(setPageHeader(data)),
-	downLoadProjectListCsv :(year,keyword,source,sectors,units,sdgs)=>dispatch(downLoadProjectListCsv(year,keyword,source,sectors,units,sdgs))	
+	downLoadProjectListCsv: (year,keyword,source,sectors,units,sdgs) => dispatch(downLoadProjectListCsv(year,keyword,source,sectors,units,sdgs))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sdg);

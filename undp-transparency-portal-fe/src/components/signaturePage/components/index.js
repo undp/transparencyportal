@@ -180,6 +180,9 @@ export default class SignaturePage extends Component {
                                         signatureSolution={'true'}
                                     />:<PreLoader/>
                                 }
+                                {
+						            !this.state.listSelected ? window.dispatchEvent(new Event('resize')) : null
+					            }
                                 {isMapDataNonEmpty ? <div class={style.disclaimer}>
                                 {'* The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.'}
                             </div>:null}

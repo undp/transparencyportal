@@ -49,7 +49,7 @@ export default class ThemesPage extends Component {
             this.callSSdata =true;
         }
         if( nextProps.endYear !== '' &&  this.callSSdata && nextProps.endYear >= commonConstants.SIGNATURE_SOLUTION_YEAR) {
-            this.props.fetchSignatureSolutionChartData(this.props.sector_code,this.props.currentYear);
+            this.props.fetchSignatureSolutionChartData(this.props.sector_code, nextProps.currentYear);
             this.callSSdata =false;
         }
         if (Object.keys(nextProps.themeSliderData.data).length) {
@@ -177,7 +177,9 @@ export default class ThemesPage extends Component {
                                 {isMapDataNonEmpty ? <div class={style.disclaimer}>
                                 {'* The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.'}
                             </div>:null}
-
+                            {
+						        !this.state.listSelected ? window.dispatchEvent(new Event('resize')) : null
+					        }    
 
                             </div>
                         </div>

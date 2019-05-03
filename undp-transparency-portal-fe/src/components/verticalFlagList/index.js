@@ -44,6 +44,7 @@ export default class VerticalFlagList extends Component {
 								<li class={style.flagli}>
 									<img onMouseOver={(e)=> this.showTooltip(e, country.country_name)}
 									onMouseOut={()=> this.tooltipOut(this.props.data)} 
+									onError={(e)=>{ e.target.src = '/assets/images/Empty.svg'}}
 									class={style.flagImg} src={country.country_iso3 ? this.props.apiBase+'/media/flag_icons/'+country.country_iso3+'.svg' : '/assets/images/Empty.svg'}></img>
 								</li>
 								)

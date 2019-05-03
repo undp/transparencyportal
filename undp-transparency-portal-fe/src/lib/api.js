@@ -1,5 +1,5 @@
 
-
+const CircularJSON = require('circular-json');
 class Api {
 	static headers() {
 		return {
@@ -8,6 +8,8 @@ class Api {
 		};
 	}
 
+  
+  
 	static headerForceDownLoad(){
 		return{
 			'Content-Type': 'text/csv'
@@ -59,8 +61,8 @@ class Api {
 
 	static xhrCSV(route, params, verb) {
 		const options = Object.assign({ method: verb });
-    options.headers = Api.headerForceDownLoad();
-    options.mode = 'cors';
+		options.headers = Api.headerForceDownLoad();
+		options.mode = 'cors';
 		// options.body = JSON.stringify(params);
 		return fetch(Api.API_BASE + route, options).then(resp => {
 			let blob = resp.blob();
@@ -71,8 +73,8 @@ class Api {
 	static xhrPDF(route, params, verb) {
 		const options = Object.assign({ method: verb });
 		options.headers = Api.headers();
-    options.body = JSON.stringify(params);
-    options.mode = 'cors';
+		options.body = (params.template_name === 'sdgChart' || params.template_name === 'sscMarker') ? CircularJSON.stringify(params) : JSON.stringify(params);
+		options.mode = 'cors';
 		return fetch(Api.API_BASE + route, options).then(resp => {
 			let json = resp.json();
 			if (resp.ok) {
@@ -84,14 +86,13 @@ class Api {
 
   /// API LISTS
   static API_BASE = 'https://api.open.undp.org';
-  static API_LOCAL = 'http://undptr-qa.qburst.build/' // QA    Original
+  static API_LOCAL = '' // QA    Original
+  static S3_BASE_URL = '';
 
   static DOWNLOAD_PDF = (path) => Api.API_BASE + '/api/v1/undp/export_download_pdf?file=' + path
   static DOWNLOAD_CSV = (path) => Api.API_BASE + '/api/v1/undp/export_csv?file=' + path
-  static GA_TRACKING_ID = ' UA-24131528-32' // Client
- 
-  // static GA_TRACKING_ID = 'UA-114441614-1' // QA
-  static MAP_API_KEY = 'pk.eyJ1IjoidW5kcG9yZyIsImEiOiJjaWc5cmJmcWwwMDRxdjJrcjgxbnczaThvIn0.J-5uk4LED0EgvK1raqCJmg'
+  static GA_TRACKING_ID = '' // Client
+  static MAP_API_KEY = '';
 
   static API_PROJECT_LIST = (year, operatingUnit, budgetSource, themes, keyword, limit, offset, budget_type, sdg,target,signatureSolution) => `/api/v1/project/list/?budget_sources=${budgetSource}&keyword=${keyword}&limit=${limit}&offset=${offset}&operating_units=${operatingUnit}&sectors=${themes}&year=${year}&budget_type=${budget_type}${target ? ('&sdg_targets='+ target) :  ('&sdgs=' + sdg )}&signature_solution=${signatureSolution}`;
   static API_PROJECT_AGGREGATE = '/api/v1/project/project_aggregate/?year='
@@ -113,7 +114,7 @@ class Api {
   static API_ABOUT = '/api/v1/about_us/list'
   ////////////////////  RECIPIENT PROFILE  ////////////////////
   static API_RECIPIENT_COUNTRY_BASIC = (code, year) => '/api/v1/project/recipient_profile/' + code + '/?year=' + year;
-  /**abcdefg*/
+
   static API_RECIPIENT_COUNTRY_THEME = (code, year) => '/api/v1/global/themes?year=' + year + '&operating_unit=' + code;
   
   
@@ -161,7 +162,8 @@ class Api {
   static API_PROJECT_PURCHASE_ORDERS = (project_id) => '/api/v1/purchase_order/list?year=&project_id=' + project_id
   /////////////////////////////////////////////////////////////////////
   static API_OPERATING_UNITS = '/api/v1/master/budget_sources';
-  static API_DONOR_FUND_LIST = '/api/v1/donor/fund_aggregate/';
+  // static API_DONOR_FUND_LIST = '/api/v1/donor/fund_aggregate/';
+  static API_DONOR_FUND_LIST = '/api/v1/donor/donor_fund_aggregate/';
   static API_PROJECT_DETAIL_GALLERY = (project_id) => '/api/v1/project/' + project_id + '/pictures';
   /////////////////////////// MAP APIs ///////////////////////////////////
   static API_MAP_GLOBAL = (year, unit) => '/api/v1/project/map?year=' + year + '&operating_unit=' + unit ;

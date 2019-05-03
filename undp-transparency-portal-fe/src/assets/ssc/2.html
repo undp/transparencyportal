@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>UNDP | SSC</title>
+	<meta charset="utf-8" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./lib/leaflet.css" />
+	<link href='http://fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+	<link href="./lib/font-awesome.min.css" rel="stylesheet">
+
+
+
+</head>
+
+<body style="margin:0;" class="easyPrint">
+	<div id="map" style="height:500px; width:100%"></div>
+	<br><br>
+	<img id="loadingIndicator" style="height:60px; width:60px" src="./loading-indicator.gif">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.5.1/snap.svg-min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.js"></script>
+	<script src="./lib/leaflet.bezier.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js"></script>
+	<script src="dist/bundle.js"></script>
+
+	<script>
+
+		let mapData;
+		let pathData;
+		let pathArray = [];
+		let pathType = 2;
+		let map = L.map('map', { zoomControl: false, worldCopyJump: true, minZoom: 1 }).setView([20, 20], 2);
+		let slide = 'RIGHT_ROUND';
+		let tiles = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidW5kcG9yZyIsImEiOiJjaWc5cmJmcWwwMDRxdjJrcjgxbnczaThvIn0.J-5uk4LED0EgvK1raqCJmg', {
+			id: 'mapbox.light'
+		}).addTo(map);
+		map.touchZoom.disable();
+		map.doubleClickZoom.disable();
+		map.scrollWheelZoom.disable();
+		map.boxZoom.disable();
+		map.keyboard.disable();
+		let printer = L.easyPrint({
+      		tileLayer: tiles,
+      		sizeModes: ['Current', 'A4Landscape', 'A4Portrait'],
+      		filename: 'myMap',
+      		exportOnly: true,
+      		hideControlContainer: true,
+		}).addTo(map);
+		
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function() {
+		  if (this.readyState == 4 && this.status == 200) {
+		    mapData = JSON.parse(this.responseText);
+		    let layers = L.layerGroup();
+			let mapDataLoaded = mapData.data;
+			let min = d3.min(mapDataLoaded, function (d) { return parseInt(d.total_budget) });
+	        let max = d3.max(mapDataLoaded, function (d) { return parseInt(d.total_budget) });
+
+			let scale = d3.scaleLinear()
+	                .domain([min, max])
+	                .range([10, 50]);
+	        
+			mapDataLoaded.forEach((location, index) => {
+				
+				if(location.unit_type === 'CO'){
+					var circleMarker = L.circleMarker([
+	                    Number(location.latitude),
+	                    Number(location.longitude)
+	                ], {
+	                    radius:  scale(location.total_budget),
+	                    weight: 2
+	                })
+	                layers.addLayer(circleMarker);
+				}
+			});
+			layers.addTo(map);
+			drawFlightPath();
+		  }
+		};
+		xmlhttp.open("GET", 'https://api.open.undp.org/api/v1/project/map?year=2019&operating_unit=&budget_source=&sector=&sdg=&marker_type=3&marker_id=&level_two_marker=', true);
+		xmlhttp.send();
+		function manualPrint (type) {
+			printer.printMap('CurrentSize', type);
+			/*map.on('easyPrint-finished', function (ev) {
+			    if(pathType < 3){
+					pathType++;
+					pathArray.forEach(function(path) {
+						map.removeLayer(path);
+					});
+					drawPath(pathType, pathData);
+				}
+			});*/
+		}
+		
+		function drawFlightPath(){
+			var xmlhttpF = new XMLHttpRequest();
+			xmlhttpF.onreadystatechange = function() {
+			  if (this.readyState == 4 && this.status == 200) {
+			        document.getElementById("loadingIndicator").style.display = "none";
+			        pathData = JSON.parse(this.responseText);
+			        drawPath(pathType, pathData);
+			  }
+			};
+			xmlhttpF.open("GET", 'https://api.open.undp.org/api/v1/output/flight_map', true);
+			xmlhttpF.send();
+		}
+		function getSSCMarkerColor (type) {
+			switch(type) {
+			  case 1:
+			    	return '#0099FF'; 
+			    break;
+			  case 2:
+			    	return '#CC0000';
+			    break;
+			  case 3:
+			    	return '#FF6600';
+			    break;
+			  default:
+			    // code block
+			}
+		};
+		function drawPath (type, myObj) {			
+	    	let dash_straight = {
+	            color: getSSCMarkerColor(type),
+	            opacity: 0.8,
+	            weight: '1',
+	        };
+			
+			myObj.data.forEach(function(element) {
+	            element.type2Array = [];
+	            let typeArr = type === 1 ? element.projects.type1 : type === 2 ? element.projects.type2 : element.projects.type3;
+
+	            let arr = typeArr.reduce((unique, o) => {
+	                if(!unique.some(obj => obj.lat === o.lat && obj.lng === o.lng)) {
+	                  unique.push(o);
+	                }
+	                return unique;
+	            },[]);
+
+	            arr.forEach(function(el) {
+	                if(Number(element.lat) !== Number(el.lat) && Number(element.lng) !== Number(el.lng)){
+	                    element.type2Array.push([{lat: Number(element.lat), lng:Number(element.lng), deep:"10", slide: slide },  {lat: el.lat, lng: el.lng}]);
+	                    slide = slide === 'RIGHT_ROUND' ? 'LEFT_ROUND' : 'RIGHT_ROUND';
+	                }
+	            });
+	            
+	            let path = L.bezier({
+	                path: element.type2Array,
+	                icon: {
+	                    path: ""
+	                }
+	            }, dash_straight).addTo(map);
+	            pathArray.push(path);
+	        });
+	        /* setTimeout(function(){ 
+				manualPrint(type);
+			}, 1000); */
+		}
+	</script>
+
+</body>
+
+</html>

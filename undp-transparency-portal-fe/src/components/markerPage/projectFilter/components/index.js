@@ -2,7 +2,7 @@ import { h, Component } from 'preact';
 import style from './style';
 import DropDown from '../../../filter';
 import NestedDropList from '../../../nestedDropList';
-import Api from '../../../../lib/api';
+import {getAPIBaseUrRl} from '../../../../utils/commonMethods';
 export default class ProjectFilter extends Component {
 
 
@@ -74,7 +74,7 @@ export default class ProjectFilter extends Component {
                                     placeHolder="Select"
                                     selectedValue={this.props.unit}
                                     selectedLabel={this.props.unitLabel}
-                                    baseURL={Api.API_BASE}
+                                    baseURL={getAPIBaseUrRl()}
                                 />
                             </div>
                         </div>

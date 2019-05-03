@@ -186,10 +186,11 @@ class Signature extends Component {
 			aggregate: this.props.themeSliderData.data.aggregate,
 			budget_sources: this.props.themeSliderData.data.budget_sources,
 			top_recipient_offices: this.props.themeSliderData.data.top_recipient_offices,
-			outcomeData: this.props.outcomeData.resourcesModalityContribution,
+			donutChartData: this.props.outcomeData.resourcesModalityContribution,
 			mapData: this.props.outputData.data,
 			title: this.props.themeSliderData.data.aggregate.sector_name,
 			projectList: this.props.projectList.projectList,
+			tabSelected: 'signature',
 			lastUpdatedDate: getFormmattedDate(this.props.lastUpdatedDate.data.last_updated_date)
 		};
 
@@ -225,7 +226,7 @@ class Signature extends Component {
 						{ property: 'twitter:description', content: description }
 					]}
 				/> 
-				<CommonHeader title={this.props.type} enableSearch enableBanner/>
+				<CommonHeader title={this.props.type} enableSearch enableBanner />
 				<div class={style.breadCrumbWrapper}>
 					<UrlBreadCrumb />
 					<EmbedSection
@@ -264,13 +265,13 @@ const mapStateToProps = (state) => ({
 	projectList: state.projectList,
 	mapCurrentYear: state.mapData.yearTimeline.mapCurrentYear,
 	lastUpdatedDate: state.lastUpdatedDate,
-	outcomeData : state.donorProfile
+	outcomeData: state.donorProfile
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	onChangeRoute: (url) => dispatch(onChangeRoute(url)),
 	setPageHeader: data => dispatch(setPageHeader(data)),
-	downLoadProjectListCsv :(year,keyword,source,sectors,units,sdgs,type,signatureSolution) => dispatch(downLoadProjectListCsv(year,keyword,source,sectors,units,sdgs,type,signatureSolution))
+	downLoadProjectListCsv: (year,keyword,source,sectors,units,sdgs,type,signatureSolution) => dispatch(downLoadProjectListCsv(year,keyword,source,sectors,units,sdgs,type,signatureSolution))
 	
 });
 
