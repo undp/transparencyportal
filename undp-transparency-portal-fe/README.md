@@ -28,11 +28,10 @@ In UNDP, we are committed to eradicating poverty, fighting climate change and re
 ## Getting Started
 
 Instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
 
-List of things needs to use the software and how to install them.
 * [Node.js](https://nodejs.org/en/) version 6.x or greater.
 
 ### Installation
@@ -51,7 +50,7 @@ cd undp-transparency-portal-fe
   static API_BASE = 'API_BASE_URL';
 ```
 
-4. Enter your [Leaflet](http://leafletjs.com) map key in [Api.js](https://github.com/undp/transparencyportal/blob/master/undp-transparency-portal-fe/src/lib/api.js#L97).
+4. Enter your [Leaflet](http://leafletjs.com) map key in [Api.js](https://github.com/undp/transparencyportal/blob/master/undp-transparency-portal-fe/src/lib/api.js#L95).
 ```JS
   static MAP_API_KEY = 'MAP_API_KEY';
 ```
