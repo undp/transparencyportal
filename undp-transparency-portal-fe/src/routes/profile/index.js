@@ -140,7 +140,6 @@ class CountryProfile extends Component {
 		type = '';
 
 		let data, loading, templateType;
-
 		switch (this.props.type) {
 			case 'recipientprofile':
 				const {
@@ -155,7 +154,7 @@ class CountryProfile extends Component {
 					{ projectList: projects } = this.props.projectList
 
 				units = this.state.selectedCountry.value;
-
+				source= '';
 
 				data = {
 					recipientName: this.profileName,
@@ -186,8 +185,8 @@ class CountryProfile extends Component {
 				templateType = "profile_recipient"
 				break;
 			case 'donorprofile':
-
-				source = this.state.selectedCountry.value;
+				units = '';
+				source = this.props.donorProfile.basicDetails.data.code;
 				type = this.state.budgetType;
 				const {
 					basicDetails: basicDetail,
@@ -511,7 +510,7 @@ class CountryProfile extends Component {
 									{ property: 'twitter:description', content: description }
 								]}
 							/>
-							<CommonHeader title={this.profileName} enableSearch enableBanner/>
+							<CommonHeader title={this.profileName} enableSearch enableBanner />
 							<div class={style.breadCrumbWrapper}>
 								<UrlBreadCrumb />
 								<EmbedSection onClickEmbed={this.openEmbedModal}
@@ -577,7 +576,7 @@ const mapDispatchToProps = (dispatch) => ({
 	onChangeRoute: (url) => dispatch(onChangeRoute(url)),
 	setPageHeader: data => dispatch(setPageHeader(data)),
 	searchCountryRegionsListData: () => dispatch(searchCountryRegionsListData()),
-	downLoadProjectListCsv: (year, keyword, source, sectors, units, sdgs, type) => dispatch(downLoadProjectListCsv(year, keyword, source, sectors, units, sdgs, type))
+	downLoadProjectListCsv: (year,keyword,source,sectors,units,sdgs,type,signatureSolution,target,markerId,markerSubType,l2marker) => dispatch(downLoadProjectListCsv(year,keyword,source,sectors,units,sdgs,type,signatureSolution,target,markerId,markerSubType,l2marker))
 
 });
 

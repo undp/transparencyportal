@@ -63,7 +63,8 @@ import markerSubTypeSelected from '../components/bootstraptable/reducer/setMarke
 import countrySelected from '../components/nestedDropList/reducer/setCountryField';
 import startAndEndYears from '../routes/themes/reducers/setEndYear';
 import levelTwoCountries from '../components/markerPage/reducer/levelTwoCountry';
-import selectedSignatureSolution from '../components/sideBar/reducer/updateSS'
+import selectedSignatureSolution from '../components/sideBar/reducer/updateSS';
+import sdgSelected from '../routes/sdgLanding/reducer';
 
 export default combineReducers({
 	yearSummary,
@@ -126,5 +127,7 @@ export default combineReducers({
 	markerSubTypeSelected,
 	countrySelected,
 	selectedSignatureSolution,
-	levelTwoCountries
+	levelTwoCountries,
+	sdgSelected
+
 });

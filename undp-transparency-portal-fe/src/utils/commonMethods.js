@@ -18,7 +18,7 @@ export const openInNewTab = (url,callbk,param='_blank') => {
 };
 
 export const getAPIBaseUrRl = (dataSet, key) => {
-	return Api.API_BASE;
+	return Api.S3_BASE_URL;
 };
 
 export const DownloadUrlGenerator = (path) => Api.DOWNLOAD_PDF(path);
@@ -33,7 +33,7 @@ export const aggregateCalculator = (dataSet, key) => {
 	return total;
 };
 export const getSSCMarkerColor = (type) => {
-	let colors = [{ type: 1, color: '#A749CB' }, { type: 2, color: '#FB873E' }, { type: 3, color: '#69BC2B' } ],
+	let colors = [{ type: 1, color: '#0099FF' }, { type: 2, color: '#CC0000' }, { type: 3, color: '#FF6600' } ],
 		item = colors[ _.findIndex(colors, { 'type' : type }) ]
 	return item.color; 
 };

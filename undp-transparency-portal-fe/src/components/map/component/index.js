@@ -29,7 +29,7 @@ require("leaflet.bezier")
 import "react-leaflet-markercluster/dist/styles.min.css";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import MapNoDataTemplate from "./noDataComponent";
-import { getSSCMarkerColor, getUniqueLatLngArray } from '../../../utils/commonMethods';
+import { getSSCMarkerColor, getUniqueLatLngArray, getAPIBaseUrRl } from '../../../utils/commonMethods';
 export default class Maps extends Component {
     constructor(props) {
         super(props);
@@ -293,6 +293,7 @@ export default class Maps extends Component {
                 cluster: location,
                 center: [parseFloat(location.latitude), parseFloat(location.longitude)]
             });
+            
             this.props.regionMap &&
                 this.props.updateCountryData(location, this.props.currentYear);
             this.props.onCountrySelect && this.props.onCountrySelect(location);
@@ -358,7 +359,7 @@ export default class Maps extends Component {
             ], {
                     icon: getMarkerIcon(feature.output_location_class)
                 })
-                .bindPopup(render(renderProjectPopUp(feature, this.props.embed, this.props.mapCurrentYear, Api.API_BASE)))
+                .bindPopup(render(renderProjectPopUp(feature, this.props.embed, this.props.mapCurrentYear, getAPIBaseUrRl() )))
             marker.on('click', (event) => {
                 marker.openPopup()
             })
@@ -372,7 +373,7 @@ export default class Maps extends Component {
             this.popup = L.popup()
                 .setLatLng(this.state.popUp.coordinates)
                 .openOn(this.map)
-            this.popup.setContent(render(renderRegionPopUp(this.state.popUp, this.props.embed, Api.API_BASE)))
+            this.popup.setContent(render(renderRegionPopUp(this.state.popUp, this.props.embed, getAPIBaseUrRl())))
         }
     }
     drawPolygon() {
@@ -524,9 +525,9 @@ export default class Maps extends Component {
             }); 
         }
         
-        setTimeout(function(){ 
-            _this.map.invalidateSize()
-        }, 100);
+        // setTimeout(function(){ 
+        //     _this.map.invalidateSize()
+        // }, 100);
     }
     
     drawFlightMapPath(type){

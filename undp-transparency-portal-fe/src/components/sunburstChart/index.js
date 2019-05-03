@@ -1,22 +1,27 @@
-import {
-    h,
-    Component
-} from 'preact';
+/**************************** Preact files ******************************/
+import { connect } from 'preact-redux';
+import { h,Component } from 'preact';
+
+/**************************** Style files******************************/
 import style from './style';
+
+/**************************** Components ******************************/
 import d3 from 'd3';
 import { numberToCurrencyFormatter } from "../../utils/numberFormatter";
 import { getBrowserInformation } from "../../utils/commonActionUtils";
-import SDGLegend from './components/sdgLegend'
+import { getAPIBaseUrRl } from '../../utils/commonMethods';
+import SDGLegend from './components/sdgLegend';
+import { updateSDG } from './../../routes/sdgLanding/action';
 
-export default class SunburstChart extends Component {
+class SunburstChart extends Component {
     constructor(props) {
         super(props);
         this.isIE = false;
     }
     componentDidMount() {
-        this._onSunburstBarChart();
+        this._onSunburstBarChart(this);
     }
-    _onSunburstBarChart() {
+    _onSunburstBarChart(sunburstChart) {
         
         if( getBrowserInformation() && getBrowserInformation().toString().indexOf('IE') !== -1 )
             this.isIE = true;
@@ -71,7 +76,7 @@ export default class SunburstChart extends Component {
             .attr('class', `${style.sdgImage}`)
             .attr('width', 156)
             .attr('height', 156)
-            .attr("xlink:href", "/assets/images/sdg.png");
+            .attr("xlink:href", getAPIBaseUrRl()+"/assets/images/sdg.png");
         let startAngle = 0;
         let endAngle = 0;
         var arc = d3.svg.arc()
@@ -94,8 +99,6 @@ export default class SunburstChart extends Component {
         var g = svg.selectAll("path")
             .data(partition.nodes(this.props.data))
             .enter().append("g");
-
-
 
         var path = g.append("path")
             .attr("d", arc)
@@ -195,6 +198,7 @@ export default class SunburstChart extends Component {
             if(d.code!=="0") {
                 isLevelOne = goBack
                 tooltip.style("display", "none");
+                d.code ? sunburstChart.props.updateSDG(parseInt(d.code)) : sunburstChart.props.updateSDG('');
                 let glowCircle = d3.select('#glowCircle');
                 glowCircle ? glowCircle.remove() : null;
                 if (!isLevelOne) {
@@ -376,7 +380,8 @@ export default class SunburstChart extends Component {
                         class={this.props.embed ? `${style.rightArray} ${style.embedArray}`: style.rightArray}
                     ><SDGLegend data={leftArray}
                         embed={this.props.embed}
-                        sdgTooltip='rightSDGTooltip' />
+                        sdgTooltip='rightSDGTooltip' 
+                        baseURL={getAPIBaseUrRl()}/>
                     </span>
                     <div style={{
                         height: 'auto', position: 'absolute',
@@ -399,12 +404,13 @@ export default class SunburstChart extends Component {
                         class={this.props.embed ? `${style.leftArray} ${style.embedArray}`: style.leftArray}>
                         <SDGLegend data={windowWidth <= 649 ? data : rightArray}
                             sdgTooltip='leftSDGTooltip' 
-                            embed={this.props.embed}/>
+                            embed={this.props.embed}
+                            baseURL={getAPIBaseUrRl()}/>
                     </span>
                     <section class={`${style.backButtonContainer} ${this.props.backButtonTop}`}>
                         <button id="sdgBackButton" class={style.backButton}>
                             {windowWidth >= 650 ?
-                            <img src={'../../assets/icons/backButtonImg.png'} class={style.backImg} /> : null
+                            <img src={getAPIBaseUrRl()+'/assets/icons/backButtonImg.png'} class={style.backImg} /> : null
                             }
                             Back 
                         </button>
@@ -415,3 +421,18 @@ export default class SunburstChart extends Component {
     }
 
 }
+
+const mapStateToProps = (state) => {
+    const sdgSelected = state.sdgSelected;
+		
+	return {
+        sdgSelected
+	};
+};
+
+const mapDispatchToProps = (dispatch) => ({
+    updateSDG: (sdg) => dispatch(updateSDG(sdg))
+});
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(SunburstChart)

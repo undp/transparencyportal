@@ -52,7 +52,7 @@ import { fetchMarkerBarChartData } from '../../components/markerPage/actions/bar
 import { fetchmarkerSubType } from '../../components/markerPage/actions/markerSubTypes';
 import { updateMarkerSubType } from '../../components/bootstraptable/actions/setMarkerType';
 import { updateCountrySelected } from '../../components/nestedDropList/actions/setCountryField';
-
+import { getAPIBaseUrRl } from '../../utils/commonMethods';
 /****************** Third Party Components  ********************/
 import Helmet from 'preact-helmet';
 
@@ -143,7 +143,7 @@ class Marker extends Component {
 			switch (type) {
 				case 'country':
 					let countryVal = value.value ;
-					this.countryName = value.name;
+					this.countryName = value.label ? value.label: value.name ;
 					this.props.updateSearchCountryField(this.countryName);
 					this.props.loadProjectListMapData(this.props.mapCurrentYear,
 						this.state.themeSelected,
@@ -231,9 +231,10 @@ class Marker extends Component {
 	
 		}
 	
-		categorySelect = (value) => {
+		categorySelect = (selected) => {
 			let yearSelected =  this.props.currentYear;
-			value = ((this.currentMarker.id === 4 ||  this.currentMarker.id === 5 ||  this.currentMarker.id === 6) && value) ? value.replace(/ /g,'+') :value;
+			this.subMarkerSelected = selected.label;
+			let value = ((this.currentMarker.id === 4 ||  this.currentMarker.id === 5 ||  this.currentMarker.id === 6) && selected) ? selected.value.replace(/ /g,'+') : selected.value;
 			this.props.updateMarkerSubType(value);
 			this.hideTable = value;
 			this.props.loadProjectListMapData(this.props.mapCurrentYear,
@@ -264,6 +265,7 @@ class Marker extends Component {
 			this.renderMarkerSummary = 1;
 			this.countryCode ='global';
 			this.hideTable = false;
+			this.subMarkerSelected = '';
 			this.state = {
 				projectList: [],
 				themeSelected: '',
@@ -380,37 +382,17 @@ class Marker extends Component {
 		}
 
 		componentWillReceiveProps(nextProps) {
-			if (this.props.mapCurrentYear !== nextProps.mapCurrentYear) {
-				this.setState({
-					dropListFilterobj: {
-						...this.state.dropListFilterobj,
-						year: {
-							...this.state.dropListFilterobj.year,
-							value: nextProps.mapCurrentYear
-						}
-					}
-				}, () => {
-					this.generateFilterListUrl();
-				});
 
-				this.props.loadProjectListMapData(nextProps.mapCurrentYear,
-					this.state.themeSelected,
-					this.state.unitSelected,
-					this.state.sourceSelected,
-					this.state.sdgSelected,
-					this.currentMarker.id,
-					nextProps.currentMarkerSubType.markerSubType
-				);
-			}
 			if (this.props.currentYear !== nextProps.currentYear) {
 				this.props.loadProjectListMapData(nextProps.currentYear,
 					this.state.themeSelected,
-					this.state.unitSelected,
+					this.props.currentCountrySelected ? this.props.currentCountrySelected.countrySelected: '' ,
 					this.state.sourceSelected,
 					this.state.sdgSelected,
 					this.currentMarker.id,
 					nextProps.currentMarkerSubType.markerSubType
 				);
+
 				( this.props.currentCountrySelected.countrySelected  !== '') ?
 					this.props.fetchMarkerData(nextProps.currentYear,this.currentMarker.id,this.props.currentCountrySelected.countrySelected,nextProps.currentMarkerSubType.markerSubType  )
 					:	this.props.fetchMarkerData(nextProps.currentYear,this.currentMarker.id,'all',nextProps.currentMarkerSubType.markerSubType);
@@ -464,36 +446,35 @@ class Marker extends Component {
 		}
 		renderExportPopup() {
 	
-			const source = this.state.dropListFilterobj.sources.value,
-				year = this.props.currentYear,
-				units = this.props.currentCountrySelected.countrySelected,
-				keyword = this.state.searchText,
-				sectors = this.state.dropListFilterobj.themes.value,
-				sdgs = this.state.dropListFilterobj.sdg.value;
-	
+			const year = this.props.currentYear,
+				units = this.props.currentCountrySelected.countrySelected;
+
 			let data, loading, templateType;
 			data = {
 				year: this.props.currentYear,
-				unitSelected: this.props.currentCountrySelected.countrySelected,
+				unitSelected: this.countryName === 'Recipient Region /Country' ?this.props.currentCountrySelected.countrySelected: this.countryName,
 				donorSelected: this.state.dropListFilterobj.sources.label,
-				mapData: this.props.outputData.data,
+				mapData: this.props.projectListMapData.data.length === 1 ? this.props.outputData.data : this.props.projectListMapData.data ,
 				projectList: this.props.projectList,
 				sectorSelected: this.state.dropListFilterobj.themes.label,
 				sdgSelected: this.state.dropListFilterobj.sdg.label,
 				lastUpdatedDate: getFormmattedDate(this.props.lastUpdatedDate.data.last_updated_date),
-				title: this.currentMarker.title
+				title: this.currentMarker.title+ ' Marker',
+				marker_id: this.currentMarker.id,
+				aggregate: this.props.aggregate.data,
+				markerSubType: this.subMarkerSelected,
+				markerChartData: this.props.markerChartData.data,
+				markerDesc: this.props.markerDescData.data
 			};
-	
 			loading = this.props.projectListMapData.loading || this.props.outputData.loading;
-			templateType = 'projects_global';
-	
-			
+			templateType = 'profile_our_approaches';
+
 			return (
 				<ExportPopup
 					templateType={templateType}
 					data={data}
 					loading={loading}
-					downloadCsv={()=>{this.props.downLoadProjectListCsv(year,keyword,source,sectors,units,'','','','',this.currentMarker.id,this.props.currentMarkerSubType.markerSubType,'')}}
+					downloadCsv={()=>{this.props.downLoadProjectListCsv(year,'','','',units,'','','','',this.currentMarker.id,this.props.currentMarkerSubType.markerSubType,'')}}
 					onCloseModal={() => this.hideExportModal()}
 				/>
 			);
@@ -582,7 +563,7 @@ class Marker extends Component {
 						<section class={style.markerTypeFilter}>
 							<DropDown
 								newclass
-								handleClick={(value) => this.categorySelect(value.value)}
+								handleClick={(value) => this.categorySelect(value)}
 								options={optionData}
 								labelStyle={style.labelStyle}
 								placeHolder="Select"
@@ -621,7 +602,7 @@ class Marker extends Component {
 								!this.props.aggregate.loading ?
 									Object.keys(this.props.aggregate.data).length ?
 										<div class={style.infoWrapper}>
-											<div class={style.imageWrapper}>{this.currentMarker ? <img class={style.marker_image} src={this.currentMarker.image_2} alt="sdg icon" />:null}</div>
+											<div class={style.imageWrapper}>{this.currentMarker ? <img class={style.marker_image} src={getAPIBaseUrRl()+this.currentMarker.image_2} alt="sdg icon" />:null}</div>
 											<div class={style.tableWrapper}>
 												<ul class={style.list}>
 													<li class={style.listItem}>
@@ -678,6 +659,9 @@ class Marker extends Component {
 									{'* The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.'}
 								</div>
 							</div>
+							{
+								!this.state.listSelected ? window.dispatchEvent(new Event('resize')) : null
+							}
 							<div class={this.state.listSelected ? style.projectListWrapper : style.hide}>
 								<BootTable data={projectList}
 									handleFilterChange={(type, value) => this.handleFilterChange(type, value)}

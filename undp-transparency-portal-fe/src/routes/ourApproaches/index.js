@@ -12,15 +12,14 @@ import Helmet from 'preact-helmet';
 /************************* Redux Action Files ************************/
 import { setPageHeader } from '../../components/urlBreadCrumb/data/actions';
 import { onChangeRoute } from '../../shared/actions/routerActions';
-
-
-import { aboutUsInfo } from './../../assets/json/undpAboutUsData'
+import { aboutUsInfo } from './../../assets/json/undpAboutUsData';
+import { getAPIBaseUrRl } from '../../utils/commonMethods';
 
 /************************* Style Files ************************/
 import style from './style';
 function AboutItem(props){
     return (<section class={style.info}>
-                <img src={props.data.img} class={style.img}/>
+                <img src={getAPIBaseUrRl()+props.data.img} class={style.img}/>
                 <section class={style.infoText}>
                     <a href={props.data.id === 3 ? '/our-approaches/ssc':'/our-approaches/'+props.data.label} class={style.infoTitle}>{props.data.title}</a>
                     <section>{props.data.desc}</section>

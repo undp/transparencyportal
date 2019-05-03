@@ -19,7 +19,7 @@ const SDGLegend = (props) => {
 							: null}
 					>
 						<img class={item.code !== SDG_OTHERS ? style.imageItem : style.othersItem}
-							src={`../../../../${item.image}`}
+							src={props.baseURL+`${item.image}`}
 						/>
 					</span>
 					{item.code === SDG_OTHERS ?

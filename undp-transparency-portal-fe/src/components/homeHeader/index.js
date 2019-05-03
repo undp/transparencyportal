@@ -6,6 +6,7 @@ import style from './style';
 import { connect } from 'preact-redux';
 import ReactGA from 'react-ga';
 import { getFormmattedDate } from '../../utils/dateFormatter';
+import {getAPIBaseUrRl} from '../../utils/commonMethods';
 class homeHeader extends Component {
 	constructor(props) {
 		super(props);
@@ -146,7 +147,7 @@ class homeHeader extends Component {
 										'External Links',
 										'UNDP Logo',
 										'http://www.undp.org')}
-									href="http://www.undp.org"><img src="/assets/images/logo.png" alt="UNDP Logo" /></a>
+									href="http://www.undp.org"><img src={getAPIBaseUrRl()+"/assets/images/logo.png"} alt="UNDP Logo" /></a>
 							</span>
 							<span class={style.projectTitle}>Transparency Portal</span>
 							<span class={style.dateUpdatedMobile}>{`Data last updated on: ${getFormmattedDate(this.props.lastUpdatedDate.data.last_updated_date)}`}</span>

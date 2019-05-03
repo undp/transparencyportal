@@ -21,6 +21,7 @@ import { getFormmattedDate } from '../../../utils/dateFormatter';
 import { connect } from 'preact-redux';
 import commonConstants from '../../../utils/constants';
 import Api from '../../../lib/api';
+import { getAPIBaseUrRl } from '../../../utils/commonMethods';
 
 class Tabs extends Component {
     constructor(props) {
@@ -336,6 +337,22 @@ class Tabs extends Component {
             this.setState({ toggleDropDown: false })
         }
     }
+
+    mapLabelToValue = (value, list) => {
+        if (list.length) {
+            let label = list.filter((item) => {
+                return item.value == value
+            })
+            if (label.length) {
+                return label[0].label
+            } else {
+                return ''
+            }
+        } else {
+            return ''
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
        
         this.setState({
@@ -374,7 +391,7 @@ class Tabs extends Component {
             this.setState({ yearSelected: nextProps.mapCurrentYear });
             if (nextProps.countryData.data.country_name != "Global" && nextProps.countryData.data.type != 1)
                 this.props.updateProjectList(nextProps.mapCurrentYear, nextProps.countryData.data.country_iso3);
-            switch (this.props.tabSelected) {
+            switch (nextProps.tabSelected) {
                 case "country": this.props.loadGlobalMapData(nextProps.mapCurrentYear, nextProps.countryRegionFilter.country.iso3);
                     break;
                 case "themes":
@@ -785,20 +802,7 @@ class Tabs extends Component {
             resize: false
         });
     }
-    mapLabelToValue = (value, list) => {
-        if (list.length) {
-            let label = list.filter((item) => {
-                return item.value == value;
-            });
-            if (label.length) {
-                return label[0].label;
-            } else {
-                return '';
-            }
-        } else {
-            return '';
-        }
-    }
+
     findSelectedItemDetails = (dataList, code) => {
         let selectedItem;
         dataList.forEach((item, index) => {
@@ -835,11 +839,10 @@ class Tabs extends Component {
             keywords = '',
             sectors = '',
             sdgs = '';
-
+            
 
         switch (this.props.tabSelected) {
             case 'country':
-
                 units = countryRegionFilter.country && countryRegionFilter.country.iso3 ? countryRegionFilter.country.iso3 : "",
                 templateType = "home_countries"
                 data = {
@@ -871,6 +874,7 @@ class Tabs extends Component {
                 }
                 break;
             case 'donors':
+
                 units = donorFilter && donorFilter.operatingUnits ? donorFilter.operatingUnits : "",
                 sdgs = donorFilter && donorFilter.sdg ? donorFilter.sdg : "",
                 sectors = donorFilter && donorFilter.themes ? donorFilter.themes : "",
@@ -896,7 +900,7 @@ class Tabs extends Component {
                         resourcesModalityContributionAggregate: aggregateCalculator(this.props.donorProfile.resourcesModalityContribution.data.total, 'total_contribution'),
                         donorSelected: this.props.donorFilter.budgetSourcesLabel ? this.props.donorFilter.budgetSourcesLabel : "",
                         unitSelected: this.props.donorFilter.operatingUnitsLabel ? this.props.donorFilter.operatingUnitsLabel : "",
-                        sectorSelected: this.mapLabelToValue(this.props.donorFilter.themes ? this.props.donorFilter.themes : "", this.props.themeList.masterThemeList),
+                        sectorSelected: this.mapLabelToValue(this.props.donorFilter.themes,this.props.themeList.themes),
                         sdgSelected: this.mapLabelToValue(this.props.donorFilter.sdg ? this.props.donorFilter.sdg : "", this.props.sdgData.masterSdgList),
                         lastUpdatedDate: getFormmattedDate(this.props.lastUpdatedDate.data.last_updated_date),
                         sdgNumber: this.props.donorFilter.sdg ? this.props.donorFilter.sdg: "" ,
@@ -965,17 +969,18 @@ class Tabs extends Component {
                 break;
 
             case 'themes':
-                
                 source = themeFilter && themeFilter.budgetSources ? themeFilter.budgetSources : "";
                 units = themeFilter && themeFilter.operatingUnits ? themeFilter.operatingUnits : "";
                 sectors = themeFilter && themeFilter.selectedTheme ? themeFilter.selectedTheme : "";
                 mapData = this.props.themesMapData.data.length == 1 ? this.props.outputMapData.data : undefined
-                recipient = this.props.themesMapData.data.length == 1 ? 1 : undefined
+                recipient = this.props.themesMapData.data.length == 1 ? 1 : undefined;
                 data = {
                     ...data,
                     title: "Our Focus",
                     mapData: mapData,
                     recipient: recipient,
+                    signatureOutcome: this.props.signatureOutcome,
+                    tabSelected: 'themes',
                     donorSelected: this.props.themeFilter.budgetSourcesLabel && this.props.themeFilter.budgetSourcesLabel != "" ? this.props.themeFilter.budgetSourcesLabel : undefined,
                     unitSelected: this.props.themeFilter.operatingUnitsLabel && this.props.themeFilter.operatingUnitsLabel != "" ? this.props.themeFilter.operatingUnitsLabel : undefined
                 }
@@ -1004,7 +1009,6 @@ class Tabs extends Component {
                 }
                 break;
             case 'signature':
-                
                 source = themeFilter && themeFilter.budgetSources ? themeFilter.budgetSources : "";
                 units = themeFilter && themeFilter.operatingUnits ? themeFilter.operatingUnits : "";
                 signatureSolution = themeFilter && themeFilter.selectedTheme ? themeFilter.selectedTheme : "";
@@ -1015,9 +1019,12 @@ class Tabs extends Component {
                     title: "Signature Solutions",
                     mapData: mapData,
                     recipient: recipient,
+                    tabSelected: 'signature',
+                    signatureOutcome: this.props.signatureOutcome,
                     donorSelected: this.props.themeFilter.budgetSourcesLabel && this.props.themeFilter.budgetSourcesLabel != "" ? this.props.themeFilter.budgetSourcesLabel : undefined,
                     unitSelected: this.props.themeFilter.operatingUnitsLabel && this.props.themeFilter.operatingUnitsLabel != "" ? this.props.themeFilter.operatingUnitsLabel : undefined
                 }
+
                 templateType = "home_sectors"
                 if (this.props.themeFilter.selectedTheme || this.props.themeFilter.selectedTheme == "0") {
                     data = {
@@ -1031,6 +1038,8 @@ class Tabs extends Component {
                         lastUpdatedDate: getFormmattedDate(this.props.lastUpdatedDate.data.last_updated_date)
                     }
                     loading = this.props.themeSliderData.loading || this.props.themeSummary.loading || this.props.outputMapData.loading;
+                    
+                    data.summaryDetails.countries = this.props.themeSliderData.data.aggregate? this.props.themeSliderData.data.aggregate.countries : null;
                 }
                 else {
                     data = {
@@ -1146,7 +1155,7 @@ class Tabs extends Component {
         this.setState({ showHideMapCard: !this.state.showHideMapCard });
     }
     getFlagURL = (country) => {
-        return Api.API_BASE+'/media/flag_icons/'+country.country_iso3+'.svg';  
+        return getAPIBaseUrRl()+'/media/flag_icons/'+country.country_iso3+'.svg';  
     }
     render({ countryList, countryRegionFilter, sdgData, themeSummary, themeList, donorFilter, themeFilter, sdgFilter, tabSelected, mapCurrentYear,
         sankeyYear, bugetType
@@ -1228,7 +1237,7 @@ class Tabs extends Component {
                             fetchThemeSummaryData={this.props.fetchThemeSummaryData}
                             fetchSignatureSummaryData={this.props.fetchSignatureSummaryData}
                             fetchDonorFundListData={this.props.fetchDonorFundListData}
-                            baseURL={Api.API_BASE}
+                            baseURL={getAPIBaseUrRl()}
                             
                         />
                     </div>
@@ -1459,7 +1468,7 @@ class Tabs extends Component {
                                                         handleChange={this.handleSearchClick}
                                                         dataList={this.props.countryRegionsearchResult}
                                                         wrapperClass={style.dropDowncountry}
-                                                        baseURL={Api.API_BASE}
+                                                        baseURL={getAPIBaseUrRl()}
                                                     />
                                                 }
                                             </div>
@@ -1471,7 +1480,7 @@ class Tabs extends Component {
                                                         <span class={style.titleName}>{this.props.countryData.data.country_name}</span>
                                                         :
                                                         <div>
-                                                            <img class={style.flagIcon} src={Api.API_BASE+'/media/flag_icons/'+this.props.countryData.data.country_iso3+'.svg'}/>
+                                                            <img class={style.flagIcon} src={getAPIBaseUrRl()+'/media/flag_icons/'+this.props.countryData.data.country_iso3+'.svg'}/>
                                                             <a class={style.activeTitleName} href={`/profile/${this.props.countryData.data.type == 1 ? this.props.countryData.data.country_iso3 : this.props.countryData.data.country_iso2}/recipientprofile`}>{this.props.countryData.data.country_name}</a>
                                                         </div>
                                                 }
@@ -1647,7 +1656,7 @@ class Tabs extends Component {
                                                                 fetchSdgListData={this.props.fetchSdgListData}
                                                                 fetchThemeSummaryData={this.props.fetchThemeSummaryData}
                                                                 fetchDonorFundListData={this.props.fetchDonorFundListData}
-                                                                baseURL={Api.API_BASE}
+                                                                baseURL={getAPIBaseUrRl()}
                                                             />
                                                         </div>
                                                     }
@@ -1727,7 +1736,7 @@ class Tabs extends Component {
                                                                     tabSelected={this.props.tabSelected}
                                                                     fetchThemeSummaryData={this.props.fetchThemeSummaryData}
                                                                     fetchDonorFundListData={this.props.fetchDonorFundListData}
-                                                                    baseURL={Api.API_BASE}
+                                                                    baseURL={getAPIBaseUrRl()}
                                                                 />
                                                             </div>
                                                         }
@@ -1815,7 +1824,7 @@ class Tabs extends Component {
                                                                     tabSelected={this.props.tabSelected}
                                                                     fetchSignatureSummaryData={this.props.fetchSignatureSummaryData}
                                                                     fetchDonorFundListData={this.props.fetchDonorFundListData}
-                                                                    baseURL={Api.API_BASE}
+                                                                    baseURL={getAPIBaseUrRl()}
                                                                 />
                                                             </div>
                                                         }
@@ -1911,7 +1920,7 @@ class Tabs extends Component {
                                                                     fetchSdgListData={this.props.fetchSdgListData}
                                                                     fetchThemeSummaryData={this.props.fetchThemeSummaryData}
                                                                     fetchDonorFundListData={this.props.fetchDonorFundListData}
-                                                                    baseURL={Api.API_BASE}
+                                                                    baseURL={getAPIBaseUrRl()}
                                                                 />
                                                             </div>
                                                         }

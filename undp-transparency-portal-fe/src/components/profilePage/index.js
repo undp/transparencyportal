@@ -9,7 +9,7 @@ import { loadDonorProfileMapData } from '../../shared/actions/mapActions/donorPr
 import { loadOutputsMapData } from '../../shared/actions/mapActions/fetchMapOutputs';
 import { updateBarChartOnArcHover } from './actions/recipientActions/budgetVsExpenseCharts';
 import { fetchthemeListData } from '../../shared/actions/commonDataActions';
-import Api from '../../lib/api';
+import {getAPIBaseUrRl} from '../../utils/commonMethods';
 const mapStateToProps = (state) => {
     // Donor Profile
     const donorBasicDetails = state.donorProfile.basicDetails ?
@@ -40,7 +40,7 @@ const mapStateToProps = (state) => {
         budgetVsExpense=state.recipientProfile.budgetVsExpense?state.recipientProfile.budgetVsExpense:[],
         budgetVsExpenseSdg = state.recipientProfile.budgetVsExpenseSdg,
         yearList = state.yearList,
-        baseURL = Api.API_BASE;
+        baseURL = getAPIBaseUrRl();
 
     const {recipientMapData, donorProfileMapData} = state.mapData
 

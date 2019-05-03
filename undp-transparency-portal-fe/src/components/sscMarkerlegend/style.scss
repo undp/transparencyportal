@@ -45,7 +45,7 @@
         align-items: center;
         opacity: 0.9;
         @media screen and (min-width:493px) {
-            margin-right: 5px;
+            margin-left: 25px;
         }
         cursor: pointer;
         .capacity_legend_block,
@@ -57,16 +57,16 @@
             font-weight: bold;
         }
         .capacity_legend_block {
-            border: 1px solid #FB873E;
-            background-color: #FB873E;
+            border: 1px solid #CC0000;
+            background-color: #CC0000;
         }
         .knowledge_legend_block {
-            border: 1px solid #A749CB;
-            background-color: #A749CB;
+            border: 1px solid #0099FF;
+            background-color: #0099FF;
         }
         .partnership_legend_block{
-            border: 1px solid #69BC2B;
-            background-color: #69BC2B;
+            border: 1px solid #FF6600;
+            background-color: #FF6600;
         }
         .legend_text {
             padding-left: 10px;
@@ -85,13 +85,13 @@
             }
         }
         .partnership_text {
-            color: #69BC2B;
+            color: #FF6600;
         }
         .knowledge_text {
-            color: #A749CB;
+            color: #0099FF;
         }
         .capacity_text {
-            color: #FB873E;
+            color: #CC0000;
         }
         &:hover{
             opacity: 1;

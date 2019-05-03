@@ -1,5 +1,5 @@
 @import "../../node_modules/react-image-gallery/styles/css/image-gallery.css";
-
+@import "../../node_modules/leaflet/dist/leaflet.css";
 html, body {
 	height: 100%;
 	width: 100%;
@@ -301,3 +301,4 @@ input[type=text]::-ms-clear {
 	font: 12px Helvetica Neue,Arial,Helvetica,sans-serif;
 	background-color: rgba(110,204,57,.6);
 }
+

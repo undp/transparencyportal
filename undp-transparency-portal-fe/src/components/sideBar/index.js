@@ -292,7 +292,6 @@ class SideBar extends Component {
 						: this.props.data.data.sdg
 				);
  
-		
 		const searchDonorText = budgetSourceSearch.searchDonorText;
 		
 		return (
@@ -308,6 +307,7 @@ class SideBar extends Component {
 									class={style.searchField}
 									placeholder="Enter donor name"
 									onInput={(e) => { this.handleOnInputChange(e); }}
+									autocomplete="off"
 								/>
 								{
 									searchDonorText === '' ? <span class={`${style.searchIcon} ${style.searchIconSearch}`}></span> :
@@ -379,6 +379,7 @@ class SideBar extends Component {
 						data={this.props.sdgSliderData}
 						loading={this.props.sdgSliderLoading}
 						sdgTargetData={this.props.sdgTargetSliderData}
+						baseURL={getAPIBaseUrRl()}
 					/>
 				</div>
 
