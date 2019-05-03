@@ -410,6 +410,7 @@ class FilterCollection extends Component {
                                             onInput={(event) => this.handleSearchChange(event)}
                                             onClick={() => this.openDropDown()}
                                             placeholder="Enter country name"
+                                            autocomplete="off"
                                         />
                                         {
                                             this.state.enableSearchIcon ?

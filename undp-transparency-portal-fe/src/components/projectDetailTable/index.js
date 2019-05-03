@@ -15,7 +15,7 @@ import { outputResults } from '../../assets/json/ourputResults'
 import { outputDetailData } from '../../assets/json/outputDetailData'
 import ReactGA from 'react-ga';
 import Cards from '../nestedCards'
-
+import {getAPIBaseUrRl} from '../../utils/commonMethods';
 
 
 
@@ -91,11 +91,11 @@ class ProjectOutputTable extends Component {
                     currentMarker= _.find(aboutUsInfo.data,(marker) => {
                         return marker.id === element
                     });
-                    imgSrc.push(currentMarker?{ src:currentMarker.image_2,alt:currentMarker.title,type:1 }:{src:'',alt:'',type:1});
+                    imgSrc.push(currentMarker?{ src:getAPIBaseUrRl()+currentMarker.image_2,alt:currentMarker.title,type:1 }:{src:'',alt:'',type:1});
                 })
             } else if(typeof(cell[0])==='string') {
                 cell.forEach((element)=> {
-                    imgSrc.push({src:`/assets/icons/${element}.svg`,alt:element,type:2})
+                    imgSrc.push({src:getAPIBaseUrRl()+`/assets/icons/${element}.svg`,alt:element,type:2})
                 })
             }
         }

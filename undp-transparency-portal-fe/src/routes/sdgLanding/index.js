@@ -11,13 +11,19 @@ import ExportPopup from '../../components/exportPopup';
 import SDGLandingPage from '../../components/sdgLandingPage';
 import Footer from '../../components/footer';
 import  commonConstants  from '../../utils/constants';
+
 /****************** Third Party Components  ********************/
 import Helmet from 'preact-helmet';
 
 /*********************** Action Files  **************************/
 import { setPageHeader } from '../../components/urlBreadCrumb/data/actions';
 import { onChangeRoute } from '../../shared/actions/routerActions';
-import { downLoadDonorsDetailsCsv } from '../../shared/actions/downLoadCSV';
+import { downLoadDonorsDetailsCsv,downLoadProjectListCsv } from '../../shared/actions/downLoadCSV';
+import { updateSDG } from './action';
+
+/*********************** Common Utility Files *********************/
+import { getFormmattedDate } from '../../utils/dateFormatter';
+
 /*********************** Style Files  **************************/
 import style from './style';
 class SdgLanding extends Component {
@@ -111,30 +117,34 @@ class SdgLanding extends Component {
 
 	componentDidMount() {
 		window.scrollTo(0, 0);
+		this.props.updateSDG('');
 		this.setPageHeader();
 	}
 	hideExportModal() {
 		this.setState({ showExportModal: false })
 	}
 	showExportModal() {
-		this.setState({ showExportModal: true })
+		this.setState({ showExportModal: true });
 	}
 	renderExportPopup() {
 
-		var data = {
-			title: 'Sustainable Development Goals'
-		},
-		loading = 	false,
-		templateType = "sdg";
+		let data = {
+			title: 'Sustainable Development Goals',
+			chartData: this.props.sdgSunburstData ,
+			lastUpdatedDate: getFormmattedDate(this.props.lastUpdatedDate.data.last_updated_date),
+			sdg_code_selected: this.props.sdgSelected.sdg_code_selected
+		};
 
+		let loading = 	false,
+			templateType = "sdgChart";
 		return (
 			<ExportPopup
 				templateType={templateType}
 				data={data}
 				loading={loading}
 				onCloseModal={() => this.hideExportModal()}
-			>
-			</ExportPopup>
+				downloadCsv={()=>{this.props.downLoadProjectListCsv(this.props.currentYear,'','','','',this.props.sdgSelected.sdg_code_selected,'','','')}}
+			/>
 		)
 	}
 	render({ router }, { currentYear }, {donorData}) {
@@ -142,12 +152,12 @@ class SdgLanding extends Component {
 			description = 'At the request of the MoH, UNDP procures a range of medicines and medical products as an emergency measure, and builds the capacity needed to support a transparent, cost-effective procurement system for the Ministry.',
 			filterUrl = `year=${this.props.currentYear}`;
 		return (
-			< div >
-			{
-				this.state.showExportModal ?
-					this.renderExportPopup()
-					: null
-			}
+			<div >
+				{
+					this.state.showExportModal ?
+						this.renderExportPopup()
+						: null
+				}
 			<Helmet title={title}
 				meta={[
 					{ name: 'description', content: description },
@@ -157,14 +167,13 @@ class SdgLanding extends Component {
 					{ property: 'twitter:description', content: description }
 				]}
 			/>
-			<CommonHeader active="sdg" title={'Sustainable development goals'} enableSearch enableBanner/>
+			<CommonHeader active="sdg" title={'Sustainable development goals'} enableSearch enableBanner />
 			<div class={style.breadCrumbWrapper}>
 				<UrlBreadCrumb />
 				<EmbedSection
 					onClickEmbed={this.openEmbedModal}
 					showExportModal={() => this.showExportModal()}
 					startYear={commonConstants.SDG_YEAR}
-					hideExport={'true'}
 				 />
 			</div>
 			<SDGLandingPage
@@ -188,16 +197,18 @@ class SdgLanding extends Component {
 
 }
 const mapStateToProps = (state) => ({
-		router: state.router,
-		sdgSunburstData: state.sdgSunburstData,
-		currentYear: state.yearList.currentYear
+	router: state.router,
+	sdgSunburstData: state.sdgSunburstData,
+	currentYear: state.yearList.currentYear,
+	sdgSelected: state.sdgSelected,
+	lastUpdatedDate: state.lastUpdatedDate
 });
-
-
 
 const mapDispatchToProps = (dispatch) => ({
 	setPageHeader: data => dispatch(setPageHeader(data)),
 	onChangeRoute: (title) => dispatch(onChangeRoute(title)),
+	updateSDG: (sdgCode) => dispatch(updateSDG(sdgCode)),
+	downLoadProjectListCsv: (year,keyword,source,sectors,units,sdgs,type,signatureSolution,target,markerId,markerSubType,l2marker) => dispatch(downLoadProjectListCsv(year,keyword,source,sectors,units,sdgs,type,signatureSolution,target,markerId,markerSubType,l2marker)),
 	downLoadDonorsDetailsCsv: (year,fundType,fundStream,donorType) => dispatch(downLoadDonorsDetailsCsv(year,fundType,fundStream,donorType))
 });
 

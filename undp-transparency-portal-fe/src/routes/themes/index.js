@@ -195,9 +195,8 @@ class Themes extends Component {
 			  source = '',
 			  units = '',
 			  keyword = '',
-			  sdgs = '';	
+			  sdgs = '';
 				
-
 
 		data = {
 			year: this.props.themeSliderData.data.aggregate.year,
@@ -207,6 +206,8 @@ class Themes extends Component {
 			mapData: this.props.outputData.data,
 			title: this.props.themeSliderData.data.aggregate.sector_name,
 			projectList: this.props.projectList.projectList,
+			tabSelected: 'themes',
+			donutChartData: this.props.donutChartData.resourcesModalityContribution,
 			lastUpdatedDate: getFormmattedDate(this.props.lastUpdatedDate.data.last_updated_date)
 		};
 
@@ -289,7 +290,9 @@ const mapStateToProps = (state) => ({
 	projectList: state.projectList,
 	mapCurrentYear: state.mapData.yearTimeline.mapCurrentYear,
 	lastUpdatedDate: state.lastUpdatedDate,
-	startAndEndYears: state.startAndEndYears
+	startAndEndYears: state.startAndEndYears,
+	donutChartData: state.donorProfile
+	
 });
 
 const mapDispatchToProps = (dispatch) => ({

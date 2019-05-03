@@ -12,6 +12,6 @@ export default function (config) {
       handler: 'networkFirst'
     }]
   };
-
+  //config.output.publicPath = '';
   return preactCliSwPrecachePlugin(config, precacheConfig);
 }

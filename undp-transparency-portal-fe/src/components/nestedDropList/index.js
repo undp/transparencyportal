@@ -127,7 +127,7 @@ class NestedDropDown extends Component {
         this.setState({ closeBtnActive: true })
         this.props.handleClickBoth && this.props.handleClickBoth(newValue.name, newValue.code, newValue.unit_type)
         if(this.props.handleClick){
-            this.props.preserve && this.props.preserve === 'false' ? this.props.handleClick(newValue.name, newValue.code, newValue.unit_type) : this.props.handleClick(newValue.code,'',newValue.unit_type);
+            this.props.preserve && this.props.preserve === 'false' ? this.props.handleClick(newValue.name, newValue.code, newValue.unit_type) : this.props.handleClick(newValue.code,this.props.isSSC === 'true' ? newValue.name : '',newValue.unit_type);
 
         }
         this.setState({ labelValue: newValue.name, selectedValue: newValue, showSelect: false, inputval: '', closeBtnActive: true });

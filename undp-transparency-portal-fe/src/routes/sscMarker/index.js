@@ -117,9 +117,9 @@ class SSCMarker extends Component {
 			},
 			checkList: [
 				{
-				flag: true,
-				label: 'Title',
-				key: 'title'
+					flag: true,
+					label: 'Title',
+					key: 'title'
 				},
 				{
 					flag: true,
@@ -235,7 +235,7 @@ class SSCMarker extends Component {
 			...this.state.dropListFilterobj
 		};
 		for (let key in filterObj) {
-			if (key == 'year') {
+			if (key === 'year') {
 				url = url + '&' + key + '=' + filterObj[key].value;
 			}
 		}
@@ -339,6 +339,7 @@ class SSCMarker extends Component {
 		this.setPageHeader();
 	}
 	onSelectMarkerType = (type, l2Country) => {
+
 		if (l2Country === 'l2Country'){
 			this.currentL2Country_iso3 = type.code ? type.code : '';
 			this.currentL2Country_name = type.label ? type.label : '';
@@ -377,12 +378,11 @@ class SSCMarker extends Component {
 		}, () => {
 			this.generateFilterListUrl();
 		});
-
 		switch (type) {
 			case 'country':
 			case 'l2Country':
-				this.onSelectCountry(type, value)
-			break;
+				this.onSelectCountry(type, value);
+				break;
 			case 'search':
 				this.setState({
 					keyword: value
@@ -419,36 +419,46 @@ class SSCMarker extends Component {
 	renderExportPopup() {
 
 		const source = this.state.dropListFilterobj.sources.value,
-		year = this.props.mapCurrentYear,
-		units = this.state.dropListFilterobj.country.value,
-		keyword = this.state.searchText,
-		sectors = this.state.dropListFilterobj.themes.value,
-		sdgs = this.state.dropListFilterobj.sdg.value;	
-
+			year = this.props.mapCurrentYear,
+			units = this.props.sscCountry.country_iso3,
+			keyword = this.state.searchText,
+			sectors = this.state.dropListFilterobj.themes.value,
+			l2marker= this.props.sscL2Country.name,
+			markerSubType = this.props.sscMarkerType.type,
+			sdgs = this.state.dropListFilterobj.sdg.value;
+		
 		let data, loading, templateType;
+		
 		data = {
 			year: this.props.mapCurrentYear,
-			unitSelected: this.state.dropListFilterobj.country.label,
+			unitSelected: this.selectedCountry ? this.selectedCountry.value: '',
 			donorSelected: this.state.dropListFilterobj.sources.label,
-			mapData: this.props.outputData.data,
+			mapData: this.props.projectListMapData.data,
 			projectList: this.props.projectList,
 			sectorSelected: this.state.dropListFilterobj.themes.label,
 			sdgSelected: this.state.dropListFilterobj.sdg.label,
-			sdgs: sdgs,
+			sdgs,
+			sscAggregae: this.props.aggregate,
 			lastUpdatedDate: getFormmattedDate(this.props.lastUpdatedDate.data.last_updated_date),
-			title: 'South-South and Triangular Cooperation'
+			title: 'South-South and Triangular Cooperation',
+			sscCountry: this.props.sscCountry,
+			sscL2Country: this.props.sscL2Country,
+			levelTwoCountries: this.props.levelTwoCountries,
+			sscMarkerPathData: this.props.sscMarkerPathData,
+			chartData: this.props.markerChartData,
+			sscMarkerType: this.props.sscMarkerType,
+			sscApproachesData: this.props.sscApproachesData
 		};
 
 		loading = this.props.projectListMapData.loading || this.props.outputData.loading;
-		templateType = 'projects_global';
+		templateType = 'sscMarker';
 
-		
 		return (
 			<ExportPopup
 				templateType={templateType}
 				data={data}
 				loading={loading}
-				downloadCsv={()=>{this.props.downLoadProjectListCsv(year,keyword,source,sectors,units,sdgs)}}
+				downloadCsv={()=>{this.props.downLoadProjectListCsv(year,keyword,source,sectors,units,sdgs,'','','',3,markerSubType,l2marker)}}
 				onCloseModal={() => this.hideExportModal()}
 			/>
 		);
@@ -466,9 +476,9 @@ class SSCMarker extends Component {
 		this.props.fetchlevelTwoCountry(this.currentCountry_iso3, this.selectedMarkerSubtype);
 		this.props.fetchmarkerSubType(this.state.sscMarkerId, this.currentCountry_iso3);
 		
-		if(unitType === 'HQ')
+		if (unitType === 'HQ')
 			this.props.loadProjectListMapData(this.props.mapCurrentYear,'',this.currentCountry_iso3,'','',this.state.sscMarkerId);
-		else if(this.currentUnitType === 'HQ')
+		else if (this.currentUnitType === 'HQ')
 			this.props.loadProjectListMapData(this.props.mapCurrentYear,'','','','',this.state.sscMarkerId);
 
 		this.currentUnitType = unitType;
@@ -499,7 +509,7 @@ class SSCMarker extends Component {
 				this.props.selectL2Country({
 					country_iso3: value.label ? value.label : '',
 					isSelected: 1,
-					name : value.value ? value.value: ''
+					name: value.value ? value.value: ''
 				});
 				if(value.value)
 					this.selectedL2Country = value;
@@ -582,7 +592,7 @@ class SSCMarker extends Component {
 			} else {
 				l2CountryData = [];
 			}
-		
+
 		return (
 			<div>
 				{
@@ -647,8 +657,8 @@ class SSCMarker extends Component {
 								placeHolder="Recipient Country / Region"
 								preserve={'true'}
 								baseURL={getAPIBaseUrRl()}
-								selectedValue={this.selectedCountry ? this.selectedCountry.value : ''}
-								selectedLabel={this.selectedCountry ? this.selectedCountry.name : ''}
+								selectedValue={this.selectedCountry ? this.selectedCountry.label : ''}
+								selectedLabel={this.selectedCountry ? this.selectedCountry.value : ''}
 								isSSC={'true'}
 								dropRecCountryDownWrapper={style.dropRecCountryDownWrapper}
 								dropRecCountryDownItem={style.dropRecCountryDownItem}
@@ -707,7 +717,7 @@ class SSCMarker extends Component {
 							!this.props.aggregate.loading ?
 								Object.keys(this.props.aggregate.data).length ?
 									<div class={style.summaryWrapper}>
-										{this.state.sscMarkerId ? <div class={style.imgDiv}><img class={style.marker_image} src={this.currentMarker.image_2} alt="ssc" /></div>:null}
+										{this.state.sscMarkerId ? <div class={style.imgDiv}><img class={style.marker_image} src={getAPIBaseUrRl()+this.currentMarker.image_2} alt="ssc" /></div>:null}
 										<ul class={`${style.list} ${style.ulWithFlag}`}>
 											<li class={style.listItem}>
 												<span class={style.value}>{this.props.aggregate.data.budget && numberToCurrencyFormatter(this.props.aggregate.data.budget, 2)}</span>
@@ -759,14 +769,20 @@ class SSCMarker extends Component {
 								onCountrySelect={(country)=>this.handleFilterChange("country", {value:country.country_iso3, name:country.country_name})}
 							/>
 						</div>
+						{
+							!(this.state.listSelected|| this.getMapImageVisibility()) ? window.dispatchEvent(new Event('resize')) : null
+						}
 						<div onClick={() => this.onClickMapImage()} class={this.state.listSelected || !this.getMapImageVisibility() ? style.hide : style.mapWrapper}>
-							<img class={style.mapImg} style={this.getMapImageVisibility() ? 'display:block' : 'display:none'} src={'/assets/images/ssc/'+this.markerType+'.png'}/>
+							<img class={style.mapImg} style={this.getMapImageVisibility() ? 'display:block' : 'display:none'} src={getAPIBaseUrRl()+'/assets/images/ssc/'+this.markerType+'.png'}/>
 							<div class={!this.state.showInfoMsg ? style.infoMsg : style.infoMsgBg}>
 								<div class={!this.state.showInfoMsg ?  style.text : style.infoTextOpacity}>Use filter to select the country</div>
 							</div>
 							
 						</div>
-						<SscMarkerlegend onSelectMarkerType={(value) => this.onSelectMarkerType(value, '')} />
+						{
+							!(this.state.listSelected) ? <SscMarkerlegend onSelectMarkerType={(value) => this.onSelectMarkerType(value, '')} />  : null
+						}
+						
 						<div class={this.state.listSelected ? style.projectListWrapper : style.hide}>
 							<BootTable data={projectList}
 							handleFilterChange={(type, value) => this.handleFilterChange(type, value)}
@@ -908,7 +924,11 @@ const mapStateToProps = (state) => {
 		markerSubtypes = state.markerSubTypes,
 		aggregate =state.individualMarkerData,
 		levelTwoCountries = state.levelTwoCountries,
+		sscCountry = state.sscCountry,
+		sscL2Country = state.sscL2Country,
+		sscMarkerType = state.sscMarkerType,
 		sscMarkerPathData = state.sscMarkerPathData;
+
 	return {
 		router: state.router,
 		loading,
@@ -919,6 +939,7 @@ const mapStateToProps = (state) => {
 		mapCurrentYear,
 		themeList,
 		sdgData,
+		sscL2Country,
 		countryList,
 		masterDonorList,
 		outputData,
@@ -927,7 +948,9 @@ const mapStateToProps = (state) => {
 		markerChartData,
 		markerSubtypes,
 		aggregate,
+		sscCountry,
 		levelTwoCountries,
+		sscMarkerType,
 		sscMarkerPathData
 	};
 };
@@ -938,7 +961,7 @@ const mapDispatchToProps = (dispatch) => ({
 	searchOperatingUnitsListData: (searchParam, key) => dispatch(searchOperatingUnitsListData(searchParam, key)),
 	searchResult: (searchParam, key) => dispatch(searchResult(searchParam, key)),
 	onChangeRoute: (title) => dispatch(onChangeRoute(title)),
-	downLoadProjectListCsv: (year,keyword,source,sectors,units,sdgs) => dispatch(downLoadProjectListCsv(year,keyword,source,sectors,units,sdgs)),
+	downLoadProjectListCsv: (year,keyword,source,sectors,units,sdgs,type,signatureSolution,target,markerId,markerSubType,l2marker) => dispatch(downLoadProjectListCsv(year,keyword,source,sectors,units,sdgs,type,signatureSolution,target,markerId,markerSubType,l2marker)),
 	selectSSCCountry: data => dispatch(selectSSCCountry(data)),
 	selectL2Country: data => dispatch(selectL2Country(data)),
 	fetchOurApproachesData: (country, lCountry, markerType) => dispatch(fetchOurApproachesData(country, lCountry, markerType)),

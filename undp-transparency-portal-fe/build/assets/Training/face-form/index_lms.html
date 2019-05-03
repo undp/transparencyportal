@@ -1,0 +1,206 @@
+<html>
+<head>
+    <title>HACT FACE Form Training</title>
+    <meta http-equiv="x-ua-compatible" content="IE=edge" />
+    <style>
+        body {
+            background: #ffffff;
+            overflow: hidden;
+        }
+
+        html, body, table {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+
+        table td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        #nosupport {
+            background: #f5f5f5;
+            margin: 50px 65px;
+            border: 1px solid #d5d5d5;
+            width: calc(100% - 130px);
+            height: calc(100% - 100px);
+        }
+
+        p {
+            font-family: 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
+            font-size: 12pt;
+            color: #303030;
+        }
+
+        a {
+            color: #2D9DDA;
+            text-decoration: none !important;
+        }
+
+    </style>
+    <script>
+        var html5Supported = true,
+                showWarning = false;
+
+        function displayWarning() {
+            if (showWarning) {
+                document.getElementById('nosupport').style.visibility = 'visible';
+            }
+        }
+
+    </script>
+    <!--[if lte IE 9]><script>html5Supported = false;</script><![endif]-->
+
+    <script type="text/javascript">
+        (function () {
+            var settings = {
+                runtimeOrder: [{"type":"html5","url":"index_lms_html5.html"}]
+            };
+
+            var detection = {
+                agent: navigator.userAgent,
+
+                flashEnabled: function () {
+                    var description, version, flashAX,
+                            plugin = navigator.plugins["Shockwave Flash"];
+
+                    if (plugin != null) {
+                        description = plugin.description.split(" ");
+                        version = Number(description[description.length - 2]);
+
+                        return (version >= 10) || isNaN(version);
+                    } else {
+                        try {
+                            flashAX = new ActiveXObject("ShockwaveFlash.ShockwaveFlash.10");
+                            return (flashAX != null);
+                        } catch (e) {
+                        }
+                    }
+
+                    return false;
+                },
+
+                html5Enabled: function () {
+                    return html5Supported;
+                },
+
+                ampEnabled: function () {
+                    return false;
+                },
+
+                isIOS: function () {
+                    return (this.agent.indexOf("AppleWebKit/") > -1 && this.agent.indexOf("Mobile/") > -1)
+                },
+
+                isAndroid: function () {
+                    return (this.agent.indexOf("Android") > -1);
+                },
+
+                isIPad: function () {
+                    return (this.agent.indexOf("iPad") > -1);
+                }
+            };
+
+            var router = {
+
+                init: function () {
+                    var i,
+                            redirected = false,
+                            order = settings.runtimeOrder,
+                            launchMap = {
+                                flash: {
+                                    isEnabled: 'flashEnabled',
+                                    delim: '?'
+                                },
+                                html5: {
+                                    isEnabled: 'html5Enabled',
+                                    delim: '?'
+                                },
+                                amp: {
+                                    isEnabled: 'ampEnabled',
+                                    delim: '#'
+                                }
+                            };
+
+                    for (i = 0; i < order.length; i++) {
+                        var launchInfo = launchMap[order[i].type],
+                                url = order[i].url;
+
+                        if (detection[launchInfo.isEnabled]()) {
+                            this.redirect(url, launchInfo.delim);
+                            redirected = true;
+                            break;
+                        }
+                    }
+
+                    if (!redirected) {
+                        showWarning = true;
+                    }
+                },
+
+                getQueryString: function (params) {
+                    params = params || [];
+                    var i,
+                            queryString = document.location.search.substr(1),
+                            paramArr = queryString.length > 0 ? queryString.split('&') : [];
+
+                    for (i = 0; i < params.length; i++) {
+                        paramArr.push([params[i].name, params[i].value].join('='));
+                    }
+
+                    return paramArr.join('&');
+                },
+
+                formatUrl: function (url, delim) {
+                    delim = delim || '?';
+
+                    var queryString = this.getQueryString();
+
+                    if (queryString != null && queryString.length > 0) {
+                        return [url, queryString].join(delim);
+                    }
+
+                    return url;
+                },
+
+                redirect: function (url, delim) {
+                    window.location.replace(this.formatUrl(url, delim));
+                }
+
+            };
+
+            router.init();
+        })();
+    </script>
+</head>
+
+<body onload="displayWarning()" style="height: 100%;">
+<div id="nosupport" style="visibility: hidden;">
+    <table>
+        <tr>
+            <td>
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="90.2" height="74.9" viewBox="0 0 90 75" version="1.1">
+                        <g transform="scale(.1)">
+                            <path d="m409 7c54-25 106 20 130 66 106 170 213 340 320 510 17 28 32 63 19 96-14 36-55 51-91 51-224 1-448 0-672 0-35 1-76-3-100-33-26-32-15-77 5-108 107-173 216-344 324-517 16-26 35-53 65-65z"
+                                  fill="#4c4c4c"/>
+                            <path d="m419 57c26-20 55 4 68 27 109 174 218 348 328 522 9 17 23 35 17 55-11 20-36 18-55 19-224 0-447 0-670 0-20-1-46 1-57-19-5-18 6-34 14-48 109-174 218-348 327-522 9-12 17-25 28-34z"
+                                  fill="#f5f5f5"/>
+                            <path d="m429 179c25-12 58 8 56 35-1 81-5 161-10 242 2 32-49 39-57 9-7-73-6-146-11-219-1-24-4-56 22-67zM430 539 430 539 430 539c45-24 80 53 32 72-45 24-80-53-32-72z"
+                                  fill="#4c4c4c"/>
+                        </g>
+                    </svg>
+                </p>
+                <p>This course cannot be played because your web browser does not support HTML5.</p>
+                <p><a href=""></a></p>
+
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+
+</html>

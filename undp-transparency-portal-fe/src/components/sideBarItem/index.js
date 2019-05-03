@@ -4,7 +4,8 @@ import List from '../../components/listView'
 import style from './style';
 import ProgressBar from '../../components/progressBar'
 import { numberToCurrencyFormatter } from '../../utils/numberFormatter'
-import { getSDGImageFromCode } from '../../utils/commonActionUtils'
+import { getSDGImageFromCode } from '../../utils/commonActionUtils';
+import {getAPIBaseUrRl} from '../../utils/commonMethods'
 
 export default class SideBarItem extends Component {
 	constructor(props, context) {
@@ -40,7 +41,7 @@ export default class SideBarItem extends Component {
     	return (
     		<section class={style.row}>
     			<article class={style.columnLeft}>  
-    				{(item.sdg_code || item.signature_solution) && <div style={item.signature_solution ? 'float:left': ''} class={style.imageWrapper}><img class={style.sdg_image} src={item.signature_solution ? ssIcon : `/assets/icons/${sdg_src}`} alt="sdg image"  /></div>}
+    				{(item.sdg_code || item.signature_solution) && <div style={item.signature_solution ? 'float:left': ''} class={style.imageWrapper}><img class={style.sdg_image} src={item.signature_solution ? ssIcon : this.props.apiBase+`/assets/icons/${sdg_src}`} alt="sdg image"  /></div>}
     				<div class={item.theme_name ? style.themesWrapper: style.sdgWrapper}>
     					<div class={style.theme_wrapper}>
     						{item.theme_name && this.props.tabSelected === 'themes' &&

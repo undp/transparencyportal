@@ -574,9 +574,9 @@ export const onAppInit = () => (dispatch) => {
 	dispatch(fetchDonorListData());         // Fetch Master Donor List
 	dispatch(fetchSectorListData()); 		// Fetch Sector List
 	dispatch(fetchProjectTimelineData());   // Fetch Project Timeline Data
-	dispatch(getMasterThemeList());         // Fetch Theme List Data
+	// dispatch(getMasterThemeList());         // Fetch Theme List Data
 	dispatch(fetchDocumentCategories());    // Fetch DocumentCategories
-	dispatch(getMasterCountryRegionsList());
+	// dispatch(getMasterCountryRegionsList());
 	dispatch(fetchLastUpdatedDate());		// Fetch Last Updated Date
-	dispatch(getMasterSignatureList());         // Fetch Signature List Data
+	// dispatch(getMasterSignatureList());         // Fetch Signature List Data
 };

@@ -391,7 +391,9 @@ export default class ProfilePage extends Component {
                         </div>
                     </div>
                     }
-
+                    {
+						!this.state.listSelected ? window.dispatchEvent(new Event('resize')) : null
+					}
                 </div>
                 {
                     props.profileType == "recipientprofile" ?

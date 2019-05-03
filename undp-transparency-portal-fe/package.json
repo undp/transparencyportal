@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "bootstrap": "^3.3.6",
+    "circular-json": "^0.5.9",
     "compression": "^1.7.2",
     "d3": "^3.5.17",
     "d3-plugins-sankey": "^1.2.1",

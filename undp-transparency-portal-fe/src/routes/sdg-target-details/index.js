@@ -178,13 +178,12 @@ class SDGTargets extends Component {
 	renderExportPopup() {
 		
 		const source = '',
-		year = this.props.mapCurrentYear,
-		units = '',
-		keyword = '',
-		sectors = '',
-		target = this.props.target_id;	
+			year = this.props.mapCurrentYear,
+			units = '',
+			keyword = '',
+			sectors = '',
+			target = this.props.target_id;
 
-		console.log(this.props)
 		let data, loading, templateType;
 		data = {
 			year: this.props.sdgSliderData.data.aggregate.year,
@@ -192,20 +191,19 @@ class SDGTargets extends Component {
 			budget_sources: this.props.sdgSliderData.data.budget_sources,
 			top_recipient_offices: this.props.sdgSliderData.data.top_recipient_offices,
 			mapData: this.props.outputData.data,
-			title: 'Goal ' + (this.props.sdgSliderData.data.aggregate.sdg) + ': ' + (this.props.sdgSliderData.data.aggregate.target),
+			title: (this.props.sdgSliderData.data.aggregate.sdg_name) + ': Target ' + (this.props.sdgSliderData.data.aggregate.target_id),
 			projectList: this.props.projectList.projectList,
 			lastUpdatedDate: getFormmattedDate(this.props.lastUpdatedDate.data.last_updated_date)
 		};
 
 		loading = this.props.projectList.loading || this.props.sdgSliderData.loading || this.props.outputData.loading ;
-		templateType = 'profile_sdg';
+		templateType = 'profile_sdgTargets';
 		return (
 			<ExportPopup
 				templateType={templateType}
 				data={data}
-
 				loading={loading}
-				downloadCsv={()=>{this.props.downLoadProjectListCsv(year,keyword,source,sectors,units,'','','',target)}}
+				downloadCsv={()=>{this.props.downLoadProjectListCsv(year,keyword,source,sectors,units,this.props.code,'','',this.props.code+'.'+target)}}
 				onCloseModal={() => this.hideExportModal()}
 			/>
 		);
@@ -275,13 +273,14 @@ class SDGTargets extends Component {
 }
 const mapStateToProps = (state) => 
 {
+
 return(
 	{
 	router: state.router,
 	countryList: state.countryList,
 	currentYear: state.yearList.currentYear,
 	sdgSliderData: state.sdgSliderData,
-	outputData: state.mapData.outputData,
+	outputData: state.mapData.sdgMapData,
 	projectList: state.projectList,
 	mapCurrentYear:state.mapData.yearTimeline.mapCurrentYear,
 	lastUpdatedDate:state.lastUpdatedDate

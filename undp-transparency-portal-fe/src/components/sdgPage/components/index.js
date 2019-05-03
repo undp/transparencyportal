@@ -16,6 +16,7 @@ import { getSDGImageFromCode } from '../../../utils/commonActionUtils';
 /**************************** Style Files ********************************/
 import style from './style';
 import HorizontalStackedBarChart from '../../horizontalStackedBarChart';
+
 /*************************************************************************/
 
 
@@ -36,19 +37,19 @@ export default class SdgPage extends Component {
 	componentWillMount() {
 		this.props.fetchSdgSliderTargetData(this.props.currentYear, this.props.sdg_code);
 		(this.props.target_code)? this.props.fetchSdgTargetData(this.props.currentYear,this.props.target_code)
-								: this.props.fetchSdgSliderData(this.props.currentYear, this.props.sdg_code);
+			: this.props.fetchSdgSliderData(this.props.currentYear, this.props.sdg_code);
 		(this.props.target_code)? this.props.loadTargetMapData(this.props.currentYear, this.props.target_code, "", "", "sdg_target")
-								: this.props.loadSdgMapData(this.props.currentYear, this.props.sdg_code, "", "", "sdg");
+			: this.props.loadSdgMapData(this.props.currentYear, this.props.sdg_code, "", "", "sdg");
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.currentYear !== this.props.currentYear) {
 			(this.props.target_code)? null : this.props.fetchSdgSliderTargetData(nextProps.currentYear, this.props.sdg_code);
 			(this.props.target_code)? this.props.fetchSdgTargetData(nextProps.currentYear,this.props.target_code)
-									: this.props.fetchSdgSliderData(nextProps.currentYear, this.props.sdg_code);
+				: this.props.fetchSdgSliderData(nextProps.currentYear, this.props.sdg_code);
 			
 			(this.props.target_code)? this.props.loadTargetMapData(nextProps.currentYear, this.props.target_code, "", "", "sdg_target")
-								: this.props.loadSdgMapData(nextProps.currentYear, this.props.sdg_code, "", "", "sdg");
+				: this.props.loadSdgMapData(nextProps.currentYear, this.props.sdg_code, "", "", "sdg");
 		}
 		if (Object.keys(nextProps.sdgSliderData.data).length) {
 			this.setState({
@@ -104,8 +105,7 @@ export default class SdgPage extends Component {
 			mapData = isMapDataNonEmpty ? (themesMapData && themesMapData.data) && themesMapData : {},
 			sdgSrc = aggregate && aggregate.sdg && getSDGImageFromCode(aggregate.sdg),
 			sdgMapData = this.props.sdgMapData;
-
-		if( this.props.target_code &&  Object.keys(aggregate).length )	
+		if ( this.props.target_code &&  Object.keys(aggregate).length )
 			this.props.onUpdateSDG(aggregate);
 
 		return (
@@ -201,6 +201,9 @@ export default class SdgPage extends Component {
 									null}
 							</div>
 						</div>
+					}
+					{
+						!this.state.listSelected ? window.dispatchEvent(new Event('resize')) : null
 					}
 				</div>
 				{ !this.props.target_code ?

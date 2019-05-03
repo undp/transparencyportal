@@ -202,6 +202,18 @@ export default class DownloadModal extends Component {
                                       <span class={style.urlTitle}>Individual Output Data:&nbsp;</span>
                                       <span class={style.urlContent}>{`${Api.API_BASE}/api/outputs/{output - id}.json`}</span>
                                   </li>
+                                  <li>
+                                      <span class={style.urlTitle}>SDG Target index:&nbsp;</span>
+                                      <span class={style.urlContent}>{`${Api.API_BASE}/api/target-index/{sdg - id}.json`}</span>
+                                  </li>
+                                  <li>
+                                      <span class={style.urlTitle}>Signature solution index:&nbsp;</span>
+                                      <span class={style.urlContent}>{`${Api.API_BASE}/api/signature-solutions-index.json`}</span>
+                                  </li>
+                                  <li>
+                                      <span class={style.urlTitle}>Our Approaches index:&nbsp;</span>
+                                      <span class={style.urlContent}>{`${Api.API_BASE}/api/our-approaches-index.json`}</span>
+                                  </li>
 
                               </ul>
                           </article>
