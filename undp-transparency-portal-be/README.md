@@ -25,3 +25,11 @@ To start server
 >python manage.py runserver
 
  `http://localhost:8000` to view the app.
+
+### Import Data
+
+To import latest data from the UNDP. Please run this command.
+
+>python manage.py intiate_automation 
+
+This downloads data from [ZIP_DOWNLOAD_URL](https://github.com/undp/transparencyportal/blob/master/undp-transparency-portal-be/utilities/config.py#L26) link and loads data to the database.
