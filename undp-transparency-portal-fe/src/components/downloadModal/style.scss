@@ -190,7 +190,7 @@
             -ms-flex-align: center;
             align-items: center;
             font-size: 24px;
-            font-weight: bold;
+            font-weight: $bold;
             .closeBtn {
                 text-align: right;
                 background: url("#{$icons}/closeIcon.png") no-repeat;
@@ -271,7 +271,7 @@
     .centerBtn{
         float: left;
         text-align: center;
-        font-weight: bold;
+        font-weight: $bold;
         cursor: default;
         overflow: hidden;
         white-space: nowrap;

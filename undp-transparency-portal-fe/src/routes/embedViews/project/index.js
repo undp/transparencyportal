@@ -36,7 +36,7 @@ class EmbedProjectView extends Component {
 
                 },
                 {
-                    displayLabel: 'Recipient Country / Region',
+                    displayLabel: 'Recipient Country / Territory / Region',
                     label: this.props.countryLabel,
                     text: ''
 

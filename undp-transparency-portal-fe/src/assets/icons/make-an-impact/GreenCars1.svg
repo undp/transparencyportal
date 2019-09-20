@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="104px" height="104px" viewBox="0 0 104 104" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 56.3 (81716) - https://sketch.com -->
+    <title>Car</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Car" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" fill-opacity="0">
+        <g transform="translate(2.000000, 2.000000)" fill="#FFFFFF" fill-rule="nonzero" stroke="#386582" stroke-width="2.5">
+            <circle id="Oval-Copy" cx="50" cy="50" r="50"></circle>
+            <g id="Group" transform="translate(13.333333, 17.000000)">
+                <g id="1">
+                    <circle id="Oval" cx="2.83333333" cy="9.16666667" r="2.5"></circle>
+                    <circle id="Oval-Copy-3" cx="18.0555556" cy="9.16666667" r="2.5"></circle>
+                    <circle id="Oval-Copy-2" cx="10.4444444" cy="12.5" r="2.5"></circle>
+                    <circle id="Oval-Copy-4" cx="25.6666667" cy="11.6666667" r="2.5"></circle>
+                    <g id="Group-2" transform="translate(32.000000, 0.000000)">
+                        <path d="M27.6666667,6.66666667 L35.8333333,6.66666667 L35.8333333,15 L0,15 L0,6.66666667 L6.66666667,6.66666667 L10,0 L25,0 L27.6666667,6.66666667 Z" id="Combined-Shape"></path>
+                        <path d="M5,16.1767992 C5,18.0177483 6.49238417,19.5101325 8.33333333,19.5101325 C10.1742825,19.5101325 11.6666667,18.0177483 11.6666667,16.1767992" id="Path"></path>
+                        <path d="M22.5,16.1767992 C22.5,18.0177483 23.9923842,19.5101325 25.8333333,19.5101325 C27.6742825,19.5101325 29.1666667,18.0177483 29.1666667,16.1767992" id="Path-Copy-2"></path>
+                    </g>
+                    <g id="Group-2-Copy" transform="translate(22.833333, 33.333333) scale(-1, 1) translate(-22.833333, -33.333333) translate(4.833333, 23.333333)">
+                        <path d="M27.6666667,6.66666667 L35.8333333,6.66666667 L35.8333333,15 L0,15 L0,6.66666667 L6.66666667,6.66666667 L10,0 L25,0 L27.6666667,6.66666667 Z" id="Combined-Shape"></path>
+                        <path d="M3,16.1767992 C3,18.0177483 4.49238417,19.5101325 6.33333333,19.5101325 C8.1742825,19.5101325 9.66666667,18.0177483 9.66666667,16.1767992" id="Path"></path>
+                        <path d="M20.5,16.1767992 C20.5,18.0177483 21.9923842,19.5101325 23.8333333,19.5101325 C25.6742825,19.5101325 27.1666667,18.0177483 27.1666667,16.1767992" id="Path-Copy-2"></path>
+                    </g>
+                </g>
+                <g id="1-copy" transform="translate(2.833333, 46.666667)">
+                    <circle id="Oval" cx="2.5" cy="9.16666667" r="2.5"></circle>
+                    <circle id="Oval-Copy-3" cx="17.7222222" cy="9.16666667" r="2.5"></circle>
+                    <circle id="Oval-Copy-2" cx="10.1111111" cy="12.5" r="2.5"></circle>
+                    <circle id="Oval-Copy-4" cx="25.3333333" cy="11.6666667" r="2.5"></circle>
+                    <g id="Group-2" transform="translate(31.666667, 0.000000)">
+                        <path d="M27.6666667,6.66666667 L35.8333333,6.66666667 L35.8333333,15 L0,15 L0,6.66666667 L6.66666667,6.66666667 L10,0 L25,0 L27.6666667,6.66666667 Z" id="Combined-Shape"></path>
+                        <path d="M5,16.1767992 C5,18.0177483 6.49238417,19.5101325 8.33333333,19.5101325 C10.1742825,19.5101325 11.6666667,18.0177483 11.6666667,16.1767992" id="Path"></path>
+                        <path d="M22.5,16.1767992 C22.5,18.0177483 23.9923842,19.5101325 25.8333333,19.5101325 C27.6742825,19.5101325 29.1666667,18.0177483 29.1666667,16.1767992" id="Path-Copy-2"></path>
+                    </g>
+                </g>
+                <g id="1-copy-2" transform="translate(58.000000, 33.666667) scale(-1, 1) translate(-58.000000, -33.666667) translate(44.500000, 29.166667)">
+                    <circle id="Oval" cx="2.5" cy="2.5" r="2.5"></circle>
+                    <circle id="Oval-Copy-3" cx="17.0555556" cy="2.5" r="2.5"></circle>
+                    <circle id="Oval-Copy-2" cx="9.77777778" cy="5.83333333" r="2.5"></circle>
+                    <circle id="Oval-Copy-4" cx="24.3333333" cy="5" r="2.5"></circle>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

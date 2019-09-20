@@ -50,6 +50,7 @@ class FilterCollection extends Component {
         this.props.updateSearchCountryField(value || label)
         this.props.searchOperatingUnitsListData(null, null);
         this.props.fetchThemeSummaryData();
+        this.props.updateProjectList(this.props.mapCurrentYear, value, this.props.tabData.themeFilter ? this.props.tabData.themeFilter.budgetSources : '' , this.props.tabData.themeFilter ? this.props.tabData.themeFilter.selectedTheme : '', '', '', '', '','','', '')
     }
     handleSelectOpUnitsSignature = (label, value, unit_type) => {
         this.props.updateThemeFilter("operatingUnits", value);
@@ -58,18 +59,22 @@ class FilterCollection extends Component {
         this.props.updateSearchCountryField(value || label)
         this.props.searchOperatingUnitsListData(null, null);
         this.props.fetchSignatureSummaryData();
+        this.props.updateProjectList(this.props.mapCurrentYear, value, this.props.tabData.themeFilter ? this.props.tabData.themeFilter.budgetSources : '' , '', '', '', '', '','','', this.props.tabData.themeFilter ? this.props.tabData.themeFilter.selectedTheme : '');
     }
 
     handleSelectBdgtSourcesThemes = (label, value) => {
         this.props.updateThemeFilter("budgetSources", value);
         this.props.updateThemeFilter("budgetSourcesLabel", label);
         this.props.fetchThemeSummaryData();
+        this.props.updateProjectList(this.props.mapCurrentYear,this.props.tabData.themeFilter ? this.props.tabData.themeFilter.operatingUnits : '' , value, this.props.tabData.themeFilter ? this.props.tabData.themeFilter.selectedTheme : '', '', '', '', '','','', '')
+
     }
 
     handleSelectBdgtSourcesSignature = (label, value) => {
         this.props.updateThemeFilter("budgetSources", value);
         this.props.updateThemeFilter("budgetSourcesLabel", label);
         this.props.fetchSignatureSummaryData();
+        this.props.updateProjectList(this.props.mapCurrentYear, this.props.tabData.themeFilter ? this.props.tabData.themeFilter.operatingUnits : '', value , '', '', '', '', '','','', this.props.tabData.themeFilter ? this.props.tabData.themeFilter.selectedTheme : '');
     }
 
     handleSelectOpUnitsSdg = (label, value, unit_type) => {
@@ -79,13 +84,14 @@ class FilterCollection extends Component {
         this.props.updateSearchCountryField(value || label)
         this.props.searchOperatingUnitsListData(null, null);
         this.props.fetchSdgListData();
-
+        this.props.updateProjectList(this.props.mapCurrentYear, value, this.props.tabData.sdgFilter && this.props.tabData.sdgFilter.budgetSources ? this.props.tabData.sdgFilter.budgetSources : '' , '', '', '', '', '', this.props.tabData.sdgFilter && this.props.tabData.sdgFilter.selectedSdg  ? this.props.tabData.sdgFilter.selectedSdg : '','', '');
     }
 
     handleSelectBdgtSourcesSdg = (label, value) => {
         this.props.updateSdgFilter("budgetSources", value);
         this.props.updateSdgFilter("budgetSourcesLabel", label);
         this.props.fetchSdgListData();
+        this.props.updateProjectList(this.props.mapCurrentYear, this.props.tabData.sdgFilter && this.props.tabData.sdgFilter.operatingUnits ? this.props.tabData.sdgFilter.operatingUnits : '' , value, '', '', '', '', '', this.props.tabData.sdgFilter && this.props.tabData.sdgFilter.selectedSdg  ? this.props.tabData.sdgFilter.selectedSdg : '','', '');
     }
 
     mapLabelToValue = (value, list) => {
@@ -235,7 +241,7 @@ class FilterCollection extends Component {
                             {
                                 <div style={tabSelected === 'donors' ? { display: 'inline-block' } : { display: 'none' }}>
                                     <NestedDropList
-                                        label="Recipient Country / Region:"
+                                        label="Recipient Country / Territory / Region:"
                                         filterClass={style.filter}
                                         countryFilter
                                         currentTab={'donors'}
@@ -278,7 +284,7 @@ class FilterCollection extends Component {
                             {
                                 <div style={(tabSelected === 'themes' ) ? { display: 'inline-block' } : { display: 'none' }}>
                                     <NestedDropList
-                                        label="Recipient Country / Region:"
+                                        label="Recipient Country / Territory / Region:"
                                         filterClass={style.filter}
                                         countryFilter
                                         currentTab={'themes'}
@@ -301,7 +307,7 @@ class FilterCollection extends Component {
                             {
                                 <div style={( tabSelected === 'signature') ? { display: 'inline-block' } : { display: 'none' }}>
                                     <NestedDropList
-                                        label="Recipient Country / Region:"
+                                        label="Recipient Country / Territory / Region:"
                                         filterClass={style.filter}
                                         countryFilter
                                         currentTab={'themes'}
@@ -325,7 +331,7 @@ class FilterCollection extends Component {
                             {
                                 <div style={tabSelected === 'sdg' ? { display: 'inline-block' } : { display: 'none' }}>
                                     <NestedDropList
-                                        label="Recipient Country / Region:"
+                                        label="Recipient Country / Territory / Region:"
                                         filterClass={style.filter}
                                         countryFilter
                                         currentTab={'sdg'}
@@ -398,7 +404,7 @@ class FilterCollection extends Component {
                         :
                         <span class={style.searchWrapper}>
                             <div class={style.searchContainer}>
-                                <span class={style.searchLabel}>{'Search for Countries'}</span>
+                                <span class={style.searchLabel}>{'Search for Countries and Territories'}</span>
                                 <div class={style.searchItems} ref={(node) => this.searchNode = node}>
                                     <div class={style.countrySearch}>
                                         <input
@@ -409,7 +415,7 @@ class FilterCollection extends Component {
                                             onkeyup={(event) => this.checkSearchKeyword(event)}
                                             onInput={(event) => this.handleSearchChange(event)}
                                             onClick={() => this.openDropDown()}
-                                            placeholder="Enter country name"
+                                            placeholder="Enter country/territory name"
                                             autocomplete="off"
                                         />
                                         {
@@ -473,7 +479,7 @@ const mapDispatchToProps = (dispatch) => {
         updateSearchCountryField: (countryCode) => dispatch(updateSearchCountryField(countryCode)),
         updateFilters: (unit, themes, sdg, donor, year,appendOthers) => dispatch(updateFilters(unit, themes, sdg, donor, year,appendOthers)),
         searchOperatingUnitsListData: (searchParam, key) => dispatch(searchOperatingUnitsListData(searchParam, key)),
-        updateProjectList: (year, unit, source, theme, keyword, limit, offset, budget_type, sdg) => dispatch(updateProjectList(year, unit, source, theme, keyword, limit, offset, budget_type, sdg)),
+        updateProjectList: (year,operatingUnit, budgetSource, themes, keyword, limit, offset, budgetType,sdg,target, signatureSolution) => dispatch(updateProjectList(year,operatingUnit, budgetSource, themes, keyword, limit, offset, budgetType,sdg,target, signatureSolution)),
         loadDonorOutputs: (year,unit) => dispatch(loadDonorOutputs(year,unit))
     }
 }

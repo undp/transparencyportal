@@ -77,6 +77,10 @@
     @media(min-width: $desktop) {
         padding-bottom: 0;
     }
+    ul {
+        list-style-type: unset !important;
+        padding-left: 16px;
+    };
 }
 .chartWrapper {
     margin-top: 20px;

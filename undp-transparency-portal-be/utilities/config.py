@@ -7,25 +7,10 @@ ANNUAL_UPLOAD_DIR = BASE_DIR + '/uploaded/annual'
 CSV_UPLOAD_DIR = BASE_DIR + '/uploaded/csv'
 LOG_UPLOAD_DIR = BASE_DIR + '/uploaded/logs'
 
-ZIP_DOWNLOAD_URL_test = "https://undpdw01.blob.core.windows.net/iatipublishing/IATIPublishing122017.zip?" \
-                   "sv=2017-04-17&ss=b&srt=sco&sp=rl&se=2019-02-01T00:00:00Z&st=2018-01-01T00:00:00Z&spr=" \
-                   "https&sig=6yBDIf5cDWLj0YpZFBFuioJtiJfYU%2BsdNirE8CS3oO8%3D"
+ZIP_DOWNLOAD_URL_test = ""
 
-# ZIP_DOWNLOAD_URL = "https://undpdw01.blob.core.windows.net/iatipublishing/IATIPublishing060618.zip?" \
-#                    "sv=2017-04-17&ss=b&srt=sco&sp=rl&se=2019-02-01T00:00:00Z&st=2018-01-01T00:00:00Z&spr=" \
-#                    "https&sig=6yBDIf5cDWLj0YpZFBFuioJtiJfYU%2BsdNirE8CS3oO8%3D"
-
-# ZIP_DOWNLOAD_URL = "https://undpdw01.blob.core.windows.net/iatipublishing/IATIPublishing050718.ZIP?" \
-#                    "sv=2017-04-17&ss=b&srt=sco&sp=rl&se=2019-02-01T00:00:00Z&st=2018-01-01T00:00:00Z&spr=" \
-#                    "https&sig=6yBDIf5cDWLj0YpZFBFuioJtiJfYU%2BsdNirE8CS3oO8%3D"
-
-# ZIP_DOWNLOAD_URL = "https://undpdw01.blob.core.windows.net/iatipublishing/IATIPublishing.ZIP?" \
-#                    "sv=2017-04-17&ss=b&srt=sco&sp=rl&se=2019-02-01T00:00:00Z&st=2018-01-01T00:00:00Z&spr=" \
-#                    "https&sig=6yBDIf5cDWLj0YpZFBFuioJtiJfYU%2BsdNirE8CS3oO8%3D"
-
-ZIP_DOWNLOAD_URL = "https://undpdw01.blob.core.windows.net/iatipublishing/IATIPublishing.zip?" \
-                   "sv=2017-04-17&ss=b&srt=sco&sp=rl&se=2019-02-01T00:00:00Z&st=2018-01-01T00:00:00Z&spr=" \
-                   "https&sig=6yBDIf5cDWLj0YpZFBFuioJtiJfYU%2BsdNirE8CS3oO8%3D"
+# URL of the IATI data file to pull into the system
+ZIP_DOWNLOAD_URL = ""
 
 UPLOAD_DIR = BASE_DIR + '/uploaded'
 EXPORT_DIR = BASE_DIR + '/media/export'
@@ -36,6 +21,7 @@ SETTINGS_DIR = BASE_DIR + '/undp_transparency/settings'
 
 FILE_DETAILS_PATH = BASE_DIR + '/file_details.ini'
 
+UPDATE_WEEK = 2
 UPDATE_DAY = 6
 ALLOWED_START_YEAR = 2011
 ALLOWED_END_YEAR = 2021
@@ -159,7 +145,7 @@ LEVEL_3_NAMES_MAPPING = {
 #     'projects_selected': 'projects/selected.html',
 #     'donors': 'donors.html',
 #     'profile_recipient': 'profile/recipient.html',
-#     'profile_donor': 'profile/donor.html'
+#     'profile_donor': 'profile/donor.html',
 # }
 
 
@@ -175,6 +161,10 @@ EXPORT_TEMPLATES_MAPPING = {
     'profile_donor': 'profile/donor.html',
     'profile_sector': 'profile/sector.html',
     'profile_sdg': 'profile/sdg.html',
+    'sdgChart':  'profile/sdg_sunburst.html',
+    'sscMarker':  'profile/sscMarker.html',
+    'profile_sdgTargets': 'profile/sdgTarget.html',
+    'profile_our_approaches': 'profile/ourApproaches.html'
 }
 
 CRS_INDEXES = {

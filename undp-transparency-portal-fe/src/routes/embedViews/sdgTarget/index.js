@@ -95,20 +95,20 @@ class EmbedTargetSdgView extends Component {
     }) {
 
         let isNonEmpty = Object.keys(this.state.themeSliderData).length,
-            isMapDataNonEmpty = Object.keys(this.state.themesMapData).length,
+            isMapDataNonEmpty = !this.props.sdgMapData.loading,
             aggregate = isNonEmpty ? (themeSliderData.data && themeSliderData.data.aggregate) : {},
             budgetSources = isNonEmpty ? (themeSliderData.data && themeSliderData.data.budget_sources) : {},
             topRecipientOffices = isNonEmpty ? (themeSliderData.data && themeSliderData.data.top_recipient_offices) : {},
-            mapData = isMapDataNonEmpty ? (themesMapData && themesMapData.data) && themesMapData : {};
+            mapData = isMapDataNonEmpty ? this.props.sdgMapData : {};
             // sdgSrc = aggregate && aggregate.sdg && getSDGImageFromCode(aggregate.sdg);
-    
+            
             return (
             <div>
                 {   
                     this.props.title === 'true' ?
                         <div class={style.titleWrapper}>
-                            {this.props.sdglabel}
-                    </div>
+                            SDG - TARGET {this.props.target}
+                        </div>
                         : null
                 }
                 <div class={style.wrapper}>
@@ -156,15 +156,16 @@ class EmbedTargetSdgView extends Component {
                             <TopographyIconsLegend /> : null} */}
                         {isMapDataNonEmpty ?
                             <Map
-                                sdg={this.props.sdg}
                                 mapData={mapData}
                                 sdgTarget={this.props.target}
+                                yearSelected={this.props.year}
                             />
                             : <PreLoader />
                         }
                         {isMapDataNonEmpty ?
                             <div class={style.disclaimer}>
-                                {'* The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.'}
+                                 <ul><li> The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.</li><li> References to Kosovo* shall be understood to be in the context of UN Security Council resolution 1244 (1999)</li>
+    </ul>
                             </div> :
                             null}
                     </div>
@@ -177,7 +178,7 @@ class EmbedTargetSdgView extends Component {
                     unit={''}
                     source={''}
                     yearSelected={this.props.year}
-                    sdg={this.props.sdg}
+                    sdg={''}
                     data={projectListArr}
                     sdg_targets={this.props.target}
                     links={links}
@@ -186,44 +187,6 @@ class EmbedTargetSdgView extends Component {
                 />
                 :null}
 
-
-
-                {this.props.outcomes === 'true' ? 
-                    <div class={`${style.wrapper} ${style.chartWrapper}`}>
-                        <div class={style.top_budget_sources_wrapper}>
-                            <span class={style.chartHead}>
-                                <span>SDG- {this.props.sdg} Targets</span>
-                                <BudgetExpenseLegend />
-                            </span>
-
-                            {
-                                this.props.sdgTargetSliderData.loading ?
-                                    <div style={{ position: 'relative', height: 344 }}>
-                                        <PreLoader />
-                                    </div>
-
-                                    :
-                                    <div class={style.targetChartWrapper}>
-                                        {
-                                            this.props.sdgTargetSliderData.data.percentage && this.props.sdgTargetSliderData.data.percentage.length > 0 ?
-                                                <div class={style.budget_sources_wrapper}>
-                                                    <HorizontalStackedBarChart
-                                                    chart_id="sdg_target_outcome_chart"
-                                                    width={1250}
-                                                    height={this.props.sdgTargetSliderData.data.percentage.length * 50}
-                                                    data={this.props.sdgTargetSliderData.data.percentage}
-                                                    />
-                                                </div>
-                                                :
-                                                <NoDataTemplate />
-                                        }
-                                    </div>
-                            }
-                        </div>
-                    </div>
-                :
-                null                    
-                }
 
                 {this.props.topDonors === 'true' ?
                 <div class={`${style.wrapper} ${style.chartWrapper}`}>

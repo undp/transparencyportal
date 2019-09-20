@@ -9,7 +9,7 @@ from rest_framework import serializers
 from master_tables.models import Sector, MapBoundary, OperatingUnit, SignatureSolution, SdgTargets
 from master_tables.serializers import OrganisationSerializer, CountrySerializer
 from undp_donors.models import DonorFundSplitUp
-from undp_outputs.models import Budget, Expense, OutputLocation, Output, ProjectMarker, MARKER_TYPE_CHOICES
+from undp_outputs.models import Budget, Expense, OutputLocation, Output, ProjectMarker, MARKER_TYPE_CHOICES, StoryMap
 from undp_projects.models import SectorAggregate, Project, CountryResultPeriod, CountryResult, \
     ProjectDocument, CountryDocument, ProjectParticipatingOrganisations
 from utilities.config import NULL_SECTOR_COLOR_CODE, TRUE_VALUES, EXCLUDED_SECTOR_CODES, UNDP_DONOR_ID, SP_START_YEAR, \
@@ -60,6 +60,7 @@ class ProjectDetailSerializer(serializers.ModelSerializer):
     organisation = serializers.SerializerMethodField()
     total_budget = serializers.SerializerMethodField()
     total_expense = serializers.SerializerMethodField()
+    storyMap = serializers.SerializerMethodField()
 
     def get_organisation(self, obj):
         try:
@@ -90,6 +91,17 @@ class ProjectDetailSerializer(serializers.ModelSerializer):
             project_budget_mapping = project_budget_mapping.filter(year=year)
         project_expense = project_budget_mapping.aggregate(total_expense=Sum('expense')).get('total_expense', 0)
         return int(round(project_expense)) if project_expense else 0
+
+    def get_storyMap(self, obj):
+        story_map = StoryMap.objects.filter(project_id=obj)
+        story_map_data = []
+        for story in story_map:
+            story_data = {
+                            'location': story.location,
+                            'source': story.link
+                        }
+            story_map_data.append(story_data)
+        return story_map_data
 
     class Meta:
         model = Project

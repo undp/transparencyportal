@@ -360,7 +360,7 @@ class SSCMarker extends Component {
 				this.selectedMarkerSubLabel = '';
 				this.markerType = 2;
 			}
-			this.props.selectSSCMarkerType( { type: type } );
+			this.props.selectSSCMarkerType( { type } );
 		}
 		this.generateFilterListUrl();
 		this.fetchData();
@@ -434,7 +434,7 @@ class SSCMarker extends Component {
 			unitSelected: this.selectedCountry ? this.selectedCountry.value: '',
 			donorSelected: this.state.dropListFilterobj.sources.label,
 			mapData: this.props.projectListMapData.data,
-			projectList: this.props.projectList,
+			projectList: { data: this.props.top10Projects },
 			sectorSelected: this.state.dropListFilterobj.themes.label,
 			sdgSelected: this.state.dropListFilterobj.sdg.label,
 			sdgs,
@@ -446,18 +446,18 @@ class SSCMarker extends Component {
 			levelTwoCountries: this.props.levelTwoCountries,
 			sscMarkerPathData: this.props.sscMarkerPathData,
 			chartData: this.props.markerChartData,
-			sscMarkerType: this.props.sscMarkerType,
+			sscMarkerType: this.props.sscMarkerType.type ? this.props.sscMarkerType : { type: '' },
 			sscApproachesData: this.props.sscApproachesData
 		};
 
 		loading = this.props.projectListMapData.loading || this.props.outputData.loading;
 		templateType = 'sscMarker';
-
 		return (
 			<ExportPopup
 				templateType={templateType}
 				data={data}
 				loading={loading}
+				usePuppeteer={'true'}
 				downloadCsv={()=>{this.props.downLoadProjectListCsv(year,keyword,source,sectors,units,sdgs,'','','',3,markerSubType,l2marker)}}
 				onCloseModal={() => this.hideExportModal()}
 			/>
@@ -475,13 +475,14 @@ class SSCMarker extends Component {
 		this.props.fetchOurApproachesData(this.currentCountry_iso3, this.currentL2Country_name, this.selectedMarkerSubtype);
 		this.props.fetchlevelTwoCountry(this.currentCountry_iso3, this.selectedMarkerSubtype);
 		this.props.fetchmarkerSubType(this.state.sscMarkerId, this.currentCountry_iso3);
-		
-		if (unitType === 'HQ')
+		if (unitType === 'HQ' || (this.currentUnitType === 'HQ' && !unitType) )
 			this.props.loadProjectListMapData(this.props.mapCurrentYear,'',this.currentCountry_iso3,'','',this.state.sscMarkerId);
 		else if (this.currentUnitType === 'HQ')
 			this.props.loadProjectListMapData(this.props.mapCurrentYear,'','','','',this.state.sscMarkerId);
 
-		this.currentUnitType = unitType;
+		if (unitType)
+			this.currentUnitType = unitType;
+
 	}
 	onSelectCountry = (type, value) => {
 		switch (type) {
@@ -654,7 +655,7 @@ class SSCMarker extends Component {
 								filterClass={style.filters}
 								labelStyle={style.labelStyle}
 								dropDownClass={style.dropDownWrapperSearch}
-								placeHolder="Recipient Country / Region"
+								placeHolder="Recipient Country / Territory / Region"
 								preserve={'true'}
 								baseURL={getAPIBaseUrRl()}
 								selectedValue={this.selectedCountry ? this.selectedCountry.label : ''}
@@ -902,7 +903,8 @@ const mapStateToProps = (state) => {
 	const {
 		loading,
 		error,
-		projectList
+		projectList,
+		top10Projects
 	} = state.projectList,
 		{
 			mapCurrentYear
@@ -935,6 +937,7 @@ const mapStateToProps = (state) => {
 		projectListMapData,
 		error,
 		projectList,
+		top10Projects,
 		currentYear,
 		mapCurrentYear,
 		themeList,

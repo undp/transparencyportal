@@ -1,3 +1,6 @@
+@import '../../../../style/helpers/_variables';
+@import '../../../../style/helpers/mixins';
+
 .sdgLegend {
     display: flex;
     flex-direction: column;
@@ -29,7 +32,7 @@
             align-items: center;
             margin-right: 10px;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: $bold;
         }
         .sdgImage {
             height: 50px;

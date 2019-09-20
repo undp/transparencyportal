@@ -70,7 +70,7 @@ class About extends Component {
     componentWillUnmount() {
         document.body.className = '';
         [...document.body.querySelectorAll('.linkColor')].forEach((item, index) => {
-            Object.values(item).removeEventListener('click', this.bindReactGA.bind(this))
+            item.length > 0 ? Object.values(item).removeEventListener('click', this.bindReactGA.bind(this)): null;
         });
     }
 

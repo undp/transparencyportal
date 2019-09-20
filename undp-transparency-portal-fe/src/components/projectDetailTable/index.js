@@ -218,7 +218,7 @@ class ProjectOutputTable extends Component {
 
         return (
             <div class={style.projectList}>
-                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+                <link rel="stylesheet" href={getAPIBaseUrRl()+"/assets/css/bootstrap.min.css"} />
 
                 <div class={style.tableOuterWrapper}>
                      

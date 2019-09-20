@@ -45,7 +45,7 @@ const mapDispatchToProps = (dispatch) => {
         updateMapYearTimeline: (year) => dispatch(updateMapYearTimeline(year)),
         setMapCurrentYear: (year) => dispatch(setMapCurrentYear(year)),
         fetchGlobalData: (year) => dispatch(fetchGlobalData(year)),
-        loadOutputsMapData: (year, unit, sector, source, project_id, budget_type, sdg,marker,markerSubType,signatureSol) => dispatch(loadOutputsMapData(year, unit, sector, source, project_id, budget_type, sdg,marker,markerSubType,signatureSol)),
+        loadOutputsMapData: (year, unit, sector, source, project_id, budget_type, sdg,marker,markerSubType,signatureSol,sdgTarget) => dispatch(loadOutputsMapData(year, unit, sector, source, project_id, budget_type, sdg,marker,markerSubType,signatureSol,sdgTarget)),
         resetOutputsMapData: () => dispatch(resetOutputsMapData()),
         fetchSscMarkerData: year => dispatch(fetchSscMarkerData(year)),
         setCurrentYear: (year) => dispatch(setCurrentYear(year)),

@@ -62,14 +62,14 @@
             @include transform(scale(1.1));
             @include transition(transform, 1s);
             background-color: $white-background;
-            color: $black-color;
+            color: #3ab1fd;
             border-radius: 10px;
             -webkit-box-shadow: 0 10px 60px rgba(7, 61, 125, 0.18);
             box-shadow: 0 10px 60px rgba(7, 61, 125, 0.18);
             z-index: 5;
             cursor: pointer;
-            a{
-                color: $black-color;
+            a {
+                color: #3ab1fd;
             }
         }
         &:after {
@@ -99,7 +99,8 @@
             }
             .value,
             .description {
-                font-family: ProximaNova-bold;
+                font-family: 'proxima-nova';
+                font-weight: $bold;
                 font-size: $text-xsmall;
                 display: block;
             }
@@ -108,6 +109,7 @@
                     padding-bottom: 23px;
                 }
                 font-family: $project-heading;
+                font-weight: 400;
                 @media(min-width: $tablets) {
                     font-size: $text-xlarge;
                 }
@@ -126,13 +128,17 @@
 .yearSlider {
     padding: 20px;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     .annualHeading {
-        font-family: ProximaNova-extrabold;
+        font-family: 'proxima-nova';
         color: $white-background;
         font-weight: $bold;
         font-size: $heading-medium;
         padding-left: 48px;
         padding-right: 48px;
+        vertical-align:  -moz-middle-with-baseline;
         @media(max-width:767px) {
             font-size:24px;
         }
@@ -181,23 +187,20 @@
     .previous,
     .next {
         opacity: 1;
-        background: url('#{$icons}/previous.png') no-repeat;
+        background: url('#{$icons}/left-arrow-filled.svg') no-repeat;
+        padding: 16.5px 15px;
+        
     }
-    .previous {
-        transform: rotate(180deg) translateY(4px);
+    .next {
+        transform: rotate(180deg);
     }
     .inActivePrevious,
     .inActiveNext {
-        opacity: 0.3;
-        background: url('#{$icons}/previous.png') no-repeat;
-        @media(max-width:767px) {
-            transform: translateY(2px);
-        }
+        cursor: no-drop;
+        background: url('#{$icons}/right-arrow-outlined.svg') no-repeat;
+        padding: 16px 15px;
     }
     .inActivePrevious {
-        transform: rotate(180deg) translateY(4px);
-        @media(max-width:767px) {
-            transform: translateY(1px);
-        }
+        transform: rotate(180deg);
     }
 }

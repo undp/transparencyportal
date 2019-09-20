@@ -163,12 +163,12 @@ const mapDispatchToProps = (dispatch) => {
         getDonorDetails: (code, year) => donorProfile(dispatch, code, year),
         fetchRecipientSdg: (code, year) => dispatch(fetchRecipientSdg(code, year)),
         updateProjectList: (year, unit, source, theme, keyword, limit, offset, budget_type, sdg) => dispatch(updateProjectList(year, unit, source, theme, keyword, limit, offset, budget_type, sdg)),
-        downLoadProjectListCsv: (year, keyword, source, sectors, units, sdgs,type,signatureSolution) => dispatch(downLoadProjectListCsv(year, keyword, source, sectors, units, sdgs,type,signatureSolution)),
-        upDateBudgetSourceField:(themes,sdg,country) => dispatch(upDateBudgetSourceField(themes,sdg,country)),
+        downLoadProjectListCsv: (year, keyword, source, sectors, units, sdgs,type,signatureSolution, target, markerId, markerSubType, l2marker, key) => dispatch(downLoadProjectListCsv(year, keyword, source, sectors, units, sdgs, type, signatureSolution, target, markerId, markerSubType, l2marker, key )),
+        upDateBudgetSourceField: (themes,sdg,country) => dispatch(upDateBudgetSourceField(themes,sdg,country)),
         fetchSignatureOutcome: (code, year) => dispatch(fetchSignatureOutcome(code, year)),
         fetchSignatureSliderData: (year, sector) => dispatch(fetchSignatureSliderData(year, sector)),
         setMapCurrentYear: (year) => dispatch(setMapCurrentYear(year)),
-        loadOutputsMapData:(year,unit) => dispatch(loadOutputsMapData(year,unit))
+        loadOutputsMapData: (year,unit) => dispatch(loadOutputsMapData(year,unit))
     }
 }
 

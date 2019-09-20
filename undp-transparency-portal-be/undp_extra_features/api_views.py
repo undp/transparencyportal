@@ -1,7 +1,8 @@
 import calendar
 import datetime
 import time
-
+import os
+import subprocess
 from django.conf import settings
 from django.db.models.aggregates import Count, Sum
 from django.db.models.expressions import F, Case, When, Value
@@ -21,20 +22,21 @@ from master_tables.models import ProjectTimeLine, Sector
 from undp_donors.models import DonorFundSplitUp, DonorFundModality
 from undp_donors.serializers import DonorContributionSerializer, DonorContributionCsvSerializer
 from undp_extra_features.dump_data import context_data_dump
-from undp_extra_features.serializers import ProjectListSerializer, GlobalBudgetSourceSerializer
-from undp_outputs.models import Output
+from undp_extra_features.serializers import ProjectListSerializer, GlobalBudgetSourceSerializer, ExportCSVSerializer
+from undp_outputs.models import Output, OutputSector
 from undp_outputs.serializers import OutputListSerializer, OutputCsvSerializer
 from undp_projects.models import Project, ProjectDocument, ProjectSearch
 from undp_projects.serializers import MapDetailsSerializer, ProjectAggregateSerializer, SectorAggregateSerializer, \
     ProjectBudgetSourceSerializer, ProjectDocumentSerializer
 from undp_purchase_orders.models import PurchaseOrder
 from undp_purchase_orders.serializers import PurchaseOrderSerializer
-from utilities.config import EXCLUDED_SECTOR_CODES, EXPORT_DIR, BASE_DIR, EXPORT_TEMPLATES_MAPPING, EXPORT_PDF_DIR
-from utilities.konstants import PROJECT_CSV_ITEMS
+from utilities.config import EXCLUDED_SECTOR_CODES, EXPORT_DIR, BASE_DIR, EXPORT_TEMPLATES_MAPPING, EXPORT_PDF_DIR, \
+    EXPORT_HTML_PATH, EXPORT_PDF_PATH
+from utilities.konstants import PROJECT_CSV_ITEMS, GLOBAL_DATA
 from utilities.mixins import ResponseViewMixin
 from utilities.utils import get_active_projects_for_year, get_project_aggregate, get_sector_aggregate, \
     process_query_params, get_project_full_text_search_query, get_fund_split_many_query, export_to_csv, \
-    get_media_path, convert_to_ordered_dict, get_last_updated_date
+    get_media_path, convert_to_ordered_dict, get_last_updated_date, get_fund_split_csv_query
 
 EXPORT_TEMPLATE_DIR_PATH = BASE_DIR + '/undp_extra_features/templates/'
 
@@ -258,6 +260,7 @@ class ExportAsPDFView(APIView, ResponseViewMixin):
         try:
             template_name = request.data.get('template_name', '')
             context_data = request.data.get('context_data', {})
+            format_type = request.data.get('format_type', '')
             last_updated_date = get_last_updated_date()
             ord_dict = convert_to_ordered_dict(context_data)
             ord_dict['last_updated_date'] = last_updated_date
@@ -275,13 +278,28 @@ class ExportAsPDFView(APIView, ResponseViewMixin):
             template = get_template(template_path)
             context = {"data": ord_dict}  # data is the context data that is sent to the html file to render the output.
             html = template.render(context)  # Renders the template with the context data.
-            now_time = str(calendar.timegm(time.gmtime()))
-            file = 'out_' + now_time + '.pdf'
-            file_name = 'export_pdf/' + file
-            pdf_path = settings.MEDIA_ROOT + file_name
-            pdfkit.from_string(html, pdf_path, options=options)
-            pdf_file = get_media_path(file_name)
-            result = {'file_path': pdf_file, 'file_name': file}
+            if format_type == 0 or format_type == 1:
+                now_time = str(calendar.timegm(time.gmtime()))
+                file = 'out_' + now_time + '.pdf'
+                file_name = 'export_pdf/' + file
+                pdf_path = settings.MEDIA_ROOT + file_name
+                pdfkit.from_string(html, pdf_path, options=options)
+                pdf_file = get_media_path(file_name)
+                result = {'file_path': pdf_file, 'file_name': file}
+            else:
+                result = {}
+            #
+            # Code to call puppeteer file for SSC and SDG landing page Export PDF.
+            #
+            # elif format_type == 1:
+            #     file_path = EXPORT_HTML_PATH
+            #     pdf_path = EXPORT_PDF_PATH
+            #     export_file = open(file_path, "w+")
+            #     export_file.write(html)
+            #     export_file.close()
+            #     subprocess.call('node ' + BASE_DIR + '/../createPDF.js')
+            #     time.sleep(5)
+            #     result = {'file_path': pdf_path, 'file_name': 'export.pdf'}
             return self.jp_response(s_code='HTTP_200_OK', data=result)
         except Exception as e:
             print(e)
@@ -333,32 +351,95 @@ class ExportAsCSVView(View):
             sdgs = process_query_params(request.GET.get('sdgs', None))
             category = request.GET.get('category')
             keyword = request.GET.get('keyword')
+            signature_solution = request.GET.get('signature_solution')
+            sdg_target = process_query_params(request.GET.get('sdg_target', None))
+            marker_type = request.GET.get('marker_type')
+            marker_id = request.GET.get('marker_id')
+            level_two_marker = request.GET.get('level_two_marker')
+            key = request.GET.get('key', None)
             search_query = get_project_full_text_search_query(year, operating_units, budget_sources,
                                                               sectors, keyword, budget_type=budget_type,
-                                                              category=category, sdgs=sdgs)
+                                                              category=category, sdgs=sdgs,
+                                                              signature_solution=signature_solution,
+                                                              sdg_targets=sdg_target, marker_type=marker_type,
+                                                              marker_id=marker_id, level_two_marker=level_two_marker)
             project_ids = ProjectSearch.objects.filter(search_query).distinct('project_id') \
                 .values_list('project_id', flat=True)
 
             funds_query = get_fund_split_many_query(years=year, budget_sources=budget_sources, budget_type=budget_type,
                                                     operating_units=operating_units)
-            funds_mapping = DonorFundSplitUp.objects.filter(funds_query).values_list('id', flat=True)
-
-            queryset = Project.objects.filter(project_id__in=project_ids) \
-                .distinct() \
-                .values('project_id') \
-                .annotate(budget=Coalesce(Sum(Case(When(Q(donorfundsplitup__in=funds_mapping),
-                                                        then=F('donorfundsplitup__budget')),
-                                                   default=Value(0))), 0),
-                          expense=Coalesce(Sum(Case(When(Q(donorfundsplitup__in=funds_mapping),
-                                                         then=F('donorfundsplitup__expense')),
-                                                    default=Value(0))), 0),
-                          title=F('title'), description=F('description'),
-                          operating_unit=F('operating_unit__name')) \
-                .values('project_id', 'title', 'description', 'budget', 'expense', 'operating_unit',) \
-                .order_by('-budget')
+            fund_csv_query = get_fund_split_csv_query(year, budget_sources=budget_sources, budget_type=budget_type,
+                                                      operating_units=operating_units, sector=sectors, sdg=sdgs,
+                                                      signature_solution=signature_solution,
+                                                      marker_type=marker_type, marker_id=marker_id,
+                                                      level_two_marker=level_two_marker)
+            funds_mapping = DonorFundSplitUp.objects.filter(fund_csv_query).values_list('id', flat=True)
             header = ['project_id', 'title', 'description', 'operating_unit', 'budget', 'expense']
-
-            export_to_csv(file_path, queryset, header)
+            if key:
+                query = Project.objects.filter(project_id__in=project_ids) \
+                    .distinct() \
+                    .values('project_id') \
+                    .annotate(budget=Coalesce(Sum(Case(When(Q(donorfundsplitup__in=funds_mapping),
+                                                            then=F('donorfundsplitup__budget')),
+                                                       default=Value(0))), 0),
+                              expense=Coalesce(Sum(Case(When(Q(donorfundsplitup__in=funds_mapping),
+                                                             then=F('donorfundsplitup__expense')),
+                                                        default=Value(0))), 0),
+                              title=F('title'), description=F('description'),
+                              operating_unit=F('operating_unit__name'))
+                serializer = ExportCSVSerializer(query, many=True)
+                if int(key) == GLOBAL_DATA.our_focus:
+                    header = ['project_id', 'title', 'description', 'operating_unit', 'budget', 'expense', 'our_focus']
+                elif int(key) == GLOBAL_DATA.signature_solutions:
+                    header = ['project_id', 'title', 'description', 'operating_unit', 'budget', 'expense',
+                              'signature_solutions']
+                elif int(key) == GLOBAL_DATA.sdg:
+                    header = ['project_id', 'title', 'description', 'operating_unit', 'budget', 'expense', 'sdg']
+            elif sdgs and not sdg_target:
+                queryset = DonorFundSplitUp.objects.filter(fund_csv_query & Q(output__outputtarget__year__in=year)) \
+                    .distinct().values('project') \
+                    .annotate(budget=Sum(Case(When(output__outputtarget__target_id__sdg__in=sdgs,
+                                              then=(F('budget') * F('output__outputtarget__percentage') / 100.0)),
+                                              default=Value(0))),
+                              expense=Sum(Case(When(output__outputtarget__target_id__sdg__in=sdgs,
+                                               then=F('expense') * F('output__outputtarget__percentage') / 100.0)),
+                                               default=Value(0)),
+                              title=F('project__title'), description=F('project__description'),
+                              operating_unit=F('project__operating_unit__name')) \
+                    .values('project_id', 'title', 'description', 'budget', 'expense', 'operating_unit', ) \
+                    .order_by('-budget')
+            elif sdgs and sdg_target:
+                queryset = DonorFundSplitUp.objects.filter(fund_csv_query & Q(output__outputtarget__year__in=year)) \
+                    .distinct().values('project') \
+                    .annotate(budget=Sum(Case(When(output__outputtarget__target_id__in=sdg_target,
+                                              then=(F('budget') * F('output__outputtarget__percentage') / 100.0)),
+                                              default=Value(0))),
+                              expense=Sum(Case(When(output__outputtarget__target_id__in=sdg_target,
+                                               then=F('expense') * F('output__outputtarget__percentage') / 100.0)),
+                                               default=Value(0)),
+                              title=F('project__title'), description=F('project__description'),
+                              operating_unit=F('project__operating_unit__name')) \
+                    .filter(Q(budget__gt=0) and Q(expense__isnull=False))\
+                    .values('project_id', 'title', 'description', 'budget', 'expense', 'operating_unit', ) \
+                    .order_by('-budget')
+            else:
+                queryset = Project.objects.filter(project_id__in=project_ids) \
+                    .distinct() \
+                    .values('project_id') \
+                    .annotate(budget=Coalesce(Sum(Case(When(Q(donorfundsplitup__in=funds_mapping),
+                                                            then=F('donorfundsplitup__budget')),
+                                                       default=Value(0))), 0),
+                              expense=Coalesce(Sum(Case(When(Q(donorfundsplitup__in=funds_mapping),
+                                                             then=F('donorfundsplitup__expense')),
+                                                        default=Value(0))), 0),
+                              title=F('title'), description=F('description'),
+                              operating_unit=F('operating_unit__name')) \
+                    .values('project_id', 'title', 'description', 'budget', 'expense', 'operating_unit',) \
+                    .order_by('-budget')
+            if key:
+                export_to_csv(file_path, serializer.data, header)
+            else:
+                export_to_csv(file_path, queryset, header)
             zip_file = open(file_path, 'rb')
             response = HttpResponse(zip_file, content_type='application/force-download')
             response['Content-Disposition'] = 'attachment; filename="%s"' % file_name

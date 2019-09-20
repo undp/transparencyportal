@@ -30,7 +30,7 @@
     max-width: 300px;
     text-align: left;
     .head{
-        font-weight: bold;
+        font-weight: $bold;
     }
 }
 .sdgWrapper {
@@ -63,7 +63,7 @@
         background-color: #fdfdfd;
         border: 2px solid #fff;
         color: black;
-        font-weight: bold;
+        font-weight: $bold;
         border-radius: 30px;
         font-size: 14px;
         outline: none;

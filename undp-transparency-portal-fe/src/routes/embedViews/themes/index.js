@@ -19,6 +19,8 @@ import {
 import style from './style';
 import commonConstants from '../../../utils/constants';
 import DonutChart from '../../../components/donutChart';
+import { setMapCurrentYear } from '../../../shared/actions/mapActions/yearTimeline';
+import { setCurrentYear } from '../../../shared/actions/getYearList';
 
 class EmbedThemesView extends Component {
     constructor(props) {
@@ -36,6 +38,8 @@ class EmbedThemesView extends Component {
     componentWillMount() {
         this.props.fetchDonorSliderData(this.props.year, this.props.themes);
         this.props.loadThemesMapData(this.props.year, this.props.themes);
+        this.props.setMapCurrentYear(this.props.year);
+		this.props.setCurrentYear(this.props.year);
         if( this.props.signatureSolutions === 'true' && Number(this.props.year) >= commonConstants.SIGNATURE_SOLUTION_YEAR )
             this.props.fetchSignatureSolutionChartData(this.props.themes, this.props.year);
     }
@@ -150,14 +154,16 @@ class EmbedThemesView extends Component {
                             <TopographyIconsLegend /> : null} */}
                         {isMapDataNonEmpty ?
                             <Map
-                                themes={this.props.themes}
+                                sector= {this.props.themes}
                                 mapData={mapData}
+                                yearSelected={this.props.year}
                             />
                             : <PreLoader />
                         }
                         {isMapDataNonEmpty ?
                             <div class={style.disclaimer}>
-                                {'* The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.'}
+                                <ul><li> The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.</li><li> References to Kosovo* shall be understood to be in the context of UN Security Council resolution 1244 (1999)</li>
+    </ul>
                             </div> :
                             null}
                     </div>
@@ -165,12 +171,11 @@ class EmbedThemesView extends Component {
                 {this.props.projectTable === 'true' ?
                     <BootTable count={totalDataSize}
                         loading={this.props.projectList.loading}
-                        currentYear={this.props.year}
                         theme={this.props.themes}
                         keyword={''}
                         unit={''}
                         source={''}
-                        currentYear={this.props.year}
+                        yearSelected={this.props.year}
                         sdg={''}
                         data={projectListArr}
                         links={links}
@@ -313,6 +318,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     fetchDonorSliderData: (year, sector) => dispatch(fetchDonorSliderData(year, sector)),
     loadThemesMapData: (year, sector) => dispatch(loadThemesMapData(year, sector)),
+    setCurrentYear: (year) => dispatch(setCurrentYear(year)),
+	setMapCurrentYear: (year) => dispatch(setMapCurrentYear(year)),
     updateProjectList: (year, unit, source, theme, keyword, limit, offset, budget_type) => dispatch(updateProjectList(year, unit, source, theme, keyword, limit, offset, budget_type)),
     fetchSignatureSolutionChartData: (code, year) => dispatch(fetchSignatureSolutionChartData(code, year))
 });

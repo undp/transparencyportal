@@ -43,10 +43,10 @@
     .impactTitle {
         display:block;
         padding-top: 7px;
-        font-weight: bold;
+        font-weight: $bold;
     }
     .value {
-        font-weight: 700;
+        font-weight: $bold;
         font-size: 28px;
         @media(max-width: $tablets) {
             font-size: 16px;
@@ -54,7 +54,7 @@
     }
     .text {
         font-size: 16px;
-        font-weight: 700;
+        font-weight: $bold;
         text-transform: uppercase;
         padding-top: 1px;
         @media(max-width: $tablets) {
@@ -65,5 +65,5 @@
 .impactWrapper {
     padding-left: 20px;
     width: 250px;
-    font-weight: bold;
+    font-weight: $bold;
 }

@@ -52,10 +52,11 @@ export default class EmbedModal extends Component {
 	}
 	generateSelectionList = () => {
 		let flag = false;
+		const hide = { display: 'none' };
 		let checkList = this.props.checkList.map((item) => {
 			flag = flag || item.flag;
 			return (
-				<div class={style.list}>
+				<div class={style.list} style={item.label === 'Story Map' && this.props.projectData && this.props.projectData.length ===0 ? hide : {}}>
 					<input type={'checkbox'} checked={item.flag} onChange={(e) => { this.handleOnSelect(e, item); }} />
 					<label for={item.label}>{item.label}</label>
 				</div>

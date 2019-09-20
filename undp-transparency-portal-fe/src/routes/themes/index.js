@@ -71,6 +71,7 @@ class Themes extends Component {
 			}
 
 		});
+		
 		this.setState({
 			selectionListUrl: newUrl
 		}, () => {
@@ -178,7 +179,7 @@ class Themes extends Component {
 	componentWillReceiveProps = (nextProps) => {
 		if (nextProps.themeSliderData.data.aggregate  && !this.setEndYear){
 			this.setEndYear = true;
-			this.props.updateEndYear(nextProps.themeSliderData.data.aggregate.start_year,nextProps.themeSliderData.data.aggregate.end_year);
+			this.props.updateEndYear(nextProps.themeSliderData.data.aggregate.start_year, Math.min(nextProps.currentYear,nextProps.themeSliderData.data.aggregate.end_year));
 			if ( nextProps.themeSliderData.data.aggregate.end_year < commonConstants.SIGNATURE_SOLUTION_YEAR){
 				 _.remove(this.state.checkList, function(n) {
 					return n.key  === 'signatureSolutions';
@@ -197,15 +198,15 @@ class Themes extends Component {
 			  keyword = '',
 			  sdgs = '';
 				
-
+		
 		data = {
 			year: this.props.themeSliderData.data.aggregate.year,
 			aggregate: this.props.themeSliderData.data.aggregate,
 			budget_sources: this.props.themeSliderData.data.budget_sources,
 			top_recipient_offices: this.props.themeSliderData.data.top_recipient_offices,
-			mapData: this.props.outputData.data,
+			mapData: this.props.outputData.data.length === 0 ? this.props.themesMapData.data : this.props.outputData.data ,
 			title: this.props.themeSliderData.data.aggregate.sector_name,
-			projectList: this.props.projectList.projectList,
+			projectList: { data: this.props.projectList.top10Projects },
 			tabSelected: 'themes',
 			donutChartData: this.props.donutChartData.resourcesModalityContribution,
 			lastUpdatedDate: getFormmattedDate(this.props.lastUpdatedDate.data.last_updated_date)
@@ -226,7 +227,7 @@ class Themes extends Component {
 	render({ router }) {
 		const title = this.state.pageTitle,
 			description = 'At the request of the MoH, UNDP procures a range of medicines and medical products as an emergency measure, and builds the capacity needed to support a transparent, cost-effective procurement system for the Ministry.',
-			filterUrl = `&year=${this.props.currentYear}&themes=${this.props.code}&themesLabel=${this.props.type}`;
+			filterUrl = `&year=${this.props.startAndEndYears.endYear < this.props.currentYear ? this.props.startAndEndYears.endYear : this.props.currentYear}&themes=${this.props.code}&themesLabel=${this.props.type}`;
 			
 
 		return (
@@ -291,8 +292,8 @@ const mapStateToProps = (state) => ({
 	mapCurrentYear: state.mapData.yearTimeline.mapCurrentYear,
 	lastUpdatedDate: state.lastUpdatedDate,
 	startAndEndYears: state.startAndEndYears,
-	donutChartData: state.donorProfile
-	
+	donutChartData: state.donorProfile,
+	themesMapData: state.mapData.themesMapData
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -301,6 +302,6 @@ const mapDispatchToProps = (dispatch) => ({
 	updateEndYear: (startYear,endYear) => dispatch(updateEndYear(startYear,endYear)),
 	downLoadProjectListCsv: (year,keyword,source,sectors,units,sdgs) => dispatch(downLoadProjectListCsv(year,keyword,source,sectors,units,sdgs))
 	
-}); 
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Themes);

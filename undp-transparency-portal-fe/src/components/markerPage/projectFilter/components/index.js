@@ -59,7 +59,7 @@ export default class ProjectFilter extends Component {
                             <div class={this.state.filterOpened ? style.filterWrapper : `${style.filterWrapper} ${style.filterHidden}`}>
                                 {/* <div class={style.filterWrapper}> */}
                                 <NestedDropList
-                                    label="Recipient Country / Region"
+                                    label="Recipient Country / Territory / Region"
                                     countryFilter
                                     theme={this.props.theme}
                                     sdg={this.props.sdg}

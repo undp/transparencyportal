@@ -98,7 +98,7 @@
             @media(max-width:767px) {
                 font-size: 16px;
             }
-            font-family: 'ProximaNova-Regular';
+            font-family: 'proxima-nova';
         }
         @media(max-width:991px) {
             margin-right: 25px;
@@ -112,7 +112,7 @@
 .markerButtonsWrapper {
     display: table-cell;
     vertical-align: middle;
-    font-family: 'ProximaNova-Regular';
+    font-family: 'proxima-nova';
     line-height: 23px;
     text-align: right;
     width: 32%;
@@ -131,6 +131,13 @@
         width: 100%;
         text-align: right;
     }
+    >span {
+        @media (min-width: $wide-screen) {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
     .buttons {
         display: inline-block;
         color: $button-text-color;
@@ -148,6 +155,12 @@
             margin-left: 10px;
             // float: right;
         }
+
+        @media (min-width: $wide-screen) {
+            padding: 6.5px 14px;
+            padding-left: 44px;
+        }
+        
         b {
             @media screen and (max-width: 1035px) {
                 display: none;
@@ -161,23 +174,42 @@
             left: 15px;
             width: 30px;
             height: 30px;
+
             @media screen and (max-width: 1035px) {
                 left: 8px;
                 top: 6px;
             }
+
+            @media (min-width: $wide-screen) {
+                width: 20px;
+                height: 20px;
+            }    
         }
         &:nth-of-type(2):after {
             background: url('#{$icons}/embed-icon.svg') no-repeat;
+            @media (min-width: $wide-screen) {
+                background-size: 100% 100%;
+            }
         }
         &:nth-of-type(1),
         &:nth-of-type(2) {
             margin-right: 12px;
+
             @media screen and (max-width: 400px) {
                 margin-right: 0;
             }
+
+            @media (min-width: $wide-screen) {
+                margin: 0;
+                margin-left: 10px;
+            }
         }
+
         &:after {
             background: url('#{$icons}/export-icon.svg') no-repeat;
+            @media (min-width: $wide-screen) {
+                background-size: 100% 100%;
+            }
         }
 
     }
@@ -273,7 +305,7 @@
 .sscButtonsWrapper {
     display: table-cell;
     vertical-align: middle;
-    font-family: 'ProximaNova-Regular';
+    font-family: 'proxima-nova';
     line-height: 23px;
     text-align: right;
     width: 31%;
@@ -428,7 +460,7 @@
 .buttonsWrapper {
     display: table-cell;
     vertical-align: middle;
-    font-family: 'ProximaNova-Regular';
+    font-family: 'proxima-nova';
     line-height: 23px;
     text-align: right;
     width: 35%;

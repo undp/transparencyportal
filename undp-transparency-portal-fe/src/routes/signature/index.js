@@ -69,6 +69,7 @@ class Signature extends Component {
 			}
 
 		});
+		
 		this.setState({
 			selectionListUrl: newUrl
 		}, () => {
@@ -173,7 +174,6 @@ class Signature extends Component {
 	}
 	renderExportPopup() {
 		let data, loading, templateType;
-
 		const year = this.props.mapCurrentYear,
 			  signatureSolution = this.props.code,
 			  source = '',
@@ -187,9 +187,9 @@ class Signature extends Component {
 			budget_sources: this.props.themeSliderData.data.budget_sources,
 			top_recipient_offices: this.props.themeSliderData.data.top_recipient_offices,
 			donutChartData: this.props.outcomeData.resourcesModalityContribution,
-			mapData: this.props.outputData.data,
+			mapData: this.props.outputData.data.length === 0 ? this.props.signatureMapData.data : this.props.outputData.data,
 			title: this.props.themeSliderData.data.aggregate.sector_name,
-			projectList: this.props.projectList.projectList,
+			projectList: { data: this.props.projectList.top10Projects },
 			tabSelected: 'signature',
 			lastUpdatedDate: getFormmattedDate(this.props.lastUpdatedDate.data.last_updated_date)
 		};
@@ -265,7 +265,8 @@ const mapStateToProps = (state) => ({
 	projectList: state.projectList,
 	mapCurrentYear: state.mapData.yearTimeline.mapCurrentYear,
 	lastUpdatedDate: state.lastUpdatedDate,
-	outcomeData: state.donorProfile
+	outcomeData: state.donorProfile,
+	signatureMapData: state.mapData.themesMapData
 });
 
 const mapDispatchToProps = (dispatch) => ({

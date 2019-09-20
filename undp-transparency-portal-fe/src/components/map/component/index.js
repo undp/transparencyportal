@@ -8,7 +8,7 @@ import "leaflet/dist/leaflet.css";
 import d3 from "d3";
 import { flatten } from "lodash";
 var L = require("leaflet")
-import { polyline } from "leaflet";
+import { polyline,polygon } from "leaflet";
 import Api from '../../../lib/api';
 import getMarkerIcon from "./markerProvider";
 import {filterArrayByStartYear} from './../../../utils/commonActionUtils';
@@ -30,6 +30,7 @@ import "react-leaflet-markercluster/dist/styles.min.css";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import MapNoDataTemplate from "./noDataComponent";
 import { getSSCMarkerColor, getUniqueLatLngArray, getAPIBaseUrRl } from '../../../utils/commonMethods';
+import {Cordinates} from './../../../utils/Cordinates';
 export default class Maps extends Component {
     constructor(props) {
         super(props);
@@ -44,7 +45,7 @@ export default class Maps extends Component {
             zoom: 3,
             topoLegend: false
         };
-        this.mapBoundaryColor = "#808080";
+        this.mapBoundaryColor = "#9e9e9e";
         this.mapEnable = false;
         this.lastSelectedLocation = {'country_iso3': '', 'isSelected': 0};
         this.NumberOfpaths = 0;
@@ -55,6 +56,7 @@ export default class Maps extends Component {
         this.noZoom = this.props.noZoom;
         this.HQType = false;
         this.isPathDrawn = true;
+        this.hideCountry = false;
     }
     
     showPopup = (coordinates, data, type) => {
@@ -125,7 +127,18 @@ export default class Maps extends Component {
 
         if(nextProps.noZoom !== this.props.noZoom){
             this.noZoom = nextProps.noZoom; 
-        }    
+        }
+
+        if(nextProps.code === "AZE" 
+        || (nextProps.clusterData.length > 0 && nextProps.clusterData[0].country_iso3 === "AZE")
+        || (nextProps.mapData.data.length > 0 && nextProps.mapData.data[0].country_iso3 === "AZE")) { //Hide for Azerbaijan
+            // this.hideCountry = true;
+            // this.noZoom = true;
+            this.hideCountry = false;
+            this.noZoom = nextProps.noZoom; 
+        } else {
+            this.hideCountry = false;
+        }
             
         this.map && this.map.closePopup();
         if (
@@ -133,15 +146,33 @@ export default class Maps extends Component {
             nextProps.mapData &&
             nextProps.mapData != this.props.mapData
         ) {
-            if (nextProps.mapData.data.length == 1 && !nextProps.mapData.loading && !this.noZoom   ) {    
-                this.props.loadOutputsMapData(nextProps.mapCurrentYear, nextProps.mapData.data[0].country_iso3? nextProps.mapData.data[0].country_iso3 : '', nextProps.sector, nextProps.source, nextProps.projectId, nextProps.budgetType, nextProps.sdg,this.props.marker,nextProps.currentMarkerSubType.markerSubType,this.props.signatureSolution ==='true'?this.props.sigSolId.selectedSignature:'');
+            if (nextProps.mapData.data.length == 1 && !nextProps.mapData.loading && !this.noZoom   ) {
+                   const { mapCurrentYear, mapData, signatureSolution, sector, source, projectId, budgetType, sdg, marker, currentMarkerSubType, sigSolId, sigTab } = nextProps
+                   const getSelectedSignature = () => {
+                       if(signatureSolution && signatureSolution === "true") {
+                           if(sigSolId.selectedSignature) {
+                               return sigSolId.selectedSignature;
+                           } else if(sigTab) {
+                               return sigTab;
+                           }
+                       }
+                       return '';
+                   }
+                this.props.loadOutputsMapData(
+                    mapCurrentYear, 
+                    mapData.data[0].country_iso3? mapData.data[0].country_iso3 : '', 
+                    signatureSolution =='true'?'':sector, 
+                    source, projectId, budgetType, 
+                    sdg, marker, currentMarkerSubType.markerSubType, getSelectedSignature(), 
+                    this.props.sdgTarget ? this.props.sdgTarget : '');
+                
                 ( nextProps.noZoom ) ?  (!this.noZoom) ? this.noZoom= true :null :null;
                 this.setState({ geojson: nextProps.mapData.data, cluster: true, popup: false })
             }
             
             else {
                
-                this.props.resetOutputsMapData();
+                if(!nextProps.isRegion ) this.props.resetOutputsMapData();
                 this.setState({
                     geojson: nextProps.mapData.data,
                     cluster: false,
@@ -149,8 +180,8 @@ export default class Maps extends Component {
                     popUp: false,
 
                 });
-                
                 this.setCenterZoom(nextProps.code,nextProps.mapData)
+                
             }
         }
         if (
@@ -160,7 +191,6 @@ export default class Maps extends Component {
         )
             this.setState({ cluster: true, geojson: [] });
         if (this.props.regionMap && this.props.resetMap != nextProps.resetMap) {
-
             this.setState({
                 cluster: undefined,
                 bounds: undefined,
@@ -170,6 +200,7 @@ export default class Maps extends Component {
             });
         }
         if (
+            !nextProps.isRegion &&
             nextProps.clusterData.length &&
             this.props.clusterData != nextProps.clusterData &&
             nextProps.clusterData[0].boundaries != null
@@ -190,14 +221,17 @@ export default class Maps extends Component {
                     flatten(nextProps.clusterData[0].boundaries.geometry.coordinates)
                 );
                 let bounds = polyline(coord).getBounds();
-                this.map.fitBounds(bounds)
-                this.setState({
-                    bounds: [
-                        [bounds._northEast.lat, bounds._northEast.lng],
-                        [bounds._southWest.lat, bounds._southWest.lng]
-                    ],
-                    popUp: false
-                });
+                // if(nextProps.clusterData[0].country_iso3 !== "AZE") {
+                    this.map.fitBounds(bounds)
+                    this.setState({
+                        bounds: [
+                            [bounds._northEast.lat, bounds._northEast.lng],
+                            [bounds._southWest.lat, bounds._southWest.lng]
+                        ],
+                        popUp: false
+                    });
+                // }
+                
             }
         }
         /* if(nextProps.isSSCMarker === 'true' && !nextProps.clusterLoading && nextProps.clusterData.length){
@@ -205,13 +239,18 @@ export default class Maps extends Component {
             return;
         } */
     }
+    // https://api.mapbox.com/styles/v1/steffyjohn/ckcu78h0e3imj1ipcajejoj0l/tiles/256/{z}/{x}/{y}@2x?access_token=
+    // https://api.mapbox.com/styles/v1/steffyjohn/ckcu1gw1c3cek1jmgs04jx0c1/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoic3RlZmZ5am9obiIsImEiOiJja2N1MG1jZmQwdjFoMnRvNGFieHFzZG9wIn0.MAyYQhV50rYI9MJeejPigg
+
+    // https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png?access_token=' 
+    
     mapInitialize() {
         this.map = L.map(this.props.mapId ? this.props.mapId : "map", { zoomControl: false, worldCopyJump: true, minZoom: 1 }).setView([20, 20], 3)
-
-        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + Api.MAP_API_KEY, {
+       
+        L.tileLayer('https://api.mapbox.com/styles/v1/steffyjohn/ckcxi5e6q0w0e1innrwiw8svo/tiles/256/{z}/{x}/{y}@2x?fresh=true&&access_token='+  Api.MAP_API_KEY , {
             id: 'mapbox.light',
             }).addTo(this.map);
-        // L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/{z}/{x}/{y}?access_token=' + Api.MAP_API_KEY).addTo(this.map);
+        
         this.map.on('zoom', (event) => {
             this.zoom(event)
         })
@@ -284,9 +323,17 @@ export default class Maps extends Component {
                 this.props.sdg,
                 this.props.marker,
                 this.props.currentMarkerSubType.markerSubType,
-                this.props.signatureSolution ==='true' ? this.props.sigSolId.selectedSignature : '' 
+                this.props.signatureSolution ==='true' ? this.props.sigSolId.selectedSignature : '' ,
+                this.props.sdgTarget ? this.props.sdgTarget : ''
             );
-            ( this.props.noZoom ) ?  (this.noZoom)? this.noZoom = !this.noZoom: null :null;
+            
+            if(location.country_iso3 === "AZE") {
+                this.hideCountry = true;
+                this.noZoom = true;
+            } else {
+                this.hideCountry = false;
+                ( this.props.noZoom ) ?  (this.noZoom)? this.noZoom = !this.noZoom: null :null;
+            }
             this.setState({
                 zoom: 4,
                 popUp: false,
@@ -746,6 +793,16 @@ export default class Maps extends Component {
         this.props.searchCountryRegionsListData('', this.props.sector, this.props.sdg, this.props.source, year);
     }
 
+    preloading() {
+        return (this.props.mapData.loading || this.props.clusterLoading || this.onPlotPaths) &&  !this.hideCountry
+    }
+
+    noMapData() {
+        return !this.preloading() && (!(!this.props.clusterMode && this.state.geojson.length>0) || this.hideCountry ||
+                        !this.state.cluster || !this.HQType || !(this.props.marker && (this.props.mapData.regionalCenter) )
+|| (this.props.isSSCMarker && !this.isPathDrawn))
+    }
+
     render() {
 
         let mapData = this.state.geojson;
@@ -761,14 +818,16 @@ export default class Maps extends Component {
             this.scale = scale
         }
         if (this.map) {
+           
             !this.state.popUp && !this.state.bounds && this.map.setView(this.state.center, this.state.zoom)
             this.markers && !this.state.popUp && this.markers.clearLayers()
             this.layers && !this.state.popUp && this.layers.clearLayers()
-            mapData != undefined && !this.state.popUp && this.renderCircles(mapData);
+           
             this.state.cluster && this.props.clusterData[0] && !this.state.popUp ? this.renderMarkers() : null;
-            this.state.cluster && this.props.clusterData[0] && this.drawPolygon()
+            this.state.cluster && this.props.clusterData[0] && this.drawPolygon();
             this.state.popUp && this.renderPopUp();
-    
+            
+             mapData != undefined && !this.state.popUp && this.renderCircles(mapData);
             if(!this.props.sscMarkerPathData.loading && this.props.isSSCMarker){
                 if(this.props.sscCountry.country_iso3 || this.props.sscL2Country.country_iso3){
                     this.updateFlightMapPath(this.props.sscMarkerType.type);
@@ -804,22 +863,38 @@ export default class Maps extends Component {
 
                 {this.props.export && <div class={style.mapOverlay}></div>}
                 <div ref={this.setWrapperRef} id={this.props.mapId ? this.props.mapId : "map"} style={{ height: '100%', cursor: 'pointer' }}>
-                    {this.props.mapData.loading || this.props.clusterLoading || this.onPlotPaths ? (
+                    {this.preloading() && (
                         <PreLoader />
-                    ) : (!this.props.clusterMode && mapData.length>0) ||
+                    )
+                    //  : (!this.props.clusterMode && mapData.length>0) || !this.hideCountry ||
+                    //     this.state.cluster || this.HQType ||(this.props.marker && (this.props.mapData.regionalCenter) )? null : ( 
+                    //             <div class={style.noDataTemplateWrapper}>
+                    //                 <MapNoDataTemplate />
+                    //             </div>
+                    //         )}
+                    //     {(this.props.isSSCMarker && !this.isPathDrawn) || this.hideCountry? 
+                    //         <div class={style.noDataTemplateWrapper}>
+                    //             <MapNoDataTemplate />
+                    //         </div>
+                    //         :
+                    //         null
+                        }
+                    </div>
+                    {
+                        this.preloading() ? null
+                     : (!this.props.clusterMode && mapData.length>0) || !this.hideCountry ||
                         this.state.cluster || this.HQType ||(this.props.marker && (this.props.mapData.regionalCenter) )? null : ( 
                                 <div class={style.noDataTemplateWrapper}>
                                     <MapNoDataTemplate />
                                 </div>
                             )}
-                        {this.props.isSSCMarker && !this.isPathDrawn ? 
+                        {(this.props.isSSCMarker && !this.isPathDrawn) || this.hideCountry? 
                             <div class={style.noDataTemplateWrapper}>
                                 <MapNoDataTemplate />
                             </div>
                             :
                             null
-                        }
-                </div>
+                    }
                 {
                     this.state.cluster ?
                         <div>

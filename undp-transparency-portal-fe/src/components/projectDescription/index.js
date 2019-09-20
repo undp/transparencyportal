@@ -152,7 +152,7 @@ class ProjectDescription extends Component {
 									<span>{this.props.projectDetail.project.organisation.org_name}</span>
 									<section class={style.mapMenu} >
 										<button class={this.state.mapType ==='map' ? `${style.mapbuttons} ${style.selected}` :style.mapbuttons} onClick= {()=> this.setMapType('map') }> Map </button>
-										{this.props.projectId.toString() === '00094616' ? <button class={this.state.mapType ==='map' ? style.mapbuttons : `${style.mapbuttons} ${style.selected}`} onClick= {()=> this.setMapType('satellite') }> Story Map </button>:null}
+										{ this.props.satelliteData && this.props.satelliteData.length > 0 ? <button class={this.state.mapType ==='map' ? style.mapbuttons : `${style.mapbuttons} ${style.selected}`} onClick= {()=> this.setMapType('satellite') }> Story Map </button>:null}
 										<img class={style.expandButton} src='./../../assets/icons/expand.png'  onClick={() => this.openModal(this.state.mapType)}/>
 									</section>
 								</section>
@@ -188,7 +188,8 @@ class ProjectDescription extends Component {
 								
 							</div>
 							<div class={style.disclaimer}>
-								{'* The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.'}
+							<ul><li> The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.</li><li> References to Kosovo* shall be understood to be in the context of UN Security Council resolution 1244 (1999)</li>
+    </ul>
 							</div>
 						</div>
 					</div>

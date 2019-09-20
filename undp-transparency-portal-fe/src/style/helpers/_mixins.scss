@@ -22,7 +22,7 @@
     animation: $name $duration $ease;
 }
 
-@mixin font($size, $weight, $color, $family: 'ProximaNova-Regular') {
+@mixin font($size, $weight, $color, $family: "proxima-nova") {
     font-size: $size;
     font-weight: $weight;
     color: $color;

@@ -175,7 +175,8 @@ export default class ThemesPage extends Component {
                                         />:<PreLoader/>
                                 }
                                 {isMapDataNonEmpty ? <div class={style.disclaimer}>
-                                {'* The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.'}
+                                <ul><li> The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.</li><li> References to Kosovo* shall be understood to be in the context of UN Security Council resolution 1244 (1999)</li>
+    </ul>
                             </div>:null}
                             {
 						        !this.state.listSelected ? window.dispatchEvent(new Event('resize')) : null

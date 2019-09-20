@@ -220,7 +220,8 @@ class ProjectMarkerSerializer(serializers.ModelSerializer):
     @staticmethod
     def get_type_title(obj):
         if obj.type == MARKER_TYPE_CHOICES.hows_marker or obj.type == MARKER_TYPE_CHOICES.humanitarian_marker or \
-                obj.type == MARKER_TYPE_CHOICES.jointprogramme_marker:
+                obj.type == MARKER_TYPE_CHOICES.jointprogramme_marker or \
+                obj.type == MARKER_TYPE_CHOICES.covid_marker:
             return obj.marker_title
         if obj.parent_type == MARKER_PARENT_CHOICES.default:
             return obj.marker_title
@@ -255,8 +256,11 @@ class ProjectMarkerSerializer(serializers.ModelSerializer):
                 parent_marker_desc = ProjectMarker.objects.values_list('parent_marker_desc', flat=True)\
                     .filter(type=obj.type, parent_type=obj.parent_type).distinct('parent_marker_desc')
                 return parent_marker_desc
+        elif obj.type == MARKER_TYPE_CHOICES.covid_marker:
+            return obj.marker_desc
         elif obj.type == MARKER_TYPE_CHOICES.jointprogramme_marker or \
-                (obj.type == MARKER_TYPE_CHOICES.humanitarian_marker and obj.marker_id == HUMANITARIAN_PLUS):
+                (obj.type == MARKER_TYPE_CHOICES.humanitarian_marker and obj.marker_id == HUMANITARIAN_PLUS) \
+                or obj.type == MARKER_TYPE_CHOICES.covid_marker:
             level_two_desc = ProjectMarker.objects.values_list('level_two_marker_description', flat=True) \
                 .filter(type=obj.type, marker_title=obj.marker_title).distinct('level_two_marker_description')
             return level_two_desc

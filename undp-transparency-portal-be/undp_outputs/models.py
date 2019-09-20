@@ -11,6 +11,7 @@ MARKER_TYPE_CHOICES = Konstants(
     K(jointprogramme_marker=4, label='Joint Programme'),
     K(partner_marker=5, label='Partner'),
     K(whos_marker=6, label='Whos'),
+    K(covid_marker=7, label='COVID-19 Response')
 )
 
 MARKER_PARENT_CHOICES = Konstants(
@@ -247,3 +248,11 @@ class SDGChartColor(models.Model):
     sdg_code = models.IntegerField()
     count = models.IntegerField()
     color = models.CharField(max_length=20, null=False, blank=False)
+
+
+class StoryMap(models.Model):
+    operating_unit = models.ForeignKey(OperatingUnit)
+    location = models.CharField(max_length=30)
+    project = models.ForeignKey(Project)
+    output = models.ForeignKey(Output)
+    link = models.CharField(max_length=200)

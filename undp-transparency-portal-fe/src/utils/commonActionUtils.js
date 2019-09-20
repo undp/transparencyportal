@@ -71,3 +71,27 @@ export function getBrowserInformation() {
 	})();
 	return (navigator.sayswho);
 }
+
+
+// get the key
+export function getApiKey() {
+	const _day = new Date().getDate();
+
+	if (_day < 5) {
+		return 'pk.eyJ1IjoidW5kcG9yZyIsImEiOiJjaWc5cmJmcWwwMDRxdjJrcjgxbnczaThvIn0.J-5uk4LED0EgvK1raqCJmg'
+	} else if (_day < 10) {
+		return 'pk.eyJ1IjoicmF0aGVlc2hxYiIsImEiOiJja2V1enI2dTAydnl5MzJvOGI5YzFtMmxyIn0.OAwY5IxXm6n1u809Vi7WeA'
+	}
+	else if (_day < 15) {
+		return 'pk.eyJ1IjoiYXJtcml6YSIsImEiOiJZSWRGbmtrIn0.WLpZFo1llqXvg04wz12a5Q'
+	}
+	else if (_day < 20) {
+		return 'pk.eyJ1IjoiemFpcmVoIiwiYSI6ImNrcDVpaGN3ejBiYjQyb3BlcmcxOW1yczEifQ.T372nofozuGd98yYAlPI-A'
+	}
+	else if (_day < 25) {
+		return 'pk.eyJ1IjoiYXJtcml6YTQ0NDQiLCJhIjoiY2twNmtmdzA0MDU5djJ2bXRmc2lxZGY3ZyJ9.y_-VlkCS4QRcXVFCbDF31Q'
+	}
+	else {
+		return 'pk.eyJ1IjoiYXJtcml6YTQiLCJhIjoiY2tldjdkNW1uMDI5bzJ6cDloejBrdGsycCJ9.JiW486rjr39AMr4kIpizyg'
+	}
+}

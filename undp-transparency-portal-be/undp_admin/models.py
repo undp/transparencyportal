@@ -28,7 +28,8 @@ TABS = Konstants(
     K(about=1, label='About Open.UNDP'),
     K(faq=2, label='FAQ'),
     K(glossary=3, label='Glossary'),
-    K(contact=4, label='Contact')
+    K(contact=4, label='Contact'),
+    K(trainings=5, label='Online Training Courses')
 )
 
 

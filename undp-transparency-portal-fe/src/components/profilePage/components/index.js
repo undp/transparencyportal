@@ -213,6 +213,9 @@ export default class ProfilePage extends Component {
         let url = baseURL + '/media/flag_icons/'+donor.iso3+'.svg';
         return url;
     }
+    onCountrySelect(location) {
+    }
+
     render(props, { projectList,
         totalDataSize,
         donutBudget,
@@ -236,7 +239,6 @@ export default class ProfilePage extends Component {
             recepientSdg,
             baseURL
         } = props;
-
         return (
             <div class={style.profile_page_container}>
                 <div class={style.wrapper}>
@@ -271,7 +273,7 @@ export default class ProfilePage extends Component {
                     {
                         props.profileType == "recipientprofile" ?
                             <div>
-                                {!recipientBasicDetails.loading ? <img class={style.flagIcon} src={this.props.selectedCountry.unit_type === 'CO' ? baseURL + '/media/flag_icons/' + this.props.selectedCountry.iso3 + '.svg' : hasNumber(this.props.selectedCountry.iso3) ? '/assets/images/Empty.svg':baseURL + '/media/flag_icons/' + this.props.selectedCountry.iso3 + '.svg'} /> : null}
+                                {!recipientBasicDetails.loading ? <img class={style.flagIcon} src={this.props.selectedCountry.isRegion ? '/assets/images/Empty.svg' : this.props.selectedCountry.unit_type === 'CO' ? baseURL + '/media/flag_icons/' + this.props.selectedCountry.iso3 + '.svg' : hasNumber(this.props.selectedCountry.iso3) ? '/assets/images/Empty.svg':baseURL + '/media/flag_icons/' + this.props.selectedCountry.iso3 + '.svg'} /> : null}
                                 {
                                     recipientBasicDetails.loading ?
                                         <div style={{ position: "relative", height: 83 }}>
@@ -371,27 +373,32 @@ export default class ProfilePage extends Component {
                                 data={projectList} /></div>
 
                         <div class={style.mapContainer} style={{ position: 'relative', display: this.state.listSelected ? 'none' : 'block' }}>
+                           
                             <Map
-                                clusterMode={this.props.unitType == 2 && props.profileType == "recipientprofile" ? true : false}
+                                clusterMode={this.props.selectedCountry.isRegion ? (this.props.outputData.data.length== 1?true: false) : this.props.unitType == 2 && props.profileType == "recipientprofile" ? true : false}
                                 source={props.profileType == "donorprofile" && this.props.selectedCountry.iso3}
                                 budgetType={props.profileType == "donorprofile" && this.state.budgetType}
                                 mapData={
-                                    this.props.unitType == 1 ? props.profileType == "donorprofile" ?
+                                    this.props.selectedCountry.isRegion && this.props.outputData.data.length > 0 ? this.props.outputData : this.props.unitType == 1 ? props.profileType == "donorprofile" ?
                                         donorProfileMapData
                                         : recipientMapData
                                         : donorProfileMapData
                                 } 
+                                code={this.props.countryCode}
                                 section={'profilePage'}
                                 unit_type={this.props.selectedCountry.unit_type}
                                 noZoom = {this.type == "Donor" ? true : false}
+                                onCountrySelect = {this.onCountrySelect}
+                                isRegion={this.props.selectedCountry.isRegion && this.props.outputData.data.length > 1 }
                                 />
-                            <div class={style.disclaimer}>
-                                {'* The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.'}
+                            <div class={style.disclaimer3}>
+                            <ul><li> The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.</li><li> References to Kosovo* shall be understood to be in the context of UN Security Council resolution 1244 (1999)</li>
+    </ul>
                             </div>
                         </div>
                     </div>
                     }
-                    {
+                    { 
 						!this.state.listSelected ? window.dispatchEvent(new Event('resize')) : null
 					}
                 </div>

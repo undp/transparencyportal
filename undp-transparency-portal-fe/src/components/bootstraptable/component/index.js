@@ -15,7 +15,7 @@ import Modal from "../../../components/modal";
 import Table from '../../tableCards';
 import DropList from '../../dropList';
 import PaginationpanelMobile from '../../paginationPanelSearch'
-import { openInNewTab } from '../../../utils/commonMethods';
+import { openInNewTab, getAPIBaseUrRl } from '../../../utils/commonMethods';
 import DropDown from '../../../components/filter';
 
 
@@ -219,7 +219,7 @@ export default class BootTable extends Component {
   componentWillReceiveProps(nextProps) {
     if (
       nextProps.currentYear != this.props.currentYear ||
-      nextProps.theme != this.props.theme ||
+      nextProps.theme !== this.props.theme ||
       nextProps.unit != this.props.unit ||
       nextProps.keyword != this.props.keyword ||
       nextProps.source != this.props.source ||
@@ -493,12 +493,12 @@ export default class BootTable extends Component {
     } else {
       options.paginationSize = 5;
     }
-
+    
     return (
       <div class={this.props.marker ? `${style.markerprojectList} ${style.projectListActive}` : `${style.projectList} ${style.projectListActive}`}>
         <link
           rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"
+          href={getAPIBaseUrRl()+"/assets/css/bootstrap.min.css"}
         /> 
         <style>.row{}</style>
         {this.props.isSSCMarker === 'true' ?

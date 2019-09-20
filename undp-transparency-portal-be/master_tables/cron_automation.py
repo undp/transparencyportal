@@ -28,7 +28,7 @@ MASTER_FILES = ['bureau.csv', 'iati_reference_units.csv', 'country_donors.csv',
                 'world.json', 'world2.json']
 
 MISC_FILES = ['report_donors.csv', 'report_donor_contributions.xlsx', 'report_po.xlsx',
-              'country_documents.xlsx']
+              'country_documents.xlsx', 'report_markers.xlsx', 'report_po_history.xlsx']
 
 
 COUNTRY_COORDINATES = [

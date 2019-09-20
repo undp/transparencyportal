@@ -6,15 +6,20 @@ import NoDataTemplate from '../../../components/no-data-template';
 import PreLoader from '../../../components/preLoader';
 import { fetchMarkerBarChartData } from '../../../components/markerPage/actions/barchartDataFetch';
 import style from './style';
+import { aboutUsInfo } from '../../../assets/json/undpAboutUsData';
 import { fetchMarkerDescriptionData } from '../../../components/markerPage/actions/typeAndDesc';
 import { Scrollbars } from 'react-custom-scrollbars';
 import BootTable from '../../../components/bootstraptable';
+import { fetchMarkerData } from '../../../components/markerPage/actions';
 import { fetchmarkerSubType } from '../../../components/markerPage/actions/markerSubTypes';
 import { fetchMarkerProjectList } from '../../../shared/actions/getProjectList';
 import Map from '../../../components/map';
 import { updateSearchCountryField } from '../../../components/nestedDropList/actions';
 import { loadProjectListMapData } from '../../../shared/actions/mapActions/projectListMapData';
 import { updateMarkerSubType } from '../../../components/bootstraptable/actions/setMarkerType';
+import { numberToCurrencyFormatter, numberToCommaFormatter } from '../../../utils/numberFormatter';
+import { setMapCurrentYear } from '../../../shared/actions/mapActions/yearTimeline';
+import { setCurrentYear } from '../../../shared/actions/getYearList';
 
 class EmbedMarkers extends Component {
 
@@ -62,7 +67,6 @@ class EmbedMarkers extends Component {
 				}
 			}
 		}, () => {
-			this.generateFilterListUrl();
 		});
 		switch (type) {
 			case 'country':
@@ -96,7 +100,13 @@ class EmbedMarkers extends Component {
 		}
 
 	}
-
+	findImage(marker){
+		const currentMarker = _.find(aboutUsInfo.data, (markerItem) => markerItem.id === parseInt(marker) );
+		if (currentMarker){
+			return currentMarker.image_2;
+		}
+		return '../../../assets/images/Empty.svg';
+	}
 
     generateRows(data,marker){
 		let rows = null;
@@ -172,7 +182,10 @@ class EmbedMarkers extends Component {
 	}
 
     componentWillMount() {
+
 		this.props.updateMarkerSubType(this.props.marker_id);
+		this.props.setMapCurrentYear(this.props.year);
+		this.props.setCurrentYear(this.props.year);
 		this.props.loadProjectListMapData(this.props.year,
 			this.props.themes,
 			this.props.country,
@@ -181,6 +194,9 @@ class EmbedMarkers extends Component {
 			this.props.marker,
 			this.props.marker_id
 		);
+		( this.props.country  !== '') ?
+			this.props.fetchMarkerData(this.props.year,this.props.marker,this.props.country,this.props.marker_id  )
+			:	this.props.fetchMarkerData(this.props.year,this.props.marker,'all',this.props.marker_id);
 		this.props.fetchMarkerDescriptionData(this.props.year,this.props.marker,this.props.country,this.props.marker_id);
 		this.props.fetchMarkerBarChartData(this.props.year,this.props.marker,this.props.country,this.props.marker_id);
 		this.props.fetchmarkerSubType(this.props.marker,this.props.country);
@@ -198,6 +214,7 @@ class EmbedMarkers extends Component {
 
 
     render(props, {	}) {
+		
 		const budgetSources = (this.props.chartData.data.budget_sources)?
 								 this.props.chartData.data.budget_sources
 							  :	 [];
@@ -226,31 +243,77 @@ class EmbedMarkers extends Component {
 		} else {
 			optionData = [];
 		}
-
+		
 		return (
 			<div>
 				{
-					(this.props.title !== 'false') ?
+					(this.props.title === 'true') ?
 						<div class={style.titleWrapper}>
                         Our Approaches - {this.props.year}
 						</div>
                    	:	null
 				}
-			   {   (this.props.title !== 'false') ?
-				   	<div class={style.mapWrapper}>
-						<Map sector={this.state.themeSelected}
+				{
+					(this.props.stats === 'true')?
+						<section>
+							{
+								!(this.props.aggregate.loading) ?
+									Object.keys(this.props.aggregate.data).length ?
+										<div class={style.infoWrapper}>
+											<div class={style.imageWrapper}>{this.props.marker ? <img class={style.marker_image} src={this.findImage(this.props.marker)} alt="sdg icon" />:null}</div>
+											<div class={style.tableWrapper}>
+												<ul class={style.list}>
+													<li class={style.listItem}>
+														<span class={style.value}>{this.props.aggregate.data.budget && numberToCurrencyFormatter(this.props.aggregate.data.budget, 2)}</span>
+														<span class={style.label}>Budget</span>
+													</li>
+													<li class={style.listItem}>
+														<span class={style.value}>{this.props.aggregate.data.expense && numberToCurrencyFormatter(this.props.aggregate.data.expense, 2)}</span>
+														<span class={style.label}>Expense</span>
+													</li>
+													<li class={style.listItem}>
+														<span class={style.value}>{this.props.aggregate.data.projects_count && numberToCommaFormatter(this.props.aggregate.data.projects_count)}</span>
+														<span class={style.label}>Projects</span>
+													</li>
+													<li class={style.listItem}>
+														<span class={style.value}>{this.props.aggregate.data.budget_sources && numberToCommaFormatter(this.props.aggregate.data.budget_sources)}</span>
+														<span class={style.label}>Donors</span>
+													</li>
+												</ul>
+											</div>
+										</div>
+										:
+										<NoDataTemplate />
+									:
+									<div style={{ position: 'relative', height: 53, marginTop: 10, marginBottom: 10 }}>
+										<PreLoader />
+									</div>
+							}
+						</section>
+						:	null
+				}
+			   {/* {   (this.props.title !== 'false') ? */}
+			   {this.props.map==='true'&&	<div class={style.mapWrapper}>
+					  
+						{this.props.map==='true'&&<Map sector={this.state.themeSelected}
 							sdg={this.state.sdgSelected}
 							source={this.state.sourceSelected}
 							mapData={this.props.mapData.projectListMapData}
+							code={this.props.country}
+                            embedCountryRegion={true}
+                            embed={true}
 							onCountrySelect={(country)=>this.handleFilterChange("country", {value:country.country_iso3, name:country.country_name})}
 							newclass
-						/>
-						<div class={style.disclaimer}>
-							{'* The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.'}
-						</div>
-					</div>
-					:null
-			   }
+							marker={this.props.marker}
+							yearSelected={this.props.year}
+						/>}
+						{this.props.map==='true'&&<div class={style.disclaimer}>
+						<ul><li> The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.</li><li> References to Kosovo* shall be understood to be in the context of UN Security Council resolution 1244 (1999)</li>
+    </ul>
+						</div>}
+					</div>}
+					{/* :null */}
+			   {/* } */}
                {
                     (this.props.typesDescription ==='true') ?
                     <section class={style.table}>
@@ -380,6 +443,7 @@ const mapStateToProps = (state) => {
 		   markerSubTypes  = state.markerSubTypes,
 		   projectList = state.projectList,
 		   mapData = state.mapData,
+		   aggregate =state.individualMarkerData,
            markerDescData = state.markerDescData;
 	return {
         currentYear,
@@ -387,17 +451,21 @@ const mapStateToProps = (state) => {
         markerDescData,
 		markerSubTypes,
 		mapData,
+		aggregate,
 		projectList
 	};
 };
 const mapDispatchToProps = (dispatch) => ({
 	fetchmarkerSubType: (marker,country) => dispatch(fetchmarkerSubType(marker,country)),
+	setCurrentYear: (year) => dispatch(setCurrentYear(year)),
+	setMapCurrentYear: (year) => dispatch(setMapCurrentYear(year)),
 	updateMarkerSubType: (value) => dispatch(updateMarkerSubType(value)),
+	fetchMarkerData: (year,marker,country,marker_id  ) => dispatch(fetchMarkerData(year,marker,country,marker_id  )),
 	loadProjectListMapData: (year, sector, unit, source, sdg,marker,marker_id) => dispatch(loadProjectListMapData(year, sector, unit, source, sdg,marker,marker_id)),
 	updateSearchCountryField: (countryCode) => dispatch(updateSearchCountryField(countryCode)),
 	fetchMarkerProjectList: (year, markerId,keyword,limit,offset,country,markerType) => dispatch(fetchMarkerProjectList(year, markerId,keyword,limit,offset,country,markerType)),
-    fetchMarkerBarChartData: (year,marker,country,marker_id) => dispatch(fetchMarkerBarChartData(year,marker,country,marker_id)),
-    fetchMarkerDescriptionData: (year,marker,country,marker_id) => dispatch(fetchMarkerDescriptionData(year,marker,country,marker_id))
+	fetchMarkerBarChartData: (year,marker,country,marker_id) => dispatch(fetchMarkerBarChartData(year,marker,country,marker_id)),
+	fetchMarkerDescriptionData: (year,marker,country,marker_id) => dispatch(fetchMarkerDescriptionData(year,marker,country,marker_id))
 });
  
 

@@ -15,6 +15,7 @@ import PDF from '../../assets/icons/PDF.png'
 import OTHER from '../../assets/icons/Download.png'
 import ReactGA from 'react-ga';
 import Cards from '../tableCards';
+import { getAPIBaseUrRl } from '../../utils/commonMethods';
 const DocumentCategoryList = ["Budget", "Reports",]
 
 class ProjectDocumentTable extends Component {
@@ -238,7 +239,7 @@ class ProjectDocumentTable extends Component {
         return (
 
             <div class={style.projectList}>
-                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+                <link rel="stylesheet" href={getAPIBaseUrRl()+"/assets/css/bootstrap.min.css"}/>
                 <div class={style.tableOuterWrapper}>
                     <BootstrapTable
                         ref={refs => this.bootStrapTable = refs}

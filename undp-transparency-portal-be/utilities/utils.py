@@ -25,7 +25,7 @@ from undp_projects.models import ProjectActiveYear
 from utilities.config import EXCLUDED_SECTOR_CODES, NULL_SECTOR_COLOR_CODE, UNDP_DONOR_ID, NULL_SDG_COLOR_CODE, \
     SETTINGS_DIR, ANNUAL_UPLOAD_DIR, FILE_DETAILS_PATH, CSV_UPLOAD_DIR, DOWNLOAD_DIR, ANNUAL_DOWNLOAD_DIR, \
     SDG_START_YEAR, UPDATE_DAY, SIGNATURE_SOLUTION_COLORS, SIGNATURE_SOLUTION_SHORT_NAMES, SECTOR_OTHERS_YEAR, \
-    SP_START_YEAR, NEW_SECTOR_CODES, OLD_SECTOR_CODES, SDG_TARGET_COLORS
+    SP_START_YEAR, NEW_SECTOR_CODES, OLD_SECTOR_CODES, SDG_TARGET_COLORS, UPDATE_WEEK
 
 from utilities.konstants import DONOR_CATEGORY_COLORS, BUREAU_COLORS
 
@@ -427,17 +427,17 @@ def get_recipient_sdg_budget_vs_expense(operating_unit, year):
         budget = DonorFundSplitUp.objects \
             .filter(project__in=active_projects) \
             .filter(year=year) \
-            .filter(project__projecttarget__year=year) \
+            .filter(output__outputtarget__year=year) \
             .filter(op_query) \
             .exclude(other_sdg)\
             .distinct() \
-            .annotate(budget_percentage=Sum(Case(When(project__projecttarget__target_id__sdg=sdg_code,
+            .annotate(budget_percentage=Sum(Case(When(output__outputtarget__target_id__sdg=sdg_code,
                                                       then=(F('budget') * F(
-                                                          'project__projecttarget__percentage') / 100.0)),
+                                                          'output__outputtarget__percentage') / 100.0)),
                                                  default=Value(0, output_field=DecimalField()))),
-                      expense_percentage=Sum(Case(When(project__projecttarget__target_id__sdg=sdg_code,
+                      expense_percentage=Sum(Case(When(output__outputtarget__target_id__sdg=sdg_code,
                                                        then=F('expense') * F(
-                                                           'project__projecttarget__percentage') / 100.0)),
+                                                           'output__outputtarget__percentage') / 100.0)),
                                              default=Value(0, output_field=DecimalField()))
                       ) \
             .aggregate(sdg_budget=Coalesce(Sum(F('budget_percentage'), output_field=DecimalField()),
@@ -577,19 +577,34 @@ def get_project_full_text_search_query(year, operating_units, budget_sources, th
                 budget_sources_query = budget_sources_query & Q(project_id__donorfundsplitup__year__in=year)
             query.add(budget_sources_query, Q.AND)
     if themes:
-        theme_query = Q()
-        EXCLUDED_SECTOR_CODES.append('8')
-        themes_temp = themes
-        if '0' in themes or list(set(themes_temp).intersection(EXCLUDED_SECTOR_CODES)):
-            if '0' in themes:
-                themes.remove('0')
+        if themes and check_sector_year(year):
+            theme_query = Q()
+            EXCLUDED_SECTOR_CODES.append('8')
+            themes_temp = themes
+            if '0' in themes or list(set(themes_temp).intersection(EXCLUDED_SECTOR_CODES)):
+                if '0' in themes:
+                    themes.remove('0')
 
-            other_sector_query = Q(project_id__outputsector__sector__in=EXCLUDED_SECTOR_CODES) | \
-                Q(project_id__outputsector__sector__isnull=True)
-            theme_query |= other_sector_query
-        if themes:
-            theme_query |= Q(project_id__outputsector__sector__in=themes)
+                other_sector_query = Q(project_id__outputsector__sector__in=EXCLUDED_SECTOR_CODES) | \
+                    Q(project_id__outputsector__sector__isnull=True)
+                theme_query |= other_sector_query
+            if themes:
+                theme_query |= Q(project_id__outputsector__sector__in=themes) & \
+                               Q(project_id__outputsector__sector__start_year__lt=SP_START_YEAR)
+        else:
+            theme_query = Q()
+            EXCLUDED_SECTOR_CODES.append('8')
+            themes_temp = themes
+            if '0' in themes or list(set(themes_temp).intersection(EXCLUDED_SECTOR_CODES)):
+                if '0' in themes:
+                    themes.remove('0')
 
+                other_sector_query = Q(project_id__outputsector__sector__in=EXCLUDED_SECTOR_CODES) | \
+                                     Q(project_id__outputsector__sector__isnull=True)
+                theme_query |= other_sector_query
+            if themes:
+                theme_query |= Q(project_id__outputsector__sector__in=themes) & \
+                               Q(project_id__outputsector__sector__start_year__gte=SP_START_YEAR)
         query.add(theme_query, Q.AND)
     if sdgs:
         sdgs_query = Q()
@@ -1159,8 +1174,8 @@ def get_file_name(name):
 def save_file_to_local_path(name, output_file_name, category):
     try:
         local_file = get_local_filename(name, category)
-        same = check_if_file_is_modified(local_file, output_file_name)
-        if not same and category in ["annual_xml", "master", "misc"]:
+        # same = check_if_file_is_modified(local_file, output_file_name)
+        if category in ["annual_xml", "master", "misc"]:
             copy_file_to_upload_folder(output_file_name, local_file)
             file_name = local_file.split('/')[-1]
             return file_name
@@ -1638,19 +1653,32 @@ def get_last_updated_date():
 def last_day_of_month():
     import datetime
     today = datetime.date.today()
-    first = today.replace(day=1)
-    month = first - datetime.timedelta(days=1)
-    if today.day >= UPDATE_DAY:
-        last_month = month
-    else:
-        last_month_first = month.replace(day=1)
-        last_month = last_month_first - datetime.timedelta(days=1)
-    return last_month
+    # first = today.replace(day=1)
+    # month = first - datetime.timedelta(days=1)
+    # if today.day >= UPDATE_DAY:
+    #     last_month = month
+    # else:
+    #     last_month_first = month.replace(day=1)
+    #     last_month = last_month_first - datetime.timedelta(days=1)
+    offset = (today.weekday() - 2) % 7
+    last_wednesday = today - datetime.timedelta(days=offset)
+    if today.weekday() == UPDATE_WEEK:
+        yesterday = today - datetime.timedelta(days=1)
+        offset = (yesterday.weekday() - 2) % 7
+        last_wednesday = yesterday - datetime.timedelta(days=offset)
+    return last_wednesday
 
 
 def check_sdg_year(year_list):
     for y in year_list:
         if int(y) >= SDG_START_YEAR:
+            return True
+    return False
+
+
+def check_sector_year(year_list):
+    for y in year_list:
+        if int(y) < SP_START_YEAR:
             return True
     return False
 
@@ -1728,13 +1756,13 @@ def get_sdg_target_aggregate(year, sdg, operating_unit='', budget_source='', act
     total_budget = DonorFundSplitUp.objects.filter(total_fund_query).distinct() \
         .aggregate(budget_amount=Sum('budget')).get('budget_amount', 0)
     if sdg:
-        target_data = DonorFundSplitUp.objects.filter(donor_query & Q(project__projecttarget__year=year))\
-            .distinct().values('project', 'project__projecttarget__target') \
-            .annotate(budget_percentage=Sum(Case(When(project__projecttarget__target__sdg=sdg_code,
-                                                      then=(F('budget')*F('project__projecttarget__percentage')/100.0)),
+        target_data = DonorFundSplitUp.objects.filter(donor_query & Q(output__outputtarget__year=year))\
+            .distinct().values('output', 'output__outputtarget__target_id') \
+            .annotate(budget_percentage=Sum(Case(When(output__outputtarget__target_id__sdg=sdg_code,
+                                                      then=(F('budget')*F('output__outputtarget__percentage')/100.0)),
                                                  default=Value(0, output_field=DecimalField()))),
-                      expense_percentage=Sum(Case(When(project__projecttarget__target__sdg=sdg_code,
-                                                       then=F('expense')*F('project__projecttarget__percentage')/100.0)),
+                      expense_percentage=Sum(Case(When(output__outputtarget__target_id__sdg=sdg_code,
+                                                       then=F('expense')*F('output__outputtarget__percentage')/100.0)),
                                              default=Value(0, output_field=DecimalField())))\
             .aggregate(total_budget=Coalesce(Sum(F('budget_percentage'),  output_field=DecimalField()),
                                              Value(0, output_field=DecimalField())),
@@ -1750,11 +1778,15 @@ def get_sdg_target_aggregate(year, sdg, operating_unit='', budget_source='', act
                        total_expense=Coalesce(Sum(F('expense'),  output_field=DecimalField()),
                                               Value(0, output_field=DecimalField())),
                        )
+    budget_total = target_data.get('total_budget', 0)
+    expense_total = target_data.get('total_expense', 0)
+    percentage = 100
     if total_budget:
         percentage = target_data['total_budget'] / total_budget * 100 if total_budget > 0 else 0
         budget_total = target_data.get('total_budget', 0)
         expense_total = target_data.get('total_expense', 0)
-    if percentage > 0:
+
+    if percentage > 0 and expense_total != 0:
         return {
             'total_budget': budget_total,
             'total_expense': expense_total,
@@ -1848,14 +1880,14 @@ def get_target_aggregate_new(year, target, sdg,  operating_unit='', budget_sourc
     projects = Project.objects.filter(projects_query & Q(project_id__in=active_projects)).distinct()
     fund_query = get_fund_split_query(year, budget_source=budget_source, operating_unit=operating_unit, sdg=sdg)
     donor_query = fund_query & Q(project__in=projects)
-    sdg_targets_aggregate = DonorFundSplitUp.objects.filter(donor_query & Q(project__projecttarget__year=year))\
-        .distinct().values('project', 'project__projecttarget__target') \
-        .annotate(budget_percentage=Sum(Case(When(project__projecttarget__target=target,
-                                                  then=(F('budget') * F('project__projecttarget__percentage') / 100.0)),
+    sdg_targets_aggregate = DonorFundSplitUp.objects.filter(donor_query & Q(output__outputtarget__year=year))\
+        .distinct().values('output', 'output__outputtarget__target_id') \
+        .annotate(budget_percentage=Sum(Case(When(output__outputtarget__target_id=target,
+                                                  then=(F('budget') * F('output__outputtarget__percentage') / 100.0)),
                                              default=Value(0, output_field=DecimalField()))),
-                  expense_percentage=Sum(Case(When(project__projecttarget__target=target,
+                  expense_percentage=Sum(Case(When(output__outputtarget__target_id=target,
                                                    then=F('expense') * F(
-                                                       'project__projecttarget__percentage') / 100.0)),
+                                                       'output__outputtarget__percentage') / 100.0)),
                                          default=Value(0, output_field=DecimalField())))\
         .aggregate(total_budget=Coalesce(Sum(F('budget_percentage'), output_field=DecimalField()),
                                      Value(0, output_field=DecimalField())),
@@ -1863,14 +1895,14 @@ def get_target_aggregate_new(year, target, sdg,  operating_unit='', budget_sourc
                                       Value(0, output_field=DecimalField())),
                    )
 
-    sdg_aggregate = DonorFundSplitUp.objects.filter(donor_query & Q(project__projecttarget__year=year))\
-        .distinct().values('project', 'project__projecttarget__target') \
-        .annotate(budget_percentage=Sum(Case(When(project__projecttarget__target__sdg=sdg,
-                                                  then=(F('budget') * F('project__projecttarget__percentage') / 100.0)),
+    sdg_aggregate = DonorFundSplitUp.objects.filter(donor_query & Q(output__outputtarget__year=year))\
+        .distinct().values('output', 'output__outputtarget__target_id') \
+        .annotate(budget_percentage=Sum(Case(When(output__outputtarget__target_id__sdg=sdg,
+                                                  then=(F('budget') * F('output__outputtarget__percentage') / 100.0)),
                                              default=Value(0, output_field=DecimalField()))),
-                  expense_percentage=Sum(Case(When(project__projecttarget__target__sdg=sdg,
+                  expense_percentage=Sum(Case(When(output__outputtarget__target_id__sdg=sdg,
                                                    then=F('expense') * F(
-                                                       'project__projecttarget__percentage') / 100.0)),
+                                                       'output__outputtarget__percentage') / 100.0)),
                                          default=Value(0, output_field=DecimalField())))\
         .aggregate(total_budget=Coalesce(Sum(F('budget_percentage'), output_field=DecimalField()),
                                          Value(0, output_field=DecimalField())),
@@ -2063,3 +2095,162 @@ def get_sdg_sunburst(year, operating_unit='', budget_source='', sdg_code=''):
             'sdg': sdg_list
         }
         return data
+
+
+def get_donor_fund_aggregate(year, donor=None, recipient_countries=None, sector=None, sdg=None):
+    result = DonorFundSplitUp.objects.filter(Q(year=year) &
+                                             ~Q(organisation__type_level_3=''))
+    if donor:
+        result = result.filter(Q(organisation__type_level_3__iexact=donor) |
+                               Q(organisation__level_3_name__iexact=donor) |
+                               Q(organisation__ref_id=donor))
+    if recipient_countries:
+        recipient_countries = [item.upper() for item in recipient_countries]
+        op_query = Q(project__operating_unit__in=recipient_countries) | \
+            Q(project__operating_unit__bureau__code__in=recipient_countries)
+        result = result.filter(op_query)
+    if sector:
+        if sector == '0' or sector in EXCLUDED_SECTOR_CODES:
+            EXCLUDED_SECTOR_CODES.append('8')
+            sector_query = Q(output__outputsector__sector=sector) | Q(output__outputsector__isnull=True) |\
+                Q(output__outputsector__sector__in=EXCLUDED_SECTOR_CODES)
+            result = result.filter(sector_query)
+        else:
+            result = result.filter(output__outputsector__sector=sector)
+    if sdg:
+        if sdg == '0':
+            result = result.filter(output__outputtarget__isnull=True)
+        else:
+            result = result.filter(output__outputtarget__target_id__sdg=sdg)
+    if donor and result.filter(organisation__ref_id=donor).exists():
+        result = result.values('organisation')\
+            .annotate(total_budget=Sum('budget'), total_expense=Sum('expense'),
+                      total_projects=Count('project', distinct=True),
+                      org_name=F('organisation__org_name'))\
+            .filter(total_budget__gt=0)\
+            .order_by('-total_budget')\
+            .values('organisation_id', 'organisation__type_level_3', 'organisation__level_3_name',
+                    'total_budget', 'total_expense', 'total_projects', 'org_name')
+    else:
+        result = result.values('organisation__type_level_3', 'organisation__level_3_name')\
+            .annotate(total_budget=Sum('budget'), total_expense=Sum('expense'),
+                      total_projects=Count('project', distinct=True)) \
+            .filter(Q(total_budget__gt=0) | Q(total_expense__gt=0)) \
+            .order_by('-total_budget')
+        sdg_result = []
+        if sdg:
+            for org in result:
+                country = ''
+                if recipient_countries:
+                    countries = [item.upper() for item in recipient_countries]
+                    country = countries[0]
+                active_project = get_active_projects_for_year(year, budget_source=org['organisation__type_level_3'])
+                aggregate = get_sdg_target_based_fund_aggregate(year, sdg=sdg, operating_unit=country,
+                                                                budget_source=org['organisation__type_level_3'],
+                                                                active_projects=active_project)
+                if aggregate:
+                    sdg_aggregate = {
+                                    'total_budget': aggregate['total_budget'],
+                                    'total_expense': aggregate['total_expense'],
+                                    'organisation__type_level_3': org['organisation__type_level_3'],
+                                    'organisation__level_3_name': org['organisation__level_3_name'],
+                                    'total_projects': org['total_projects']
+                                    }
+                    sdg_result.append(sdg_aggregate)
+            return sdg_result
+
+    return result
+
+
+def get_fund_split_csv_query(years, budget_sources=None, budget_type='', operating_units=None, sector=None, sdg=None,
+                             sdg_targets=None, signature_solution=None, marker_type=None, marker_id=None,
+                             level_two_marker=None):
+    query = Q()
+    if years:
+        years = [int(y) for y in years]
+        query.add(Q(year__in=years), Q.AND)
+    if budget_sources:
+        if budget_type != 'regular':
+            budget_sources = [item.upper() for item in budget_sources]
+            query.add(Q(organisation__ref_id__in=budget_sources) | Q(organisation__type_level_3__in=budget_sources),
+                      Q.AND)
+        if budget_type == 'regular':
+            query.add(Q(organisation__ref_id=UNDP_DONOR_ID), Q.AND)
+    if operating_units:
+        operating_units = [unit.upper().strip() for unit in operating_units]
+        op_query = Q(project_id__operating_unit__in=operating_units) | \
+            Q(project_id__operating_unit__bureau__code__in=operating_units)
+        query.add(op_query, Q.AND)
+    if sector:
+        if sector and check_sector_year(years):
+            theme_query = Q()
+            EXCLUDED_SECTOR_CODES.append('8')
+            themes_temp = sector
+            if '0' in sector or list(set(themes_temp).intersection(EXCLUDED_SECTOR_CODES)):
+                if '0' in sector:
+                    sector.remove('0')
+
+                other_sector_query = Q(outputsector__sector__in=EXCLUDED_SECTOR_CODES) | \
+                    Q(outputsector__sector__isnull=True)
+                theme_query |= other_sector_query
+            if sector:
+                theme_query |= Q(outputsector__sector__in=sector) & \
+                               Q(outputsector__sector__start_year__lt=SP_START_YEAR)
+            outputs = Output.objects.filter(theme_query).distinct().values_list('output_id', flat=True)
+        else:
+            theme_query = Q()
+            EXCLUDED_SECTOR_CODES.append('8')
+            themes_temp = sector
+            if '0' in sector or list(set(themes_temp).intersection(EXCLUDED_SECTOR_CODES)):
+                if '0' in sector:
+                    sector.remove('0')
+
+                other_sector_query = Q(outputsector__sector__in=EXCLUDED_SECTOR_CODES) | \
+                                     Q(outputsector__sector__isnull=True)
+                theme_query |= other_sector_query
+            if sector:
+                theme_query |= Q(outputsector__sector__in=sector) & \
+                               Q(outputsector__sector__start_year__gte=SP_START_YEAR)
+            outputs = Output.objects.filter(theme_query).distinct().values_list('output_id', flat=True)
+        query.add(Q(output__in=outputs), Q.AND)
+    if sdg:
+        sdgs_query = Q()
+        if '0' in sdg:
+            sdg.remove('0')
+            sdgs_query |= Q(outputtarget__target_id__sdg__isnull=True)
+        if sdg:
+            sdgs_query |= Q(outputtarget__target_id__sdg__in=sdg) \
+                          & Q(outputtarget__year__in=years) & Q(output_active__year__in=years)
+        outputs = Output.objects.filter(sdgs_query).distinct().values_list('output_id', flat=True)
+        query.add(Q(output__in=outputs), Q.AND)
+    if sdg_targets:
+        sdg_target_query = Q()
+        sdg_target_query |= Q(outputtarget__target_id__in=sdg_targets) \
+                            & Q(outputtarget__year__in=years) & Q(output_active__year__in=years)
+        outputs = Output.objects.filter(sdg_target_query).distinct().values_list('output_id', flat=True)
+        query.add(Q(output__in=outputs), Q.AND)
+    if signature_solution:
+        signature_solution_query = Q(output__signature_solution__ss_id=signature_solution)
+        query.add(signature_solution_query, Q.AND)
+    if marker_type:
+        outputs = ProjectMarker.objects.filter(Q(type=marker_type) & Q(
+            output__output_active__year__in=years)).distinct().values_list('output_id', flat=True)
+
+        if marker_id:
+            if int(marker_type) == MARKER_TYPE_CHOICES.partner_marker:
+                outputs = outputs.filter(Q(parent_marker_desc=str(marker_id)) & Q(
+                    output__output_active__year__in=years)).distinct().values_list('output_id', flat=True)
+            elif int(marker_type) == MARKER_TYPE_CHOICES.whos_marker:
+                outputs = outputs.filter(Q(marker_title=str(marker_id)) & Q(
+                    output__output_active__year__in=years)).distinct().values_list('output_id', flat=True)
+            elif int(marker_type) == MARKER_TYPE_CHOICES.jointprogramme_marker:
+                outputs = outputs.filter(Q(level_two_marker_description=str(marker_id)) & Q(
+                    output__output_active__year__in=years)).distinct().values_list('output_id', flat=True)
+            else:
+                outputs = outputs.filter(Q(marker_id=marker_id) & Q(
+                    output__output_active__year__in=years)).distinct().values_list('output_id', flat=True)
+        query.add(Q(output__in=outputs), Q.AND)
+    if level_two_marker:
+        query.add(Q(output__marker_output__level_two_marker_title=level_two_marker), Q.AND)
+
+    return query

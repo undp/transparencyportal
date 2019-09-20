@@ -13,7 +13,6 @@ import {
 import { loadProjectListMapData } from '../../../../shared/actions/mapActions/projectListMapData';
 import { fetchSdgListData } from '../../../../shared/actions/sdgAggregate'
 import { fetchDonorFundListData } from '../../../../shared/actions/getDonorFundAggrList'
-import SideBar from '../../../../components/sideBar';
 import { onTabSwitch } from '../../../../components/TabSection/actions'
 import List from '../../../../components/listView';
 import SideBarItem from '../../../../components/sideBarItem';
@@ -78,7 +77,6 @@ class EmbedHomeTabs extends Component {
     	} = this.props;
     	this.props.onTabSwitch(this.props.type);
 		financialFlowType === 'budget' ? this.props.fetchBudgetFinancialFlow(financialFlowYear) : this.props.fetchExpenseFinancialFlow(financialFlowYear)
-		
     	switch (this.props.type) {
 			case 'themes':
     			this.props.fetchThemeSummaryData(year, budgetSources, operatingUnits);
@@ -262,12 +260,15 @@ class EmbedHomeTabs extends Component {
     							code={operatingUnitsSidebar}
     							yearSelected={yearSidebar}
     							embed={true}
-    							sector={themesSidebar}
+    							sector={this.props.type === "signature"?'':themesSidebar}
     							sdg={sdgSidebar}
-    							source={budgetSourcesSidebar}
+								source={budgetSourcesSidebar}
+								signatureSolution={this.props.type === "signature" ? 'true': 'false'}
+								sigTab={this.props.type === "signature" ? themesSidebar : null}
     						/>
     						<div class={style.disclaimer}>
-    							{'* The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.'}
+							<ul><li> The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.</li><li> References to Kosovo* shall be understood to be in the context of UN Security Council resolution 1244 (1999)</li>
+    </ul>
     						</div>
     					</div>
     					<div class={style.sidebarWrapper}>

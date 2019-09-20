@@ -7,7 +7,7 @@
         display: block;
         font-size: 14px;
         display: inline-block;
-        font-family: 'ProximaNova-Regular', arial, sans-serif;
+        font-family: 'proxima-nova', arial, sans-serif;
         &:nth-child(1) {
             width: 8%;
             @media(max-width:450px){
@@ -22,7 +22,7 @@
             text-align: left;
             vertical-align: top;
             font-size: 15px;
-            font-weight: bold;
+            font-weight: $bold;
             cursor: pointer;
             color: #333;
         }
@@ -41,7 +41,7 @@
                 display: inline-block;
                 text-align: left;
                 padding-left: 10px;
-                font-weight: bold;
+                font-weight: $bold;
                 font-size: 13px;
             }
             .country_percentage {
@@ -79,7 +79,7 @@
         display:none;
     }
     .targetTitle{
-        font-weight: bold;
+        font-weight: $bold;
         padding-right: 5px;
     }
 }

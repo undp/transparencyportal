@@ -52,12 +52,12 @@ export function parseSdgAggregateData(data) {
 
 export const fetchSdgListData = (year,recipentCountry,donor) => (dispatch, getState) => {
 	const sdgFilter = getState().tabData.sdgFilter,
-		recipentCountry = recipentCountry || ( sdgFilter.operatingUnits ? sdgFilter.operatingUnits : ''),
-		donor = donor || (sdgFilter.budgetSources ? sdgFilter.budgetSources : ''),
+		newrecipentCountry = recipentCountry || ( sdgFilter.operatingUnits ? sdgFilter.operatingUnits : ''),
+		newdonor = donor || (sdgFilter.budgetSources ? sdgFilter.budgetSources : ''),
 		newYear =  year || getState().tabData.currentYear;
 	dispatch(sdgAggregateFetchStart());
 	if (newYear !== null)
-		return Api.get(Api.API_SDG_AGGREGATE(newYear,recipentCountry,donor)).then(resp => {
+		return Api.get(Api.API_SDG_AGGREGATE(newYear,newrecipentCountry,newdonor)).then(resp => {
 			if (resp.success && resp.data) {
 				let newData = parseSdgAggregateData(resp.data);
 				dispatch(sdgAggregateFetchEnd());

@@ -94,8 +94,32 @@ export const fetchCountryListData = () => (dispatch) => {
 				label: item.name,
 				value: item.iso3
 			}));
+			// dispatch(countryListFetchEnd());
+			// dispatch(countryListFetchSuccess(pasrsedData));
+			dispatch(fetchRegionListData(pasrsedData))
+		}
+		else {
 			dispatch(countryListFetchEnd());
-			dispatch(countryListFetchSuccess(pasrsedData));
+		}
+	}).catch((exception) => {
+		dispatch(countryListFetchEnd());
+		dispatch(countryListFetchFailed());
+	});
+};
+export const fetchRegionListData = (countryList) => (dispatch) => {
+	// dispatch(countryListFetchStart());
+	return Api.get(Api.API_REGION_DATA).then(resp => {
+		if (resp) {
+			let pasrsedData = resp.map((item) => ({
+				...item,
+				label: item.name,
+				value: item.iso3,
+				isRegion: true
+			}));
+			let finalData = countryList.concat(pasrsedData);
+			dispatch(countryListFetchSuccess(finalData));
+			// dispatch(countryListFetchEnd());
+			// dispatch(regionListFetchSuccess(pasrsedData));
 		}
 		else {
 			dispatch(countryListFetchEnd());
@@ -579,4 +603,5 @@ export const onAppInit = () => (dispatch) => {
 	// dispatch(getMasterCountryRegionsList());
 	dispatch(fetchLastUpdatedDate());		// Fetch Last Updated Date
 	// dispatch(getMasterSignatureList());         // Fetch Signature List Data
+	// dispatch(fetchRegionListData());
 };

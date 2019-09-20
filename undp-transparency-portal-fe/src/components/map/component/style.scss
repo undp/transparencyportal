@@ -19,7 +19,7 @@
             display: table-cell;
             color: white;
             font-size: 24px;
-            font-weight: bold;
+            font-weight: $bold;
             vertical-align: middle;
         }
     }
@@ -35,7 +35,7 @@
             span {
                 font-weight: 400;
             }
-            font-family: 'ProximaNova-Regular', arial, sans-serif;
+            font-family: 'proxima-nova', arial, sans-serif;
         }
         .popUpHeadTitleActive {
             &:hover {
@@ -82,6 +82,9 @@
             }
         }
     }
+   
+
+    
 }
 .mapModal {
     position: relative;
@@ -103,7 +106,7 @@
             display: table-cell;
             color: white;
             font-size: 24px;
-            font-weight: bold;
+            font-weight: $bold;
             vertical-align: middle;
         }
     }
@@ -470,4 +473,18 @@
             }
         }
     }
+}
+.hiddenMapTooltip {
+    box-shadow: none !important;
+    font-size: 14px;
+    -webkit-box-shadow: none !important;
+    background: none !important;
+    border:none !important;
+    color:#777777 !important;
+    font-size:16px !important;
+    font-weight: 600 !important;
+}
+
+.polygonOverlap{
+    z-index: 1 !important;
 }

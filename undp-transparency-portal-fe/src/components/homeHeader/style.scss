@@ -7,6 +7,7 @@
         height: 668px;
     }
 }
+
 .dropbtn {
 	background-color: transparent;
 	color: white;
@@ -108,7 +109,8 @@
 						color: $black-color;
 						outline: none;
 						&.active {
-							font-family: ProximaNova-bold;
+							font-family: 'proxima-nova';
+							font-weight: $bold;
 							border-bottom: none;
 							@media(min-width: $desktop) {
 								border-bottom: 5px solid $active-color;
@@ -180,7 +182,7 @@
         margin-bottom: 3px;
         font-size:$heading-small;
         @media(min-width: $tablets) {
-            font-size: $heading-big;
+            font-size: 40px;
         }
     }
     .overviewWrapper {
@@ -234,7 +236,7 @@
         background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, .98), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4));
         background-image: -o-linear-gradient(top, rgba(0, 0, 0, .98), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4));
         background-image: linear-gradient(to bottom, rgba(0, 0, 0, .98), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4));
-        opacity: .7;
+        opacity: .8;
         display: block;
         content: '';
         position: absolute;
@@ -298,7 +300,8 @@
 		vertical-align: top;
 		text-align: center;
 		font-size: 20px;
-		font-family: lora-bold;
+		font-family: "lora";
+        font-weight: $bold;
 		@media(max-width: 320px) {
 			font-size: 18px;
 		}
@@ -425,7 +428,8 @@
 					display: block;
 					cursor: pointer;
 					&.active {
-						font-family: ProximaNova-bold;
+						font-family: 'proxima-nova';
+						font-weight: $bold;
 						color: $active-color;
 						border-bottom: none;
 						@media(min-width: $desktop) {
@@ -435,7 +439,7 @@
 						}
 					}
 					&:not(.active):hover {
-						font-family: ProximaNova-regular;
+						font-family: 'proxima-nova';
 						color: $white-background;
 						border-bottom: none;
 						@media(min-width: $desktop) {
@@ -554,8 +558,8 @@ input[type=text]::-ms-clear {
             -webkit-appearance: none;
             -moz-appearance: none;
 			@media(min-width: $tablets) {
-				width: 55%;
-				height: 61px;
+				width: 40%;
+				height: 50px;
 				padding: 22px;
 				font-size: $text-xmedium;
 				border-top-left-radius: 5px;
@@ -572,7 +576,7 @@ input[type=text]::-ms-clear {
 			position: relative;
 			cursor: pointer;
 			@media(min-width: $tablets) {
-				height: 61px;
+				height: 50px;
 				width: 68px;
 				border-top-right-radius: 5px;
 				border-bottom-right-radius: 5px;
@@ -632,4 +636,104 @@ input[type=text]::-ms-clear {
 }
 .downloadsItem{
 	position: relative;
+}
+
+.addOnContainer {
+	height: 570px;
+	@media(min-width: $tablets) {
+		height: calc(668px + 100px);
+	}
+	@media(min-width: $desktop) {
+		height: calc(668px + 140px);
+	}
+
+	.header {
+		height: calc(80px + 100px);
+		@media(min-width: $desktop) {
+			&.scrolled {
+				height: calc(95px + 140px);
+			}
+		}
+	}
+	.bannerSection {
+		padding-top: 180px;//80px + 100px
+		height: calc(470px + 100px);
+		@media(min-width: $tablets) {
+			padding-top: 170px; //70px + 100px
+			height: calc(470px + 100px);
+		}
+		@media(min-width: $desktop) {
+			padding-top: 270px; // 130px + 140px
+			height: calc(599px + 140px);
+		}
+	}
+	
+}
+
+
+
+.upperAddonSection {
+	height: 100px;
+	width: 100%;
+	display: flex;
+	position: relative;
+	background: url('#{$images}/covid-banner.png') no-repeat;
+	transition: height 1s ease-in-out 0s, opacity 0.5s ease-in-out 0s;
+	background-size: cover;
+	background-position: -360px 0;
+	@media(min-width: $tablets) {
+		background-size: cover;
+		background-position: -150px 0;
+	}
+	@media(min-width: $desktop) {
+		height: 140px;
+		background-position: inherit;
+	}
+
+	.link {
+		margin: auto;
+		z-index: 1;
+		font-size: 24px;
+		font-family: "lora";
+		font-weight: $bold;
+		color: #000465;
+		text-decoration: underline;
+		cursor: pointer;
+		position: relative;
+		@media(min-width: $desktop) {
+			font-size: 30px;
+		}
+		&:hover {
+			color: #000465 !important;
+		}
+
+		i {
+			background: url('#{$icons}/right-arrow.svg') no-repeat;
+			background-size: 100% 100%;
+			margin: 10px;
+			align-items: center;
+			padding: 0px 10.5px;
+			font-size: 18px;
+			@media(min-width: $desktop) {
+				font-size: 24px;
+			}
+		}
+	}
+
+	>i {
+		background: url('#{$icons}/close-icon.svg') no-repeat;
+		align-items: center;
+		cursor: pointer;
+		position: absolute;
+		right: 20px;
+		top: 20px;
+		width: 15px;
+		height: 15px;
+		background-size: 100% 100%;
+	}
+}
+
+.hideUpperAddonSection {
+	opacity: 0;
+	height: 0;
 }

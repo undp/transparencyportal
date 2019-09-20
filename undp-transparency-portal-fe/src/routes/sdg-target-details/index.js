@@ -190,9 +190,9 @@ class SDGTargets extends Component {
 			aggregate: this.props.sdgSliderData.data.aggregate,
 			budget_sources: this.props.sdgSliderData.data.budget_sources,
 			top_recipient_offices: this.props.sdgSliderData.data.top_recipient_offices,
-			mapData: this.props.outputData.data,
+			mapData: this.props.outputMapData.data.length > 0 ? this.props.outputMapData.data : this.props.outputData.data,
 			title: (this.props.sdgSliderData.data.aggregate.sdg_name) + ': Target ' + (this.props.sdgSliderData.data.aggregate.target_id),
-			projectList: this.props.projectList.projectList,
+			projectList: { data: this.props.projectList.top10Projects },
 			lastUpdatedDate: getFormmattedDate(this.props.lastUpdatedDate.data.last_updated_date)
 		};
 
@@ -281,6 +281,7 @@ return(
 	currentYear: state.yearList.currentYear,
 	sdgSliderData: state.sdgSliderData,
 	outputData: state.mapData.sdgMapData,
+	outputMapData: state.mapData.outputData,
 	projectList: state.projectList,
 	mapCurrentYear:state.mapData.yearTimeline.mapCurrentYear,
 	lastUpdatedDate:state.lastUpdatedDate

@@ -40,14 +40,16 @@ class ProjectDetails extends Component {
 // ------------------------ Embed section methods  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	createCheckList = (callbk) => {
 		let newUrl = this.state.baseUrl;
+		this.setState()
 		this.state.checkList.forEach((item, index) => {
 			if (index === 0) {
 				newUrl = newUrl + item.key + '=' + item.flag;
 			}
 			else {
 				newUrl = newUrl + '&' + item.key + '=' + item.flag;
-			}
+			} 
 		});
+		
 		this.setState({
 			selectionListUrl: newUrl
 		}, () => {
@@ -168,8 +170,12 @@ class ProjectDetails extends Component {
 						&& this.props.projectDetail.purchase_orders.data
 						? this.props.projectDetail.purchase_orders.data 
 						: []}
+						links = {this.props.projectDetail &&
+							this.props.projectDetail.purchase_orders
+							&& this.props.projectDetail.purchase_orders.links? this.props.projectDetail.purchase_orders.links:null}
+
 				/>
-			);
+			); 
 				break;
 			default:
 				rendertable = null;
@@ -194,7 +200,7 @@ class ProjectDetails extends Component {
 			baseUrl: window.location.origin + '/embed/projects/' + this.props.id + '?',
 			projectDocCategory: '',
 			pageTitle: '',
-			checkList: this.props.id.toString() === '00094616' ? [
+			checkList: [
 				{
 					flag: true,
 					label: 'Title',
@@ -212,75 +218,33 @@ class ProjectDetails extends Component {
 				},
 				{
 					flag: false,
-					label: 'Satellite',
+					label: 'Project Info',
+					key: 'projectinfo'
+				},
+				{
+					flag: false,
+					label: 'Donors',
+					key: 'budgetSources'
+				},
+				{
+					flag: false,
+					label: 'Outputs / Results',
+					key: 'outputTable'
+				},
+				{
+					flag: false,
+					label: 'Documents',
+					key: 'docTable'
+				},
+				{
+					flag: false,
+					label: 'Purchase Orders',
+					key: 'purchaseOrdrTable'
+				},
+				{
+					flag: false,
+					label: 'Story Map',
 					key: 'satellite'
-				},
-				{
-					flag: false,
-					label: 'Project Info',
-					key: 'projectinfo'
-				},
-				{
-					flag: false,
-					label: 'Donors',
-					key: 'budgetSources'
-				},
-				{
-					flag: false,
-					label: 'Outputs / Results',
-					key: 'outputTable'
-				},
-				{
-					flag: false,
-					label: 'Documents',
-					key: 'docTable'
-				},
-				{
-					flag: false,
-					label: 'Purchase Orders',
-					key: 'purchaseOrdrTable'
-				}
-
-			] : [
-				{
-					flag: true,
-					label: 'Title',
-					key: 'title'
-				},
-				{
-					flag: true,
-					label: 'Description',
-					key: 'description'
-				},
-				{
-					flag: true,
-					label: 'Map',
-					key: 'map'
-				},
-				{
-					flag: false,
-					label: 'Project Info',
-					key: 'projectinfo'
-				},
-				{
-					flag: false,
-					label: 'Donors',
-					key: 'budgetSources'
-				},
-				{
-					flag: false,
-					label: 'Outputs / Results',
-					key: 'outputTable'
-				},
-				{
-					flag: false,
-					label: 'Documents',
-					key: 'docTable'
-				},
-				{
-					flag: false,
-					label: 'Purchase Orders',
-					key: 'purchaseOrdrTable'
 				}
 
 			],
@@ -465,6 +429,7 @@ class ProjectDetails extends Component {
 					handleClose={this.handleClose}
 					getselectedItem={this.getselectedItem}
 					handleOnSelect={this.handleOnSelect}
+					projectData={this.props.projectDetail.project.storyMap}
 				/>
 				<Footer />
 			</div>

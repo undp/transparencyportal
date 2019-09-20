@@ -1,3 +1,6 @@
+import subprocess
+import os
+
 from django.core import management
 from django.core.management.commands import loaddata, flush
 
@@ -10,20 +13,22 @@ from undp_projects.cron_automation import CronJob as ProjectCronJob, UploadCount
     DownloadXmlCron
 import datetime
 import simplejson
+import csv
 from django.conf import settings as main_settings
 
 from undp_purchase_orders.cron_automation import PurchaseOrderCron
 import xlrd
 from utilities import config as settings
 from master_tables.models import SignatureSolution, OperatingUnit, ProjectTimeLine, SdgTargets
-from undp_outputs.models import Output, MARKER_TYPE_CHOICES, MARKER_PARENT_CHOICES, ProjectMarker
-from undp_projects.models import SDGSunburst, ProjectTarget, SDGMap
+from undp_outputs.models import Output, MARKER_TYPE_CHOICES, MARKER_PARENT_CHOICES, ProjectMarker, StoryMap
+from undp_projects.models import SDGSunburst, ProjectTarget, SDGMap, Project
 from django.conf import settings as main_settings
 from utilities.config import SDG_START_YEAR
-from utilities.utils import get_sdg_sunburst
+from utilities.utils import get_sdg_sunburst, get_filenames
 from undp_projects.api_views import get_map_data
 
 db = main_settings.DB_FOR_WRITE
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
 
 
 class Automation:
@@ -47,6 +52,8 @@ class Automation:
         self.upload_misc_data()
         self.load_sdg_data()
         self.load_sdg_map_data()
+        self.cache_script()
+        self.story_map_data()
         end_time = datetime.datetime.now()
         run_time = end_time - start_time
         update_admin_log(JOBS.initiate_automation, start_time,
@@ -104,6 +111,7 @@ class Automation:
         cursor.execute("TRUNCATE TABLE undp_donors_donorfundmodality")
         cursor.execute("TRUNCATE TABLE undp_extra_features_projectyearsummary")
         cursor.execute("TRUNCATE TABLE undp_projects_projectsearch")
+        cursor.execute("TRUNCATE TABLE undp_projects_sdgsunburst")
         print("Models Truncated")
 
     # def switch_database(self):
@@ -186,7 +194,7 @@ class Automation:
 
     def load_sdg_data(self):
         import simplejson
-        year = ProjectTimeLine.objects.filter(year__gte=SDG_START_YEAR).order_by('year')\
+        year = ProjectTimeLine.objects.using(db).filter(year__gte=SDG_START_YEAR).order_by('year')\
                 .values_list('year', flat=True)
         for sdg_year in list(year):
             try:
@@ -198,10 +206,11 @@ class Automation:
                 pass
 
     def load_sdg_map_data(self):
-        year = ProjectTimeLine.objects.filter(year__gte=SDG_START_YEAR).order_by('year') \
+        year = ProjectTimeLine.objects.using(db).filter(year__gte=SDG_START_YEAR).order_by('year') \
             .values_list('year', flat=True)
         sdgs = SdgTargets.objects.values_list('sdg', flat=True).distinct('sdg').order_by('sdg')
         targets = SdgTargets.objects.values_list('target_id', flat=True).distinct('target_id').order_by('target_id')
+        print("Loading SDG Data")
         for sdg_year in year:
             for sdg in sdgs:
                 try:
@@ -212,6 +221,7 @@ class Automation:
                                                                   response=simplejson.dumps(sdg_response))
                 except Exception as e:
                     pass
+        print("Loading SDG Target Data")
         for sdg_year in year:
             for target in targets:
                 try:
@@ -231,42 +241,78 @@ class Automation:
         try:
             for row in range(sheet.nrows):
                 if row_iter != 0:
-                    output = sheet.cell_value(row, 4)
-                    type = getattr(MARKER_TYPE_CHOICES, sheet.cell_value(row, 7))
-                    parent_type = round(sheet.cell_value(row, 8))
-                    parent_marker_desc = sheet.cell_value(row, 10)
-                    marker_id = sheet.cell_value(row, 11)
-                    marker_title = sheet.cell_value(row, 12)
-                    marker_desc = sheet.cell_value(row, 13)
-                    level_two_marker_id = 0 if sheet.cell_value(row, 14) is '' else sheet.cell_value(row, 14)
-                    level_two_marker_title = sheet.cell_value(row, 15)
-                    level_two_marker_description = sheet.cell_value(row, 16)
-                    iso3 = sheet.cell_value(row, 20)
-
-                    if type == MARKER_TYPE_CHOICES.ssc_marker:
-                        level_two_marker_title = OperatingUnit.objects.get(iso3=iso3).name
-                        level_two_marker_description = OperatingUnit.objects.get(iso3=iso3).name
-
                     try:
-                        op = Output.objects.using(db).get(output_id=output)
-                        if op:
-                            ProjectMarker.objects.using(db).update_or_create(
-                                output=op,
-                                type=type,
-                                parent_type=parent_type,
-                                parent_marker_desc=parent_marker_desc,
-                                marker_id=marker_id,
-                                marker_title=marker_title,
-                                marker_desc=marker_desc,
-                                level_two_marker_id=level_two_marker_id,
-                                level_two_marker_title=level_two_marker_title,
-                                level_two_marker_description=level_two_marker_description
-                            )
+                        output = sheet.cell_value(row, 4)
+                        type = getattr(MARKER_TYPE_CHOICES, sheet.cell_value(row, 7))
+                        parent_type = round(sheet.cell_value(row, 8))
+                        parent_marker_desc = sheet.cell_value(row, 10)
+                        marker_id = sheet.cell_value(row, 11)
+                        marker_title = sheet.cell_value(row, 12)
+                        marker_desc = sheet.cell_value(row, 13)
+                        level_two_marker_id = 0 if sheet.cell_value(row, 14) is '' else sheet.cell_value(row, 14)
+                        level_two_marker_title = sheet.cell_value(row, 15)
+                        level_two_marker_description = sheet.cell_value(row, 16)
+                        iso3 = sheet.cell_value(row, 20)
 
+                        if type == MARKER_TYPE_CHOICES.ssc_marker:
+                            level_two_marker_title = OperatingUnit.objects.get(iso3=iso3).name
+                            level_two_marker_description = OperatingUnit.objects.get(iso3=iso3).name
+
+                        try:
+                            op = Output.objects.using(db).get(output_id=output)
+                            if op:
+                                ProjectMarker.objects.using(db).update_or_create(
+                                    output=op,
+                                    type=type,
+                                    parent_type=parent_type,
+                                    parent_marker_desc=parent_marker_desc,
+                                    marker_id=marker_id,
+                                    marker_title=marker_title,
+                                    marker_desc=marker_desc,
+                                    level_two_marker_id=level_two_marker_id,
+                                    level_two_marker_title=level_two_marker_title,
+                                    level_two_marker_description=level_two_marker_description
+                                )
+
+                        except Exception as e:
+                            pass
                     except Exception as e:
-                        print(e)
                         pass
                 row_iter = row_iter + 1
 
+        except Exception as e:
+            print(e)
+
+    def cache_script(self):
+        subprocess.call(BASE_DIR + '/cache.sh')
+
+    def story_map_data(self):
+        file_path = settings.CSV_UPLOAD_DIR + "/report_storymaps.csv"
+        csv_object = csv.reader(open(file_path, 'r', encoding="utf-8"), dialect='excel',
+                                delimiter=',', quotechar='"')
+        i = 1
+        try:
+            for row in csv_object:
+                if i != 1:
+                    iso3 = row[0]
+                    location_name = row[1]
+                    project_id = row[2]
+                    output_id = row[3]
+                    map_link = row[4]
+                    try:
+                        operating_unit = OperatingUnit.objects.using(db).get(iso3=iso3)
+                        output = Output.objects.using(db).get(output_id=output_id)
+                        project = Project.objects.using(db).get(project_id=project_id)
+                        StoryMap.objects.using(db).update_or_create(
+                            operating_unit=operating_unit,
+                            location=location_name,
+                            project=project,
+                            output=output,
+                            link=map_link
+                        )
+                    except Exception as e:
+                        print(e)
+                        pass
+                i += 1
         except Exception as e:
             print(e)

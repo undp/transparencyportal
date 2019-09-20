@@ -31,9 +31,10 @@ export const exportPDFFetchFailed = (error) => ({
 export const resetExportUrl = () => ({
     type: EXPORT_PDF.reset
 })
-export const exportPDFCall = (template_name, context_data) => (dispatch) => {
+export const exportPDFCall = (template_name, context_data, format_type = 0) => (dispatch) => {
     let params = {
         template_name: template_name,
+        format_type,
         context_data: context_data
     }
     dispatch(exportPDFFetchStart());

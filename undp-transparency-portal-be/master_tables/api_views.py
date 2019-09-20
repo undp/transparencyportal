@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from master_tables.models import Region, Sector, ProjectTimeLine, DocumentCategory, Sdg
 from master_tables.serializers import RegionSerializer, CountrySerializer, OrganisationSerializer, \
     SectorSerializer, OperatingUnitSerializer, BudgetSourceSerializer, DocumentCategorySerializer, \
-    BureauLevelSerializer, CountryLevelSerializer, SdgSerializer
+    BureauLevelSerializer, CountryLevelSerializer, SdgSerializer, BureauSerializer
 from undp_donors.models import DONOR_CATEGORY_CHOICES, FUND_STREAM_CHOICES
 from undp_projects.models import ProjectSearch
 from utilities.mixins import ResponseViewMixin
@@ -30,6 +30,13 @@ class RegionListView(ListAPIView):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('bureau', 'name', 'region_code')
 
+
+class BureauListView(ListAPIView):
+    serializer_class = BureauSerializer
+    queryset = Bureau.objects.all()
+    paginate_by = 100
+    # filter_backends = (filters.SearchFilter,)
+    # search_fields = ('bureau', 'name', 'region_code')
 
 class CountryListViewModified(ListAPIView, ResponseViewMixin):
     # serializer_class = CountrySerializer

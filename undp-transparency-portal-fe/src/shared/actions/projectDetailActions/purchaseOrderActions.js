@@ -27,7 +27,7 @@ export const projectPurchaseOrdersFetchFailed = (error) => ({
 	error
 });
 
-export const fetchProjectPurchaseOrders = (id) => (dispatch, getState) => {
+export const fetchProjectPurchaseOrders = (id) => (dispatch, getState) => { 
 	dispatch(projectPurchaseOrdersFetchStart());
 	return Api.get(Api.API_PROJECT_PURCHASE_ORDERS(id)).then(resp => {
 		if (resp.data && resp.success) {
@@ -42,3 +42,20 @@ export const fetchProjectPurchaseOrders = (id) => (dispatch, getState) => {
 		dispatch(projectPurchaseOrdersFetchFailed());
 	});
 };
+
+export const PurchaseOrderPagination = (API,cb)=>(dispatch, getState) => {
+	dispatch(projectPurchaseOrdersFetchStart()); 
+	return Api.get(API).then(resp => {
+		if (resp.data && resp.success) {
+			if(cb)cb(resp.data)
+			dispatch(projectPurchaseOrdersFetchEnd());
+		}
+		else {
+			dispatch(projectPurchaseOrdersFetchEnd());
+		}
+	}).catch((err) => {
+		dispatch(projectPurchaseOrdersFetchEnd());
+		console.log("err",err)
+	});
+
+ }

@@ -93,21 +93,26 @@ class EmbedSdgView extends Component {
     }) {
 
         let isNonEmpty = Object.keys(this.state.themeSliderData).length,
-            isMapDataNonEmpty = Object.keys(this.state.themesMapData).length,
+            isMapDataNonEmpty = !this.props.sdgMapData.loading,
             aggregate = isNonEmpty ? (themeSliderData.data && themeSliderData.data.aggregate) : {},
             budgetSources = isNonEmpty ? (themeSliderData.data && themeSliderData.data.budget_sources) : {},
             topRecipientOffices = isNonEmpty ? (themeSliderData.data && themeSliderData.data.top_recipient_offices) : {},
-            mapData = isMapDataNonEmpty ? (themesMapData && themesMapData.data) && themesMapData : {};
+            mapData = isMapDataNonEmpty ? this.props.sdgMapData : {};
             // sdgSrc = aggregate && aggregate.sdg && getSDGImageFromCode(aggregate.sdg);
-    
+           
             return (
             <div>
                 {   
                     this.props.title === 'true' ?
-                        <div class={style.titleWrapper}>
-                            {this.props.sdglabel}
-                    </div>
-                        : null
+                        <div>
+                            <div class={style.titleWrapper}>
+                                SDG - {this.props.sdg}
+                            </div>
+                            <div class={style.titleWrapper}>
+                                {this.props.sdglabel}
+                            </div>
+                        </div>
+                    : null
                 }
                 <div class={style.wrapper}>
                     {
@@ -152,16 +157,18 @@ class EmbedSdgView extends Component {
 
                         {/* {isMapDataNonEmpty ?
                             <TopographyIconsLegend /> : null} */}
-                        {isMapDataNonEmpty ?
+                        { isMapDataNonEmpty?
                             <Map
                                 sdg={this.props.sdg}
                                 mapData={mapData}
+                                yearSelected={this.props.year}
                             />
                             : <PreLoader />
                         }
-                        {isMapDataNonEmpty ?
+                        {isMapDataNonEmpty?
                             <div class={style.disclaimer}>
-                                {'* The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.'}
+                                 <ul><li> The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.</li><li> References to Kosovo* shall be understood to be in the context of UN Security Council resolution 1244 (1999)</li>
+    </ul>
                             </div> :
                             null}
                     </div>
@@ -173,7 +180,7 @@ class EmbedSdgView extends Component {
                     theme={''}
                     unit={''}
                     source={''}
-                    currentYear={this.props.year}
+                    yearSelected={this.props.year}
                     sdg={this.props.sdg}
                     data={projectListArr}
                     links={links}

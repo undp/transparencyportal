@@ -181,7 +181,7 @@ class ProcessOutput:
         try:
             with transaction.atomic(using=db):
                 field_key = 'output'
-                output, created = Output.objects.update_or_create(
+                output, created = Output.objects.using(db).update_or_create(
                     output_id=output_id,
                     defaults=parsed_data,
                 )
@@ -218,7 +218,7 @@ class ProcessOutput:
     @staticmethod
     def output_active_years(output, year):
         try:
-            OutputActiveYear.objects.update_or_create(
+            OutputActiveYear.objects.using(db).update_or_create(
                 output=output, year=int(year),
             )
         except Exception as e:
@@ -343,13 +343,13 @@ class ProcessOutput:
                 'feature_designation': location_node.find('feature-designation').attrib.get('code', '')
                 if location_node.find('feature-designation') is not None else ''
             }
-            OutputLocation.objects.update_or_create(output=output, project=output.project,
-                                                    operating_unit=operating_unit,
-                                                    location_reach=location_reach,
-                                                    activity_description=activity_description,
-                                                    latitude=latitude,
-                                                    longitude=longitude,
-                                                    location_code=location_code, defaults=location)
+            OutputLocation.objects.using(db).update_or_create(output=output, project=output.project,
+                                                              operating_unit=operating_unit,
+                                                              location_reach=location_reach,
+                                                              activity_description=activity_description,
+                                                              latitude=latitude,
+                                                              longitude=longitude,
+                                                              location_code=location_code, defaults=location)
 
     @staticmethod
     def process_participating_orgs_nodes(output, participating_orgs_nodes):
@@ -607,7 +607,7 @@ class ProcessProject:
                 'field_key': recepient_country_code
             })
         try:
-            project_obj, created = Project.objects.update_or_create(
+            project_obj, created = Project.objects.using(db).update_or_create(
                 project_id=project_id,
                 defaults={'title': title['text'], 'organisation': reporting_org, 'crs_code': crs_code,
                           'description': description.get('text', ''), 'contact_email': contact_email,
@@ -641,7 +641,7 @@ class ProcessProject:
     def project_active_years(project, year):
         try:
 
-            ProjectActiveYear.objects.update_or_create(
+            ProjectActiveYear.objects.using(db).update_or_create(
                 project=project, year=year,
             )
         except Exception as e:
@@ -764,7 +764,13 @@ class UpdateSearchModel:
                     .filter(project=entry.project, year=entry.year)
                 sectors = OutputSector.objects.using(db).filter(project=entry.project).select_related('sector')
                 sdgs = OutputSdg.objects.using(db).filter(project=entry.project).select_related('sdg')
-                body_text = [entry.project.project_id, entry.project.title, entry.project.description]
+                outputs = Output.objects.using(db).filter(project=entry.project)
+                body_text = [entry.project.project_id, entry.project.title, entry.project.description,
+                             entry.project.project_id.lstrip("0")]
+                for output in outputs:
+                    body_text.append(output.output_id)
+                    body_text.append(output.output_id.lstrip("0"))
+                    body_text.append(output.description)
                 for mapping in mappings:
                     body_text.append(mapping.organisation.org_name)
                     body_text.append(mapping.organisation.level_3_name)

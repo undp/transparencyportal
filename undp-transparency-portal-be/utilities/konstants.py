@@ -125,3 +125,8 @@ ORGANISATION_ROLES = Konstants(
 )
 
 
+GLOBAL_DATA = Konstants(
+    K(our_focus=1, label='Our Focus'),
+    K(signature_solutions=2, label='Signature Solutions'),
+    K(sdg=3, label='SDG')
+)

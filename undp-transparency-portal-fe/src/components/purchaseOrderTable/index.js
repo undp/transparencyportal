@@ -1,4 +1,5 @@
 import { h, Component } from 'preact';
+import { connect } from 'preact-redux';
 import style from './style';
 import { BootstrapTable, TableHeaderColumn, DeleteButton } from 'react-bootstrap-table';
 import Modal from '../../components/modal'
@@ -10,14 +11,18 @@ import Cards from '../tableCards';
 import {getFormmattedDate} from '../../utils/dateFormatter'
 import NoDataTemplate from '../no-data-template'
 import { numberToDollarFormatter } from '../../utils/numberFormatter'
+import { getAPIBaseUrRl } from '../../utils/commonMethods';
+import {PurchaseOrderPagination} from '../../shared/actions/projectDetailActions/purchaseOrderActions'
 const DocumentCategoryList = ["sdvksdgs", "svkjdhsg",]
 
-export default class PurchaseOrderTable extends Component {
+ class PurchaseOrderTable extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            showMore : props.data.length <=20 ? false : true,
+            showMore : props.links.next === null ? false : true,
+            purchaseData:props.data?props.data:[],
+            link:props.links.next?props.links.next:null
         }
         this.data = [
             {
@@ -30,16 +35,10 @@ export default class PurchaseOrderTable extends Component {
         ]
     }
     componentDidMount() {
-        if (this.props.data.length <= 20) 
-            this.setState({showMore: false})
+        if (this.props.links.next == null) 
+            this.setState({showMore: false,purchaseData:props.data})
         else
-            this.setState({showMore: true})
-    }
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.data.length <= 20) 
-            this.setState({showMore: false})
-        else
-        this.setState({showMore: true})
+            this.setState({showMore: true,purchaseData:props.data})
     }
     currencyFormat = (cell, row) => {
         return (
@@ -69,9 +68,28 @@ export default class PurchaseOrderTable extends Component {
         })
         return [obj, ...formattedarray]
     }
-    onMaximize = () => {
-        this.setState({showMore : false})
-    }
+     onMaximize = () => {
+         // this.setState({showMore : false})
+         if (this.state.link !== null) {
+             const pathname = new URL(this.state.link).pathname,
+                 searchParam = new URL(this.state.link).search,
+                 url = pathname + searchParam
+
+             this.props.PurchaseOrderPagination(url, this.onSucess)
+         }
+         else {
+             this.setState({ showMore: false })
+         }
+     }
+     onSucess = (res) => {
+         if (res) {
+             const _data = [...this.state.purchaseData, ...res.data],
+                 showMore = (res.links.next === null) ? false : true
+             this.setState({ showMore, purchaseData: _data, link: res.links.next }, () => {
+             })
+         }
+
+     }
     generateCardList = (dataArray) => {
         if (dataArray.length) {
             return dataArray.map((item) => {
@@ -130,22 +148,22 @@ export default class PurchaseOrderTable extends Component {
         }
     }
 
-
-
+ 
     render({ data }, state) {
         const options = {
             noDataText: this.props.loading?<div class={style.preloaderWrapper}><PreLoader /></div>:<NoDataTemplate />
         };
+
         return (
             <div>
                 <div class={`${style.projectList} ${style.tableOuterWrapper }`}>
-                    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+                    <link rel="stylesheet" href={getAPIBaseUrRl()+"/assets/css/bootstrap.min.css"} />
                     <BootstrapTable
                         data={
                             !this.props.loading?
                                 this.state.showMore === false ?
-                                data
-                                :data.slice(0, 20)
+                                this.state.purchaseData
+                                : this.state.purchaseData
                             :[]
                         }
                         options={options}
@@ -195,3 +213,8 @@ export default class PurchaseOrderTable extends Component {
     }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+	PurchaseOrderPagination: (data,cb) => dispatch(PurchaseOrderPagination(data,cb)),
+});
+
+export default connect(null, mapDispatchToProps)(PurchaseOrderTable);

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="104px" height="104px" viewBox="0 0 104 104" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 56.3 (81716) - https://sketch.com -->
+    <title>Leveraged</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Leveraged" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" fill-opacity="0" stroke-linecap="round">
+        <g transform="translate(2.000000, 2.000000)" fill="#FFFFFF" fill-rule="nonzero" stroke="#386582" stroke-width="2.5">
+            <circle id="Oval-Copy" cx="50" cy="50" r="50"></circle>
+            <g id="Group-2" transform="translate(19.166667, 19.166667)">
+                <circle id="Oval" cx="30.8333333" cy="30.8333333" r="17.5"></circle>
+                <path d="M26.8109536,22.594024 C23.7646531,24.0840012 21.6666667,27.2136618 21.6666667,30.8333333 C21.6666667,35.8959435 25.7707231,40 30.8333333,40 L30.8333333,40 C35.8959435,40 40,35.8959435 40,30.8333333 C40,26.9249123 37.5539404,23.587799 34.1091613,22.2693338" id="Path"></path>
+                <path d="M30.4166667,20 L30.4166667,26.5690104" id="Path-5"></path>
+                <g id="Group">
+                    <path d="M30.8447266,0 L30.8447266,9.06901042" id="Path-5"></path>
+                    <path d="M43.9754232,3.51835955 L43.9754232,12.58737" id="Path-5" transform="translate(43.975423, 8.052865) rotate(30.000000) translate(-43.975423, -8.052865) "></path>
+                    <path d="M53.5877602,13.1306966 L53.5877602,22.199707" id="Path-5" transform="translate(53.587760, 17.665202) rotate(60.000000) translate(-53.587760, -17.665202) "></path>
+                    <path d="M57.1061198,26.2613932 L57.1061198,35.3304036" id="Path-5" transform="translate(57.106120, 30.795898) rotate(90.000000) translate(-57.106120, -30.795898) "></path>
+                    <path d="M53.5877602,39.3920898 L53.5877602,48.4611003" id="Path-5" transform="translate(53.587760, 43.926595) rotate(120.000000) translate(-53.587760, -43.926595) "></path>
+                    <path d="M43.9754232,49.0044269 L43.9754232,58.0734373" id="Path-5" transform="translate(43.975423, 53.538932) rotate(150.000000) translate(-43.975423, -53.538932) "></path>
+                    <path d="M30.8447266,52.5227865 L30.8447266,61.5917969" id="Path-5" transform="translate(30.844727, 57.057292) rotate(180.000000) translate(-30.844727, -57.057292) "></path>
+                    <path d="M17.7140299,49.0044269 L17.7140299,58.0734373" id="Path-5" transform="translate(17.714030, 53.538932) rotate(210.000000) translate(-17.714030, -53.538932) "></path>
+                    <path d="M8.10169289,39.3920898 L8.10169289,48.4611003" id="Path-5" transform="translate(8.101693, 43.926595) rotate(240.000000) translate(-8.101693, -43.926595) "></path>
+                    <path d="M4.58333333,26.2613932 L4.58333333,35.3304036" id="Path-5" transform="translate(4.583333, 30.795898) rotate(270.000000) translate(-4.583333, -30.795898) "></path>
+                    <path d="M8.10169289,13.1306966 L8.10169289,22.199707" id="Path-5" transform="translate(8.101693, 17.665202) rotate(300.000000) translate(-8.101693, -17.665202) "></path>
+                    <path d="M17.7140299,3.51835955 L17.7140299,12.58737" id="Path-5" transform="translate(17.714030, 8.052865) rotate(330.000000) translate(-17.714030, -8.052865) "></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

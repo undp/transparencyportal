@@ -16,7 +16,6 @@ import Api from '../../lib/api';
 import DropDown from '../../components/filter';
 import ErrorPage from './../404Page';
 import commonConstants from '../../utils/constants';
-
 import {
 	connect
 } from 'preact-redux';
@@ -66,6 +65,7 @@ class Marker extends Component {
 	};
 
 	openEmbedModal = () => {
+		this.generateFilterListUrl();
 		this.createCheckList(
 			this.setState({
 				displayEmbedModal: true
@@ -111,9 +111,10 @@ class Marker extends Component {
 			const filterObj = {
 				...this.state.dropListFilterobj
 			};
+
 			for (let key in filterObj) {
-				if (key === 'year' || key === 'searchText') {
-					url = url + '&' + key + '=' + filterObj[key].value;
+				if (key === 'year' ) {
+					url = url + '&' + key + '=' + this.props.currentYear;
 				}
 				else {
 					url = url + '&' + key + '=' + filterObj[key].value + '&' + key + 'Label=' + filterObj[key].label;
@@ -311,6 +312,10 @@ class Marker extends Component {
 					flag: true,
 					label: 'Title',
 					key: 'title'
+				},{
+					flag: true,
+					label: 'Stats',
+					key: 'stats'
 				},
 				{
 					flag: true,
@@ -360,13 +365,13 @@ class Marker extends Component {
 				this.currentMarker.id
 			);
 			this.createCheckList();
-			this.generateFilterListUrl();
 			this.props.updateCountrySelected('');
 			this.props.updateMarkerSubType('');
 			this.props.fetchMarkerData(this.props.mapCurrentYear,this.currentMarker.id,'all');
 			this.props.fetchMarkerDescriptionData(this.props.mapCurrentYear,this.currentMarker.id);
 			this.props.fetchMarkerBarChartData(this.props.mapCurrentYear,this.currentMarker.id);
 			this.props.fetchmarkerSubType(this.currentMarker.id,'');
+			this.generateFilterListUrl();
 		}
 
 		componentDidMount() {
@@ -455,7 +460,7 @@ class Marker extends Component {
 				unitSelected: this.countryName === 'Recipient Region /Country' ?this.props.currentCountrySelected.countrySelected: this.countryName,
 				donorSelected: this.state.dropListFilterobj.sources.label,
 				mapData: this.props.projectListMapData.data.length === 1 ? this.props.outputData.data : this.props.projectListMapData.data ,
-				projectList: this.props.projectList,
+				projectList: this.props.top10Projects,
 				sectorSelected: this.state.dropListFilterobj.themes.label,
 				sdgSelected: this.state.dropListFilterobj.sdg.label,
 				lastUpdatedDate: getFormmattedDate(this.props.lastUpdatedDate.data.last_updated_date),
@@ -579,7 +584,7 @@ class Marker extends Component {
 							theme={this.props.theme}
 							sdg={this.props.sdg}
 							handleClickBoth={(label,value) => this.handleFilterChange('country', {value:value,label:label})}
-							placeHolder={'Recipient Region /Country'}
+							placeHolder={'Recipient Region / Country / Territories'}
 							selectedValue={this.props.currentCountrySelected.countrySelected === '' ? '' :  this.countryName}
 							selectedLabel={this.props.currentCountrySelected.countrySelected === '' ? '' :  this.countryName}
 							baseURL={Api.API_BASE}
@@ -589,7 +594,7 @@ class Marker extends Component {
 						/>
 						<EmbedSection
 							disableEmbedExport
-							startYear={commonConstants.SIGNATURE_SOLUTION_YEAR}
+							startYear={this.currentMarker.id === 7 ? 2020 : commonConstants.SIGNATURE_SOLUTION_YEAR}
 							marker={'year'}
 						/>
 					</section>
@@ -650,13 +655,14 @@ class Marker extends Component {
 									sdg={this.state.sdgSelected}
 									source={this.state.sourceSelected}
 									mapData={projectListMapData}
+									startYear={2018}
 									onCountrySelect={(country)=>this.handleFilterChange("country", {value:country.country_iso3, name:country.country_name})}
 									marker={this.currentMarker.id}
-									startYear={2018}
 									mapId={'markerMap'}
 								/>
-								<div class={style.disclaimer}>
-									{'* The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.'}
+								<div class={style.disclaimer} >
+								<ul class={style.class}><li> The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.</li><li> References to Kosovo* shall be understood to be in the context of UN Security Council resolution 1244 (1999)</li>
+    </ul>
 								</div>
 							</div>
 							{
@@ -711,7 +717,8 @@ const mapStateToProps = (state) => {
 	const {
 			loading,
 			error,
-			projectList
+			projectList,
+			top10Projects
 		} = state.projectList,
 		{
 			mapCurrentYear
@@ -745,7 +752,7 @@ const mapStateToProps = (state) => {
 		countryList,
 		masterDonorList,
 		outputData,
-
+		top10Projects,
 		aggregate,
 		markerDescData,
 		markerChartData,

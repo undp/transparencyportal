@@ -25,7 +25,7 @@ tbody {
 
 
 .tableBodyClass {
-    font-family: "ProximaNova-Regular";
+    font-family: 'proxima-nova';
     font-weight: 600;
     margin-bottom: 0;
     box-shadow: none !important;
@@ -269,13 +269,13 @@ tbody {
     }
 
     .sub_header {
-        font-weight: bold;
+        font-weight: $bold;
         font-size: 14px;
     }
     
 
     .marker_header {
-        font-weight: bold;
+        font-weight: $bold;
         font-size: 18px;
         color: #1c81c2;
 

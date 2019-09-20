@@ -204,6 +204,10 @@ export default class DownloadModal extends Component {
                                   </li>
                                   <li>
                                       <span class={style.urlTitle}>SDG Target index:&nbsp;</span>
+                                      <span class={style.urlContent}>{`${Api.API_BASE}/api/target-index.json`}</span>
+                                  </li>
+                                  <li>
+                                      <span class={style.urlTitle}>Individual SDG Target index:&nbsp;</span>
                                       <span class={style.urlContent}>{`${Api.API_BASE}/api/target-index/{sdg - id}.json`}</span>
                                   </li>
                                   <li>
@@ -213,6 +217,10 @@ export default class DownloadModal extends Component {
                                   <li>
                                       <span class={style.urlTitle}>Our Approaches index:&nbsp;</span>
                                       <span class={style.urlContent}>{`${Api.API_BASE}/api/our-approaches-index.json`}</span>
+                                  </li>
+                                  <li>
+                                      <span class={style.urlTitle}>Project Data:&nbsp;</span>
+                                      <span class={style.urlContent}>{`${Api.API_BASE}/api/project_list/?year={year}&sector={sector-id}&operating_unit={iso3}&sdg={sdg-id}&signature_solution={signature solution-id}&budget_source={budget source-id}&marker_type={marker-id}&limit={1-1000}&offset={0-count/1000}`}</span>
                                   </li>
 
                               </ul>

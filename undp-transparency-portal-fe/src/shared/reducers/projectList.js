@@ -7,6 +7,7 @@ const defaultState = {
 		links: {},
 		data: []
 	},
+	top10Projects: [],
 	loading: false,
 	error: {
 		message: '',
@@ -29,11 +30,21 @@ export default (state = defaultState, action) => {
 			};
 
 		case PROJECT_LIST.success:
+			if (action.offset === '0' || action.offset === 0){
+				return {
+					...state,
+					projectList: action.data,
+					top10Projects: action.data && action.data.data ? action.data.data.length > 10 ? action.data.data.slice(0,10) : action.data.data : [],
+					error: defaultState.error
+				};
+
+			}
 			return {
 				...state,
 				projectList: action.data,
 				error: defaultState.error
 			};
+			
 
 		case PROJECT_LIST.failed:
 			return {

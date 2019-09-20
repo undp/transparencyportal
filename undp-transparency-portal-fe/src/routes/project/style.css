@@ -8,7 +8,7 @@
   margin: 0 auto;
 }
 .wrapper{
-  font-family: 'ProximaNova-Regular';
+  font-family: 'proxima-nova';
   line-height: 23px;
 }
 .mapWrapper {
@@ -57,8 +57,13 @@
 }
 .disclaimer {
   font-size: 12px;
-  padding: 5px;
+  padding-left: 5px;
   line-height: 1;
   color: #4f4f4f;
   padding-bottom: 20px;
+  
 }
+ul {
+  list-style-type: unset !important;
+  padding-left: 16px;
+};

@@ -39,6 +39,20 @@
   height: 500px;
   position: relative;
   margin-bottom: 6rem;
+  .disclaimer {
+    font-size: 12px;
+    padding-left: 5px;
+    line-height: 1;
+    color: #4f4f4f;
+    padding-bottom: 20px;
+    // @media(min-width: $desktop) {
+    //     padding-bottom: 0;
+    // }
+    ul {
+        list-style-type: unset !important;
+        padding-left: 16px;
+    };
+}
 }
 .titleWrapper{
   padding: 2%;
@@ -46,6 +60,53 @@
   font-weight: 600;
   font-size: 18px;
 }
+
+.infoWrapper {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+
+    .imageWrapper {
+      width: 5%;
+      margin: 3rem 7px 0 0%;
+        .marker_image{
+          width: 100%;
+          max-height: 57px;
+        }
+    }
+
+    .tableWrapper {
+      width: 95%;
+        .list{
+          padding: 0;
+          border-top: 5px solid #1c81c2;
+          display: flex;
+          height: 83px;
+          margin: 30px 1.5rem 50px 0.5rem;
+          background-color: #f4f5fa;
+            .listItem{
+                width: 25%;
+                  .value{
+                    display: block;
+                    font-size: 16px;
+                    color: #454545;
+                    font-weight: 700;
+                    text-align: center;
+                    margin-top: 10px;
+                  }
+                  .label{
+                    display: block;
+                    font-size: 14px;
+                    font-weight: 400;
+                    padding-top: 5px;
+                    text-align: center;
+                  }
+            }
+        }
+    }
+}
+
 .chartHead {
   width: 100%;
   display: block;

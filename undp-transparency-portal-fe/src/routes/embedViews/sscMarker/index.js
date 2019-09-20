@@ -44,6 +44,7 @@ class EmbedSSCMarkerView extends Component {
             projectList: [],
             totalDataSize: 0,
             links: {},
+            showInfoMsg: false,
             keyword: this.props.search,
             filterList: [
                 {
@@ -53,7 +54,7 @@ class EmbedSSCMarkerView extends Component {
 
                 },
                 {
-                    displayLabel: 'Recipient Country / Region',
+                    displayLabel: 'Recipient Country / Territory / Region',
                     label: this.props.countryLabel,
                     text: ''
 
@@ -86,9 +87,9 @@ class EmbedSSCMarkerView extends Component {
         }
 		this.sscMarkerId = '3';
 		this.currentCountry_iso3 = '';
-		this.country = '',
-		this.level2CountryIso3 = '',
-		this.level2CountryName = '',
+		this.country = '';
+		this.level2CountryIso3 = '';
+		this.level2CountryName = '';
 		this.markerSubType = '';
     }
 
@@ -185,6 +186,25 @@ class EmbedSSCMarkerView extends Component {
         })
     }
 
+    onClickMapImage(){
+		let _this= this;
+		this.setState({ showInfoMsg: true });
+		setTimeout(function(){
+			_this.setState({ showInfoMsg: false });
+		}, 2000);
+	}
+
+    getMapImageVisibility(){
+		let mapImageVisibility = false;
+		if ( (!this.country || this.props.country==='all') && !this.l2Country )
+			mapImageVisibility = true;
+		else
+			mapImageVisibility = false;
+		
+        return mapImageVisibility;
+
+	}
+
     render({ projectListMapData }, { links, projectList, totalDataSize }) {
         let optionData;
         if (this.props.markerSubtypes.data && this.props.markerSubtypes.data[0]){
@@ -242,18 +262,32 @@ class EmbedSSCMarkerView extends Component {
                 : 
                 null}
                 { this.props.map === 'true' ? 
-                    <div class={style.mapWrapper}>
-                        <Map sector={this.props.themes}
-                            sdg={this.props.sdg}
-                            source={this.props.sources}
-                            mapData={this.props.projectListMapData}
-                            enableTimeline={false}
-                            embed={true}
-                            isSSCMarker={'true'}
-                            selectedMarkerSubtype={this.props.markerSubType}
-                        />
-                        <SscMarkerlegend />
-                    </div>  
+                    !(this.getMapImageVisibility()) ?
+                        <div class={style.mapWrapper}>
+                            <Map source={this.state.sourceSelected}
+                                    mapData={projectListMapData}
+                                    isSSCMarker={'true'}
+                                    mapId={'sscMap'}
+                                    onCountrySelect={(country)=>this.handleFilterChange("country", {value:country.country_iso3, name:country.country_name})}
+                            />
+                            {/* <Map sector={this.props.themes}
+                                sdg={this.props.sdg}
+                                source={this.props.sources}
+                                mapData={this.props.projectListMapData}
+                                enableTimeline={false}
+                                embed={true}
+                                isSSCMarker={'true'}
+                                selectedMarkerSubtype={this.props.markerSubType}
+                            /> */}
+                            <SscMarkerlegend />
+                        </div> 
+                        :<div onClick={() => this.onClickMapImage()} style="position:relative">
+                            <img class={style.mapImg} style={this.getMapImageVisibility() ? 'display:block' : 'display:none'} src={'/assets/images/ssc/'+(this.markerSubType===''? 2 :this.markerSubType) +'.png'}/>
+                            <div class={!this.state.showInfoMsg ? style.infoMsg : style.infoMsgBg}>
+                                <div class={!this.state.showInfoMsg ?  style.text : style.infoTextOpacity}>Use filter to select the country</div>
+                            </div>
+                        
+                        </div>
                     :
                     null 
                 }
