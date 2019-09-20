@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="104px" height="104px" viewBox="0 0 104 104" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 56.3 (81716) - https://sketch.com -->
+    <title>Vote</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Vote" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(2.000000, 2.000000)">
+            <circle id="Oval-Copy" stroke="#386582" stroke-width="2.5" fill-opacity="0" fill="#FFFFFF" fill-rule="nonzero" cx="50" cy="50" r="50"></circle>
+            <g id="Group-2" transform="translate(18.333333, 15.833333)" fill="#FFFFFF" fill-opacity="0" fill-rule="nonzero" stroke="#386582" stroke-width="2.5">
+                <rect id="Rectangle" x="14.1666667" y="30" width="38.3333333" height="18.3333333"></rect>
+                <path d="M26.9894101,1.90393991 C11.7747088,3.79601856 0,16.772944 0,32.5 C0,45.9132018 8.56485915,57.3259736 20.5239185,61.5676564" id="Path" stroke-linecap="round"></path>
+                <polyline id="Path-3" stroke-linecap="round" points="16.0498047 64.1646322 20.0188606 62.2241539 20.9810384 61.7537435 19.9829102 55.8390299"></polyline>
+                <path d="M63.9037857,1.95728085 C48.6890843,3.8493595 36.9143755,16.8262849 36.9143755,32.5533409 C36.9143755,45.9665428 45.4792347,57.3793145 57.438294,61.6209973" id="Path" stroke-linecap="round" transform="translate(50.409081, 31.789139) scale(-1, -1) rotate(-8.000000) translate(-50.409081, -31.789139) "></path>
+                <polyline id="Path-3" stroke-linecap="round" transform="translate(41.503354, 4.496938) scale(-1, -1) rotate(-8.000000) translate(-41.503354, -4.496938) " points="39.0377371 8.65973907 43.006793 6.71926077 43.9689708 6.24885039 42.9708425 0.334136852"></polyline>
+                <polygon id="Rectangle" points="22.5 17.5 44.1666667 17.5 51.0252062 26.0614611 15.6613507 26.0614611"></polygon>
+                <polyline id="Path-4" points="26.9894101 38.5803223 30.5887858 41.5633138 38.4823823 34.4287109"></polyline>
+                <path d="M25.7521034,21.8620775 L40.8722768,21.8620775 L42.157925,23.6042914 L43.1637175,21.6120775 L41.0081688,21.6120775 L40.4975614,21.3542914 L40.687792,21.6120775 L25.9397288,21.6120775 L26.1271134,21.3623984 L25.6275548,21.6120775 L23.4387256,21.6120775 L24.4384848,23.6123984 L25.7521034,21.8620775 Z" id="Rectangle"></path>
+            </g>
+            <g id="Group" transform="translate(18.333333, 17.737273)"></g>
+            <g id="Group-Copy" transform="translate(68.292236, 46.253662) scale(-1, -1) rotate(-8.000000) translate(-68.292236, -46.253662) translate(54.542236, 15.003662)"></g>
+        </g>
+    </g>
+</svg>

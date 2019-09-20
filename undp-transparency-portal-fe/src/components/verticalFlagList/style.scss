@@ -61,7 +61,7 @@
             width: 16px;
             height: 16px;
             border-radius: 16px;
-            font-weight: bold;
+            font-weight: $bold;
         }
 
         .capacity_legend_block {
@@ -82,7 +82,7 @@
         .legend_text {
             margin-left: 10px;
             font-size: 12px;
-            font-weight: bold;
+            font-weight: $bold;
             letter-spacing: 0.13px;
             margin-top: -2px;
 
@@ -167,6 +167,6 @@
 }
 
 .targetTitle {
-    font-weight: bold;
+    font-weight: $bold;
     padding-right: 5px;
 }

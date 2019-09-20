@@ -32,9 +32,7 @@ const generateRecipientCharts = (
 			
 			{/* Recipient Profile first Row start */}
 			<div class={`${style.wrapper} ${style.chartWrapper}`}>
-				<span class={style.SDGdisclaimer}>
-					Data under the Sustainable Development Goals (SDGs) and Our Focus is based on the Strategic Plan 2014-2017 and corporate-level mapping to the SDGs.  Data will be updated to the Strategic Plan 2018-2021 and country-level SDG mapping from December 2018
-				</span>
+
 				{/* Recipient Profile Themes section start */}
 				{
 					!displaybudgetPercThemes || (displaybudgetPercThemes && displaybudgetPercThemes === 'true') ?

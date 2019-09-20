@@ -341,7 +341,7 @@ class Tabs extends Component {
     mapLabelToValue = (value, list) => {
         if (list.length) {
             let label = list.filter((item) => {
-                return item.value == value
+                return item.value == value || item.code == value
             })
             if (label.length) {
                 return label[0].label
@@ -838,16 +838,17 @@ class Tabs extends Component {
             units = '',
             keywords = '',
             sectors = '',
-            sdgs = '';
+            sdgs = '',
+            tabkey = 0;
             
 
         switch (this.props.tabSelected) {
             case 'country':
                 units = countryRegionFilter.country && countryRegionFilter.country.iso3 ? countryRegionFilter.country.iso3 : "",
-                templateType = "home_countries"
+                templateType = "home_countries";
                 data = {
                     ...data,
-                    title: 'Recipient Country / Region',
+                    title: 'Recipient Country / Territory / Region',
                     selected: this.props.countryData.data.country_name,
                     themesBudget: this.props.themesBudget.data,
                     themesBudgetAggregate: aggregateCalculator(this.props.themesBudget.data, 'theme_budget'),
@@ -880,17 +881,19 @@ class Tabs extends Component {
                 sectors = donorFilter && donorFilter.themes ? donorFilter.themes : "",
                 source = donorFilter && donorFilter.budgetSources ? donorFilter.budgetSources : "";
                 // mapData = this.props.donorsMapData.data.length == 1 ? this.props.outputMapData.data : undefined
-                mapData = this.props.donorsMapData.data.length >0 ? this.props.donorsMapData.data.length == 1? this.props.donorOutputData.data:this.props.donorsMapData.data : [];
-                recipient = this.props.donorsMapData.data.length == 1 ? 1 : undefined
-                templateType = "home_donors"
+                mapData = this.props.outputMapData.data.length > 0? this.props.outputMapData.data : this.props.donorsMapData.data;
+                recipient = this.props.donorsMapData.data.length == 1 ? 1 : undefined;
+                templateType = "home_donors";
                 data = {
                     ...data,
                     title: "Donors",
                     mapData: mapData,
                     recipient: recipient
                 }
+                
                 if ((!this.props.donorFilter.budgetSourcesLabel || this.props.donorFilter.budgetSourcesLabel == "")
                 ) {
+                    
                     data = {
                         ...data,
                         donorList: this.state.themeData,
@@ -900,8 +903,8 @@ class Tabs extends Component {
                         resourcesModalityContributionAggregate: aggregateCalculator(this.props.donorProfile.resourcesModalityContribution.data.total, 'total_contribution'),
                         donorSelected: this.props.donorFilter.budgetSourcesLabel ? this.props.donorFilter.budgetSourcesLabel : "",
                         unitSelected: this.props.donorFilter.operatingUnitsLabel ? this.props.donorFilter.operatingUnitsLabel : "",
-                        sectorSelected: this.mapLabelToValue(this.props.donorFilter.themes,this.props.themeList.themes),
-                        sdgSelected: this.mapLabelToValue(this.props.donorFilter.sdg ? this.props.donorFilter.sdg : "", this.props.sdgData.masterSdgList),
+                        sectorSelected:  this.props.tabData.donorFilter.themes ? this.mapLabelToValue(this.props.tabData.donorFilter.themes, this.props.themeList.themes) : '',
+                        sdgSelected:  this.props.tabData.donorFilter.sdg ? this.mapLabelToValue(this.props.tabData.donorFilter.sdg, this.props.sdgData.masterSdgList) : '',
                         lastUpdatedDate: getFormmattedDate(this.props.lastUpdatedDate.data.last_updated_date),
                         sdgNumber: this.props.donorFilter.sdg ? this.props.donorFilter.sdg: "" ,
                         projectList: this.props.projectList.projectList.data.slice(0, 10) 
@@ -929,7 +932,7 @@ class Tabs extends Component {
                         projectList: this.props.projectList.projectList.data.slice(0, 10),
                         budgetSources: this.props.donorProfile.budgetSources.data.slice(0, 20),
                         donorSelected: this.props.donorFilter.budgetSourcesLabel ? this.props.donorFilter.budgetSourcesLabel : "",
-                        sectorSelected: this.mapLabelToValue(this.props.donorFilter.themes ? this.props.donorFilter.themes : "", this.props.themeList.masterThemeList),
+                        sectorSelected: this.mapLabelToValue(this.props.donorFilter.themes ? this.props.donorFilter.themes : "", this.props.themeList.themes),
                         sdgSelected: this.mapLabelToValue(this.props.donorFilter.sdg ? this.props.donorFilter.sdg : "", this.props.sdgData.masterSdgList),
                         lastUpdatedDate: getFormmattedDate(this.props.lastUpdatedDate.data.last_updated_date),
                         sdgNumber: this.props.donorFilter.sdg ? this.props.donorFilter.sdg: ""
@@ -974,6 +977,7 @@ class Tabs extends Component {
                 sectors = themeFilter && themeFilter.selectedTheme ? themeFilter.selectedTheme : "";
                 mapData = this.props.themesMapData.data.length == 1 ? this.props.outputMapData.data : undefined
                 recipient = this.props.themesMapData.data.length == 1 ? 1 : undefined;
+                tabkey = this.props.tabData.themeFilter.selectedTheme === undefined || this.props.tabData.themeFilter.selectedTheme === '' ? 1 : 0;
                 data = {
                     ...data,
                     title: "Our Focus",
@@ -990,7 +994,7 @@ class Tabs extends Component {
                         ...data,
                         summaryDetails: this.findSelectedItemDetails(this.state.themeData.data.sector, this.props.themeFilter.selectedTheme),
                         aggregate: this.props.themeSliderData.data.aggregate,
-                        projectList: this.props.projectList.projectList.data.slice(0, 10),
+                        projectList: this.props.projectList.top10Projects,
                         selected: this.props.themeSliderData.data.aggregate && this.props.themeSliderData.data.aggregate.sector_name,
                         budgetSources: this.props.themeSliderData.data.budget_sources ? this.props.themeSliderData.data.budget_sources : [],
                         recipientOffices: this.props.themeSliderData.data.top_recipient_offices ? this.props.themeSliderData.data.top_recipient_offices : [],
@@ -1011,6 +1015,7 @@ class Tabs extends Component {
             case 'signature':
                 source = themeFilter && themeFilter.budgetSources ? themeFilter.budgetSources : "";
                 units = themeFilter && themeFilter.operatingUnits ? themeFilter.operatingUnits : "";
+                tabkey = this.props.tabData.themeFilter.selectedTheme === undefined || this.props.tabData.themeFilter.selectedTheme === '' ? 2 : 0;
                 signatureSolution = themeFilter && themeFilter.selectedTheme ? themeFilter.selectedTheme : "";
                 mapData = this.props.signatureMapData.data.length == 1 ? this.props.outputMapData.data : undefined
                 recipient = this.props.signatureMapData.data.length == 1 ? 1 : undefined
@@ -1055,6 +1060,7 @@ class Tabs extends Component {
                 units = sdgFilter && sdgFilter.operatingUnits ? sdgFilter.operatingUnits : "";
                 source = sdgFilter && sdgFilter.budgetSources ? sdgFilter.budgetSources : "";
                 sdgs = sdgFilter && sdgFilter.selectedSdg ? sdgFilter.selectedSdg : "";
+                tabkey = !this.props.tabData.sdgFilter.selectedSdg ? 3 : 0;
                 mapData = this.props.sdgMapData.data.length == 1 ? this.props.outputMapData.data : undefined
                 recipient = this.props.sdgMapData.data.length == 1 ? 1 : undefined
                 targetData= this.props.sdgTargetSliderData.data.percentage? this.props.sdgTargetSliderData.data.percentage : []
@@ -1075,7 +1081,7 @@ class Tabs extends Component {
                         aggregate: this.props.sdgSliderData.data.aggregate,
                         budgetSources: this.props.sdgSliderData.data.budget_sources,
                         recipientOffices: this.props.sdgSliderData.data.top_recipient_offices,
-                        projectList: this.props.projectList.projectList.data.slice(0, 10),
+                        projectList: this.props.projectList.top10Projects,
                         lastUpdatedDate: getFormmattedDate(this.props.lastUpdatedDate.data.last_updated_date),
                         targetData
                     }
@@ -1092,13 +1098,13 @@ class Tabs extends Component {
                 }
                 break;
         }
-        
+
         return ( 
             <ExportPopup
                 templateType={templateType}
-                data={data}
+                data={data} 
                 downloadCsv={() => {
-                    this.props.downLoadProjectListCsv(year, keywords, source, sectors, units, sdgs,'',signatureSolution)
+                    this.props.downLoadProjectListCsv(year, keywords, source, sectors, units, sdgs, '', signatureSolution, '', '', '', '', tabkey)
                 }
                 }
                 loading={loading}
@@ -1130,7 +1136,6 @@ class Tabs extends Component {
             }
         } 
         else if (this.props.tabSelected == "sdg") {
-            this.props.updateProjectList(this.props.mapCurrentYear, this.props.sdgFilter.operatingUnits,this.props.sdgFilter.budgetSources,"","","","","");          
             this.props.fetchSdgSliderData(this.props.mapCurrentYear, this.props.sdgFilter.selectedSdg && this.props.sdgFilter.selectedSdg != "" ? this.props.sdgFilter.selectedSdg : null)
         }
         else {
@@ -1180,8 +1185,12 @@ class Tabs extends Component {
             operatingUnitsSdg = sdgFilter && sdgFilter.operatingUnits ? sdgFilter.operatingUnits : "",
             operatingUnitsLabelSdg = sdgFilter && sdgFilter.operatingUnits && sdgFilter.operatingUnitsLabel ? sdgFilter.operatingUnitsLabel : "",
             sdgSdg = sdgFilter && sdgFilter.selectedSdg ? sdgFilter.selectedSdg : "",
+            total_budget = this.props.countryData.data.total_budget,
+            total_expense = this.props.countryData.data.total_expense,
+            project_count = this.props.countryData.data.project_count,
+            donor_count = this.props.countryData.data.donor_count ,
             filterUrl = {
-                country: `&year=${mapCurrentYear}&country=${country}&countryLabel=${countryLabel}&financialFlowYear=${sankeyYear}&financialFlowType=${bugetType}`,
+                country: `&year=${mapCurrentYear}&country=${country}&countryLabel=${countryLabel}&financialFlowYear=${sankeyYear}&financialFlowType=${bugetType}&total_budget=${total_budget}&total_expense=${total_expense}&project_count=${project_count}&donor_count=${donor_count}`,
                 donors: `&year=${mapCurrentYear}&operatingUnits=${operatingUnits}&sdg=${sdg}&themes=${themes}&operatingUnitsLabel=${operatingUnitsLabel}&budgetSources=${budgetSourcesDonor}&budgetSourcesLabel=${budgetSourcesLabelDonor}&financialFlowYear=${sankeyYear}&financialFlowType=${bugetType}`,
                 themes: `&year=${mapCurrentYear}&operatingUnits=${operatingUnitstheme}&operatingUnitsLabel=${operatingUnitsLabeltheme}&budgetSources=${budgetSources}&budgetSourcesLabel=${budgetSourcesLabel}&themes=${sectorstheme}&financialFlowYear=${sankeyYear}&financialFlowType=${bugetType}`,
                 sdg: `&year=${mapCurrentYear}&operatingUnits=${operatingUnitsSdg}&operatingUnitsLabel=${operatingUnitsLabelSdg}&budgetSources=${budgetSourcesSdg}&budgetSourcesLabel=${budgetSourcesLabelSdg}&sdg=${sdgSdg}&financialFlowYear=${sankeyYear}&financialFlowType=${bugetType}`,
@@ -1200,7 +1209,7 @@ class Tabs extends Component {
                     <div>
                         <ul class={this.props.currentYearSelected >= commonConstants.SIGNATURE_SOLUTION_YEAR ? style.list_with_signature : style.list}>
                             <li>
-                                <button class={this.props.tabSelected == "country" && style.active} onClick={(e) => this.tabClick('country')}>RECIPIENT COUNTRY / REGION</button>
+                                <button class={this.props.tabSelected == "country" && style.active} onClick={(e) => this.tabClick('country')}>RECIPIENT COUNTRY / TERRITORY / REGION</button>
                             </li>
                             <li>
                                 <button class={this.props.tabSelected == "donors" && style.active} onClick={(e) => this.tabClick('donors')}>DONORS</button>
@@ -1416,7 +1425,8 @@ class Tabs extends Component {
 
                                 }
                                 <div class={style.disclaimer}>
-                                    {'* The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.'}
+                                <ul><li> The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.</li><li> References to Kosovo* shall be understood to be in the context of UN Security Council resolution 1244 (1999)</li>
+    </ul>
                                 </div>
                             </div>
                         </div>
@@ -1426,7 +1436,7 @@ class Tabs extends Component {
                     <div class={style.accordion}>
                         <div class={this.state.accordionSelected == "country" ? `${style.accordionItem} ${style.accordionPosition}` : style.accordionItem}>
                             <div class={this.state.accordionSelected == "country" ? `${style.accordionTitle} ${style.accordionSelected}` : style.accordionTitle} onClick={() => { this.accordionClick('country'); }}>
-                                <h3 class={style.accordionHead}>RECIPIENT COUNTRY / REGION</h3>
+                                <h3 class={style.accordionHead}>RECIPIENT COUNTRY / TERRITORY / REGION</h3>
                             </div>
                             {
                                 this.state.accordionSelected == "country"
@@ -1441,7 +1451,7 @@ class Tabs extends Component {
                                             </div>
                                         </div>
                                         <div class={style.searchWrapper}>
-                                            <span class={style.searchLabel}>{'Search for Countries'}</span>
+                                            <span class={style.searchLabel}>{'Search for Countries and Territories'}</span>
                                             <div class={style.searchItems} ref={(node) => this.searchNode = node}>
                                                 <div class={style.countrySearch}
                                                 >
@@ -1454,7 +1464,7 @@ class Tabs extends Component {
                                                         onInput={(event) => this.handleSearchChange(event)}
                                                         onTouchStart={() => this.setState({ toggleDropDown: true })}
                                                         onMouseDown={() => this.setState({ toggleDropDown: true })}
-                                                        placeholder="Enter country name"
+                                                        placeholder="Enter country/territory name"
                                                     />
                                                     {
                                                         this.state.enableSearchIcon ?
@@ -1599,7 +1609,8 @@ class Tabs extends Component {
                                             />
                                         </div>
                                         <div class={style.disclaimer}>
-                                            {'* The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.'}
+                                        <ul><li> The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.</li><li> References to Kosovo* shall be understood to be in the context of UN Security Council resolution 1244 (1999)</li>
+    </ul>
                                         </div>
                                     </div>
                                     : null
@@ -1622,7 +1633,8 @@ class Tabs extends Component {
                                             />
                                             <button class={style.mapClose} onClick={() => { this.mapcloseClick(); }}></button>
                                             <div class={style.disclaimer}>
-                                                {'* The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.'}
+                                            <ul><li> The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.</li><li> References to Kosovo* shall be understood to be in the context of UN Security Council resolution 1244 (1999)</li>
+    </ul>
                                             </div>
                                         </div>
                                         : <div class={style.accordionContent}>
@@ -1704,7 +1716,8 @@ class Tabs extends Component {
                                             />
                                             <button class={style.mapClose} onClick={() => { this.mapcloseClick(); }}></button>
                                             <div class={style.disclaimer}>
-                                                {'* The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.'}
+                                            <ul><li> The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.</li><li> References to Kosovo* shall be understood to be in the context of UN Security Council resolution 1244 (1999)</li>
+    </ul>
                                             </div>
                                         </div>
                                         :
@@ -1792,7 +1805,8 @@ class Tabs extends Component {
                                             />
                                             <button class={style.mapClose} onClick={() => { this.mapcloseClick(); }}></button>
                                             <div class={style.disclaimer}>
-                                                {'* The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.'}
+                                            <ul><li> The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.</li><li> References to Kosovo* shall be understood to be in the context of UN Security Council resolution 1244 (1999)</li>
+    </ul>
                                             </div>
                                         </div>
                                         :
@@ -1881,7 +1895,8 @@ class Tabs extends Component {
                                             />
                                             <button class={style.mapClose} onClick={() => { this.mapcloseClick(); }}></button>
                                             <div class={style.disclaimer}>
-                                                {'* The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.'}
+                                            <ul><li> The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.</li><li> References to Kosovo* shall be understood to be in the context of UN Security Council resolution 1244 (1999)</li>
+    </ul>
                                             </div>
                                         </div>
                                         :
@@ -1896,9 +1911,9 @@ class Tabs extends Component {
                                                         showExportModal={() => this.showExportModal()} />
                                                 </div>
                                             </div>
-                                            <span class={style.SDGdisclaimer}>
+                                            {/* <span class={style.SDGdisclaimer}>
                                                 *Data under the Sustainable Development Goals (SDGs) and Our Focus is based on the Strategic Plan 2014-2017 and corporate-level mapping to the SDGs.  Data will be updated to the Strategic Plan 2018-2021 and country-level SDG mapping from December 2018
-                                            </span>
+                                            </span> */}
                                             <div class={style.scrollWrapper}>
                                                 <Scrollbars>
                                                     <div class={style.accordioncontentScroll}>

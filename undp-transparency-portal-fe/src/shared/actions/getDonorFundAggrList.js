@@ -57,15 +57,15 @@ export function parseDonorFundListData(data){
 
 export const fetchDonorFundListData = (year,recipentCountry,donor,themes,sdg) => (dispatch,getState) => {
 	const donorFilter = getState().tabData.donorFilter,
-		recipentCountry =  recipentCountry || (donorFilter.operatingUnits?donorFilter.operatingUnits:''),
+		newrecipentCountry =  recipentCountry || (donorFilter.operatingUnits?donorFilter.operatingUnits:''),
 		newthemes = themes || (donorFilter.themes?donorFilter.themes:''),
-		donor = donor || (donorFilter.budgetSources?donorFilter.budgetSources:'') ,
-		sdg = sdg || (donorFilter.sdg?donorFilter.sdg:''),
+		newdonor = donor || (donorFilter.budgetSources?donorFilter.budgetSources:'') ,
+		newsdg = sdg || (donorFilter.sdg?donorFilter.sdg:''),
 		newYear = year || ( getState().tabData.currentYear );
 
 	dispatch(donorFundListFetchStart());
 	if (newYear !== null)
-		return Api.get(`${Api.API_DONOR_FUND_LIST}?year=${newYear}&recipient_countries=${recipentCountry}&sectors=${newthemes}&donor=${donor}&sdg=${sdg}`).then(resp => {
+		return Api.get(`${Api.API_DONOR_FUND_LIST}?year=${newYear}&recipient_countries=${newrecipentCountry}&sectors=${newthemes}&donor=${newdonor}&sdg=${newsdg}`).then(resp => {
 			if (resp.success && resp.data) {
 				dispatch(donorFundListFetchEnd());
 				dispatch(donorFundListFetchSuccess(resp.data));

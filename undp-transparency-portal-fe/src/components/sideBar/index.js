@@ -15,6 +15,7 @@ import { fetchSignatureSliderData } from '../themeSlider/actions/signatureDonor'
 import { fetchSignatureOutcome , fetchSignatureSolutionChartData } from '../themeSlider/actions/signatureOutcome';
 import { fetchSdgSliderData } from '../sdgSlider/actions';
 import donorProfile from '../profilePage/actions/donorActions';
+import { updateProjectList } from '../../shared/actions/getProjectList';
 import NoDataTemplate from '../no-data-template';
 import style from './style';
 import { updateSignatureSolution } from './action/updateSS'
@@ -118,6 +119,17 @@ class SideBar extends Component {
 
 	}
 	selectRow = (item, index, type) => {
+		if(this.props.tabSelected === 'themes' && this.props.themeFilter){
+			this.props.updateProjectList(this.props.mapCurrentYear, this.props.themeFilter.operatingUnits, this.props.themeFilter.budgetSources, item, '', '', '', '', '','');
+		}
+
+		if(this.props.tabSelected === 'signature' && this.props.themeFilter){
+			this.props.updateProjectList(this.props.mapCurrentYear, this.props.themeFilter.operatingUnits, this.props.themeFilter.budgetSources, '', '', '', '', '', '','',item);
+		}
+		if(this.props.tabSelected === 'sdg' && this.props.sdgFilter){
+			this.props.updateProjectList(this.props.mapCurrentYear, this.props.sdgFilter.operatingUnits, this.props.sdgFilter.budgetSources, '', '', '', '', '', item,'','');
+		}
+		
 		this.props.selectThemeSdg(item, type);
 		this.props.updateSSThemesFilter(this.props.tabSelected, item);
 		this.props.tabSelected === 'signature' ? 
@@ -405,7 +417,8 @@ const mapStateToProps = (state) => {
 		donorsLoading: state.donorFundList.loading,
 		sdgLoading: state.sdgAggregate.loading,
 		tabSelected: state.tabData.tabSelected,
-		sdgTargetSliderData: state.sdgTargetSliderData
+		sdgTargetSliderData: state.sdgTargetSliderData,
+		curState: state
 	};
 };
 const mapDispatchToProps = (dispatch) => ({
@@ -416,6 +429,7 @@ const mapDispatchToProps = (dispatch) => ({
 	updateSignatureSolution: (index) => dispatch(updateSignatureSolution(index)),
 	fetchSignatureSolutionChartData: (code, year) => dispatch(fetchSignatureSolutionChartData(code, year)),
 	fetchSignatureSliderData: (year, sector) => dispatch(fetchSignatureSliderData(year, sector)),
+	updateProjectList: (year, unit, source, theme, keyword, limit, offset, budgetType, sdg,target,signatureSolution) => dispatch(updateProjectList(year, unit, source, theme, keyword, limit, offset, budgetType, sdg,target,signatureSolution)),
 	fetchSdgSliderTargetData: (year, sdg) => dispatch(fetchSdgSliderTargetData(year, sdg))
 });
 

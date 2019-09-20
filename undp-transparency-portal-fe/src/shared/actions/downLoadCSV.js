@@ -46,12 +46,12 @@ const saveToDisk = (fileURL, fileName) =>{
 }
 
 
-export const downLoadProjectListCsv = (year='',keyword='',source='',sectors='',units='',sdgs='',type='',signatureSolution='',target='',markerId='',markerSubType='',l2marker='') => (dispatch) => {
-    dispatch(exportCSVReset())
-    return Api.downLoadCSV(Api.API_DOWNLOAD_CSV_PROJECT_LISTS(year,keyword,source,sectors,units,sdgs,type,signatureSolution,target,markerId,markerSubType,l2marker)).then(resp => {
-        const url = window.URL.createObjectURL(resp)
-        saveToDisk(url,'project_list.csv')
-        dispatch(exportCSVSuccess(url))
+export const downLoadProjectListCsv = (year='', keyword='', source='', sectors='', units='', sdgs='', type='', signatureSolution='', target='', markerId='', markerSubType='', l2marker='', key=0) => (dispatch) => {
+    dispatch(exportCSVReset());
+    return Api.downLoadCSV(Api.API_DOWNLOAD_CSV_PROJECT_LISTS(year,keyword,source,sectors,units,sdgs,type,signatureSolution,target,markerId,markerSubType,l2marker, key)).then(resp => {
+        const url = window.URL.createObjectURL(resp);
+        saveToDisk(url,'project_list.csv');
+        dispatch(exportCSVSuccess(url));
     }).catch((exception) => {
 
     });
@@ -59,7 +59,7 @@ export const downLoadProjectListCsv = (year='',keyword='',source='',sectors='',u
 
 
 export const downLoadProjectDetailsCsv = (projectId,item,search,category,fileName='data.csv') => (dispatch) => {
-    dispatch(exportCSVReset())
+    dispatch(exportCSVReset());
     return Api.downLoadCSV(Api.API_DOWNLOAD_CSV_PROJECT_DETAILS(projectId,item,search,category)).then(resp => {
         const url = window.URL.createObjectURL(resp)
         saveToDisk(url,fileName)

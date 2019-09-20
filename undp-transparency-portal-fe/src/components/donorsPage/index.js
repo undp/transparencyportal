@@ -229,6 +229,8 @@ tabClick = (tab) => {
         }
     }, () => {
         this.props.getDataTabClick && this.props.getDataTabClick(this.state.filterObj);
+
+        this.props.getFilteObjectValue && this.props.getFilteObjectValue(this.state.filterObj);
         this.props.donorFetchData(this.state.filterObj, this.state.tabSelected)
     });
 }
@@ -271,6 +273,7 @@ render(props, { tabSelected, filterObj }) {
     var flag = data != undefined &&
         data.contributions != undefined &&
         data.contributions.length > 0;
+
     return (
         <div>
             {
@@ -490,7 +493,7 @@ return {
     donorData: state.donorData,
     donorTypes: state.donorTypes,
     fundStreams: state.fundStreams,
-
+    curState: state
 }
 }
 

@@ -142,6 +142,7 @@ class SdgLanding extends Component {
 				templateType={templateType}
 				data={data}
 				loading={loading}
+				usePuppeteer={'true'}
 				onCloseModal={() => this.hideExportModal()}
 				downloadCsv={()=>{this.props.downLoadProjectListCsv(this.props.currentYear,'','','','',this.props.sdgSelected.sdg_code_selected,'','','')}}
 			/>
@@ -174,6 +175,7 @@ class SdgLanding extends Component {
 					onClickEmbed={this.openEmbedModal}
 					showExportModal={() => this.showExportModal()}
 					startYear={commonConstants.SDG_YEAR}
+					hideExport={'true'}
 				 />
 			</div>
 			<SDGLandingPage

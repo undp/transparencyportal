@@ -12,7 +12,7 @@ class Bureau(models.Model):
 
 class Region(models.Model):
     name = models.CharField(max_length=50)
-    region_code = models.CharField(max_length=10, primary_key=True)
+    region_code = models.CharField(max_length=30, primary_key=True)
     bureau = models.ForeignKey(Bureau)
 
     def __str__(self):

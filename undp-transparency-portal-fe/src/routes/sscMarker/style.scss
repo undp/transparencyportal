@@ -32,7 +32,7 @@
 }
 
 .wrapper {
-  font-family: 'ProximaNova-Regular';
+  font-family: 'proxima-nova';
   line-height: 23px;
 }
 
@@ -278,6 +278,9 @@
     }
   }
   .embedExport{
+    display: flex;
+    margin-right: 8%;
+    justify-content: flex-end;
     width:50%;
     padding-top: 25px;
     @media screen and (max-width:1034px) {
@@ -323,7 +326,7 @@
 }
 .mapBtn {
   padding: 10px 20px;
-  font-family: 'ProximaNova-Regular', arial, sans-serif;
+  font-family: 'proxima-nova', arial, sans-serif;
   line-height: 16px;
   pointer-events: auto;
   margin-top: 10px;
@@ -407,7 +410,7 @@
   opacity: 0;
   top: 50%;
   left: 50%;
-  font-weight: bold;
+  font-weight: $bold;
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);

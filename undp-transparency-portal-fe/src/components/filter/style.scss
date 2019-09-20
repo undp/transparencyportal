@@ -106,6 +106,13 @@
             min-width: 225px;
             max-width: 225px;
         }
+        @media(min-width: $wide-screen) {
+            display: flex;
+            align-items: center;
+            padding: 6.5px 20px;
+            height: auto;
+            justify-content: space-between;
+        }
         .dropDownItem{
             color: #2c2c2c;
             font-size: 18px;
@@ -117,7 +124,7 @@
             white-space: nowrap;
             overflow: hidden;
             vertical-align: top;
-            font-family: 'ProximaNova-Regular';
+            font-family: 'proxima-nova';
             @media(max-width: $tablets) {
                 font-size: 16px;
             }
@@ -157,6 +164,14 @@
             height: 100%;
             padding: 5px;
             padding-right: 10px;
+
+            @media(min-width: $wide-screen) {
+                background-size: 100% 100%;
+                height: 14px;
+                width: 10px;
+                padding: 7px 5px;
+                margin-left: 10px;
+            }
         }
         .closetab {
             background: url('/assets/images/closeCard.png') no-repeat center;
@@ -210,7 +225,7 @@
             white-space: nowrap;
             overflow: hidden;
             vertical-align: top;
-            font-family: 'ProximaNova-Regular';
+            font-family: 'proxima-nova';
             @media(max-width: $tablets) {
                 font-size: 16px;
             }

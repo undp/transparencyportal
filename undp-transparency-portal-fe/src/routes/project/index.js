@@ -465,12 +465,13 @@ class Project extends Component {
 			sdgs = this.state.dropListFilterobj.sdg.value;
 
 		let data, loading, templateType;
+		
 		data = {
 			year: this.props.mapCurrentYear,
-			unitSelected: this.state.dropListFilterobj.country.label,
+			unitSelected: this.state.unitLabel,
 			donorSelected: this.state.dropListFilterobj.sources.label,
 			mapData: this.props.outputData.data,
-			projectList: this.props.projectList,
+			projectList: { data: this.props.top10Projects },
 			sectorSelected: this.state.dropListFilterobj.themes.label,
 			sdgSelected: this.state.dropListFilterobj.sdg.label,
 			sdgs,
@@ -570,7 +571,8 @@ class Project extends Component {
 							projects={'true'}
 						/>
 						<div class={style.disclaimer}>
-							{'* The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.'}
+						<ul><li> The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.</li><li> References to Kosovo* shall be understood to be in the context of UN Security Council resolution 1244 (1999)</li>
+    </ul>
 						</div>
 					</div>
 				</div>
@@ -580,7 +582,8 @@ class Project extends Component {
 						handleFilterChange={(type, value) => this.handleFilterChange(type, value)}
 						loading={this.props.loading}
 						getSearchParam={(param) => { this.setState({ searchText: param }); }}
-						enableSearch theme={this.state.themeSelected}
+						enableSearch 
+						theme={this.state.themeSelected}
 						unit={this.state.unitSelected}
 						keyword={this.state.keyword}
 						source={this.state.sourceSelected}
@@ -609,7 +612,8 @@ const mapStateToProps = (state) => {
 	const {
 			loading,
 			error,
-			projectList
+			projectList,
+			top10Projects
 		} = state.projectList,
 		{
 			mapCurrentYear
@@ -630,6 +634,7 @@ const mapStateToProps = (state) => {
 	return {
 		router: state.router,
 		loading,
+		top10Projects,
 		projectListMapData,
 		error,
 		projectList,

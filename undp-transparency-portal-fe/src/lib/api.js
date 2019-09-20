@@ -1,5 +1,11 @@
 
 const CircularJSON = require('circular-json');
+import {getApiKey} from './../utils/commonActionUtils'
+/// API LISTS
+const API_OPEN = 'https://api.open.undp.org';
+const API_QA = 'QA_URL'; // QA    Original
+const API_LOCAL = 'LOCAL_URL';
+
 class Api {
 	static headers() {
 		return {
@@ -82,18 +88,21 @@ class Api {
 			}
 			return json.then(err => { throw err; });
 		}).then(json => json);
-	}
+  }
 
-  /// API LISTS
-  static API_BASE = 'https://api.open.undp.org';
-  static API_LOCAL = '' // QA    Original
-  static S3_BASE_URL = '';
+  /// API LISTS  
+  static S3_BASE_URL = 'https://d296gbxh4k2cui.cloudfront.net';
+  // ;
 
+  static API_BASE = API_OPEN;
+  
   static DOWNLOAD_PDF = (path) => Api.API_BASE + '/api/v1/undp/export_download_pdf?file=' + path
   static DOWNLOAD_CSV = (path) => Api.API_BASE + '/api/v1/undp/export_csv?file=' + path
-  static GA_TRACKING_ID = '' // Client
-  static MAP_API_KEY = '';
-
+  static GA_TRACKING_ID = ' UA-24131528-32' // Client
+ 
+  // static GA_TRACKING_ID = 'UA-114441614-1' // QA
+  // static MAP_API_KEY = 'pk.eyJ1IjoidW5kcG9yZyIsImEiOiJjaWc5cmJmcWwwMDRxdjJrcjgxbnczaThvIn0.J-5uk4LED0EgvK1raqCJmg'
+  static MAP_API_KEY = getApiKey();
   static API_PROJECT_LIST = (year, operatingUnit, budgetSource, themes, keyword, limit, offset, budget_type, sdg,target,signatureSolution) => `/api/v1/project/list/?budget_sources=${budgetSource}&keyword=${keyword}&limit=${limit}&offset=${offset}&operating_units=${operatingUnit}&sectors=${themes}&year=${year}&budget_type=${budget_type}${target ? ('&sdg_targets='+ target) :  ('&sdgs=' + sdg )}&signature_solution=${signatureSolution}`;
   static API_PROJECT_AGGREGATE = '/api/v1/project/project_aggregate/?year='
   static API_YEAR_LIST = '/api/v1/master/project_time_line'
@@ -112,6 +121,7 @@ class Api {
   static API_SDG_TARGET_PERCENTAGE_DATA = (year, sdg) => '/api/v1/project/sdg_target?year=' + year + '&sdg=' + sdg;
   static API_SDG_TARGET_DATA = (year,targetId) => '/api/v1/project/sdg_target/details?year=' +year+'&sdg_target=' + targetId
   static API_ABOUT = '/api/v1/about_us/list'
+  static API_REGION_DATA = '/api/v1/master/bureau'
   ////////////////////  RECIPIENT PROFILE  ////////////////////
   static API_RECIPIENT_COUNTRY_BASIC = (code, year) => '/api/v1/project/recipient_profile/' + code + '/?year=' + year;
 
@@ -174,7 +184,7 @@ class Api {
   static API_MAP_DONORS = (year, unit, sector, source, sdg) => '/api/v1/project/map?year=' + year + '&operating_unit=' + unit + '&sector=' + sector + '&budget_source=' + source + '&sdg=' + sdg;
   static API_MAP_SDG = (year, sdg, unit, source, tab) => '/api/v1/project/map?year=' + year + '&operating_unit=' + unit + '&sdg=' + sdg + '&budget_source=' + source + '&tab=' + tab;
   static API_MAP_RECIPIENT = (year, unit) => '/api/v1/project/map?year=' + year + '&operating_unit=' + unit;
-  static API_MAP_OUTPUTS = (year, unit, sector, source, project_id, budget_type, sdg,marker,markerSubtype,sigSoln) => '/api/v1/project/map?year=' + year + '&operating_unit=' + unit + '&sector=' + sector + '&project_id=' + project_id + '&sdg=' + sdg + '&budget_source=' + source + '&budget_type=' + budget_type + '&provide_output=1' + '&marker_type='+marker +'&marker_id='+ markerSubtype+'&signature_solution='+sigSoln;
+  static API_MAP_OUTPUTS = (year, unit, sector, source, project_id, budget_type, sdg,marker,markerSubtype,sigSoln,sdgTarget) => '/api/v1/project/map?year=' + year + '&operating_unit=' + unit + '&sector=' + sector + '&project_id=' + project_id + '&sdg=' + sdg + '&budget_source=' + source + '&budget_type=' + budget_type + '&provide_output=1' + '&marker_type='+marker +'&marker_id='+ markerSubtype+'&signature_solution='+sigSoln+'&sdg_target='+sdgTarget;
   static API_MAP_DONOR = (year, source, budget_type) => '/api/v1/project/map?year=' + year + '&budget_source=' + source + '&budget_type=' + budget_type ;
   static API_MAP_SDG_TARGETS =(year, target, unit, source, tab) => '/api/v1/project/map?year=' + year + '&sdg_target=' + target;
   ////////////////////////////////////////////////////////////////////////
@@ -191,7 +201,7 @@ class Api {
   static API_COUNTRYREGION_MASTER = '/api/v1/master/country_regions';
   static API_LAST_UPDATED = '/api/v1/admin_log/last_modified';
   static API_EXPORTPDF = '/api/v1/undp/export_pdf/?'
-  static API_DOWNLOAD_CSV_PROJECT_LISTS = (year,keyword,source,sectors,units,sdgs,type,signatureSolution,target,markerId,markerSubType,l2marker) => '/api/v1/undp/export_csv/?' +'year='+year +'&keyword='+keyword+'&budget_sources=' + source + '&operating_units=' + units+'&sdgs='+sdgs+'&budget_type='+type+'&sectors='+sectors+'&signature_solution='+signatureSolution+'&sdg_target='+target+'&marker_type='+markerId+'&marker_id='+markerSubType+'&level_two_marker='+l2marker;
+  static API_DOWNLOAD_CSV_PROJECT_LISTS = (year,keyword,source,sectors,units,sdgs,type,signatureSolution,target,markerId,markerSubType,l2marker,key) => '/api/v1/undp/export_csv/?' +'year='+year +'&keyword='+keyword+'&budget_sources=' + source + '&operating_units=' + units+'&sdgs='+sdgs+'&budget_type='+type+'&sectors='+sectors+'&signature_solution='+signatureSolution+'&sdg_target='+target+'&marker_type='+markerId+'&marker_id='+markerSubType+'&level_two_marker='+l2marker+ ( key && key !==0 ? '&key=' + key: '');
   // static API_DOWNLOAD_CSV_PROJECT_LISTS = (year,keyword,source,sectors,units,sdgs,type,signatureSolution,target) => '/api/v1/undp/export_csv/?' +'year='+year +'&keyword='+keyword+'&budget_sources=' + source + '&operating_units=' + units+'&sdgs='+sdgs+'&budget_type='+type+'&sectors='+sectors+'&signature_solution='+signatureSolution+'&sdg_target='+target;
   static API_DOWNLOAD_CSV_PROJECT_DETAILS = (projectId,item,search,category) => '/api/v1/undp/export_csv/projectdetails/?' +'project_id='+projectId +'&item='+item+'&search='+search+'&category='+category;
   static API_DOWNLOAD_CSV_DONORS = (year,fundType,fundStream,donorType) => '/api/v1/undp/export_donors_csv?' +'year='+year +'&fund_type='+fundType+'&fund_stream='+fundStream+'&donor_type='+donorType;
@@ -212,6 +222,7 @@ class Api {
   static SSC_OUR_APPROACHES = (country, levelTwoMarker, markerType) => '/api/v1/output/marker_description?operating_unit='+ country+'&level_two_marker='+levelTwoMarker+'&marker_id=' +markerType;
   static API_LEVEL_TWO_COUNTRY_DATA = (opUnit, markerId) => '/api/v1/output/level_two_dropdown?operating_unit='+opUnit+'&marker_id='+markerId;
   static API_SSC_COUNTRY_REGION_SEARCH = (search, theme, sdg, donor, currentYear, markerType, markerId, levelTwoMarker) => '/api/v1/master/country_regions?search=' + search + '&sector=' + theme + '&sdg=' + sdg + '&donor=' + donor + '&year=' + currentYear+'&marker_type='+markerType+'&marker_id='+markerId+'&level_two_marker='+levelTwoMarker;
+
 }
 
 export default Api;

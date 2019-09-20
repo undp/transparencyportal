@@ -185,11 +185,14 @@ class ProjectSearch(models.Model):
 
 
 class SDGSunburst(models.Model):
-    sdg_year = models.IntegerField()
+    sdg_year = models.IntegerField(primary_key=True, db_index=True)
     response = models.TextField()
 
 
 class SDGMap(models.Model):
-    year = models.IntegerField()
+    year = models.IntegerField(db_index=True)
     sdg = models.CharField(max_length=20)
     response = models.TextField()
+
+    class Meta:
+        unique_together = ("year", "sdg")

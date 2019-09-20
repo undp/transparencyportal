@@ -181,22 +181,22 @@ class Sdg extends Component {
 			sectors = '',
 			sdgs = this.props.code;
 
-
 		let data, loading, templateType;
 		data = {
 			year: this.props.sdgSliderData.data.aggregate.year,
 			aggregate: this.props.sdgSliderData.data.aggregate,
 			budget_sources: this.props.sdgSliderData.data.budget_sources,
 			top_recipient_offices: this.props.sdgSliderData.data.top_recipient_offices,
-			mapData: this.props.outputData.data,
+			mapData: this.props.outputZoomData.data.length > 0 ? this.props.outputZoomData.data : this.props.outputData.data,
 			title: 'Goal ' + (this.props.sdgSliderData.data.aggregate.sdg) + ': ' + (this.props.sdgSliderData.data.aggregate.sdg_name),
-			projectList: this.props.projectList.projectList,
+			projectList: { data: this.props.projectList.top10Projects },
 			lastUpdatedDate: getFormmattedDate(this.props.lastUpdatedDate.data.last_updated_date),
 			targetChartData: this.props.targetChartData.data.percentage ?  this.props.targetChartData.data.percentage: []
 		};
 
 		loading = this.props.projectList.loading || this.props.sdgSliderData.loading || this.props.outputData.loading ;
 		templateType = 'profile_sdg';
+		
 		return (
 			<ExportPopup
 				templateType={templateType}
@@ -266,6 +266,7 @@ const mapStateToProps = (state) => ({
 	currentYear: state.yearList.currentYear,
 	sdgSliderData: state.sdgSliderData,
 	outputData: state.mapData.sdgMapData,
+	outputZoomData: state.mapData.outputData,
 	projectList: state.projectList,
 	mapCurrentYear: state.mapData.yearTimeline.mapCurrentYear,
 	lastUpdatedDate: state.lastUpdatedDate,

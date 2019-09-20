@@ -251,17 +251,24 @@ class ProfilePage extends Component {
                         <div class={style.mapContainer} style={{ position: 'relative', display: 'block' }}>
                             <Map
                                 embed={true}
-                                clusterMode={this.props.unitType == 2 && props.profileType == "recipientprofile" ? true : false}
+                                clusterMode={this.props.selectedCountry.isRegion ? (this.props.outputData.data.length== 1?true: false) : this.props.unitType == 2 && props.profileType == "recipientprofile" ? true : false}
                                 source={props.profileType == "donorprofile" && this.props.selectedCountry.iso3}
                                 budgetType={props.profileType == "donorprofile" && this.state.budgetType}
                                 mapData={
-                                    this.props.unitType == 1 ? props.profileType == "donorprofile" ?
+                                    this.props.selectedCountry.isRegion && this.props.outputData.data.length > 0 ? this.props.outputData : this.props.unitType == 1 ? props.profileType == "donorprofile" ?
                                         donorProfileMapData
                                         : recipientMapData
                                         : donorProfileMapData
-                                } />
+                                } 
+                                code={this.props.countryCode}
+                                section={'profilePage'}
+                                unit_type={this.props.selectedCountry.unit_type}
+                                noZoom={this.type == "Donor" ? true : false}
+                                isRegion={this.props.selectedCountry.isRegion && this.props.outputData.data.length > 1 }
+                                 />
                             <div class={style.disclaimer}>
-                                {'* The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.'}
+                            <ul><li> The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.</li><li> References to Kosovo* shall be understood to be in the context of UN Security Council resolution 1244 (1999)</li>
+    </ul>
                             </div>
                         </div>
                         : null
@@ -376,7 +383,7 @@ const mapStateToProps = (state) => {
         budgetVsExpenseSdg = state.recipientProfile.budgetVsExpenseSdg,
         yearList = state.yearList;
 
-    const { recipientMapData, donorProfileMapData } = state.mapData
+    const { recipientMapData, donorProfileMapData, outputData } = state.mapData
 
     return {
         // Donor Profile
@@ -404,7 +411,8 @@ const mapStateToProps = (state) => {
         currentYear,
         budgetVsExpense,
         budgetVsExpenseSdg,
-        yearList
+        yearList,
+        outputData
 
     }
 }

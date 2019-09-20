@@ -54,7 +54,7 @@
             width: 16px;
             height: 16px;
             border-radius: 16px;
-            font-weight: bold;
+            font-weight: $bold;
         }
         .capacity_legend_block {
             border: 1px solid #CC0000;
@@ -71,7 +71,7 @@
         .legend_text {
             padding-left: 10px;
             font-size: 12px;
-            font-weight: bold;
+            font-weight: $bold;
             letter-spacing: 0.13px;
             margin-top: 1px;
             padding-right: 5px;

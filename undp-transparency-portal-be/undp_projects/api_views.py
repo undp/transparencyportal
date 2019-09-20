@@ -613,7 +613,7 @@ class MapLocationsNewView(APIView, ResponseViewMixin):
                     if tab == 'sdg'and int(year) >= SDG_START_YEAR and sdg or int(year) >= SDG_START_YEAR and sdg:
                         try:
                             response = SDGMap.objects.get(year=year, sdg=sdg).response
-                        except ObjectDoesNotExist:
+                        except Exception as e:
                             response = get_map_data(year=year, sdg=sdg, budget_source=budget_source,
                                                     recipient_country=recipient_country, sector=sector,
                                                     project_id=project_id, budget_type=budget_type,
@@ -625,7 +625,7 @@ class MapLocationsNewView(APIView, ResponseViewMixin):
                     elif int(year) >= SDG_START_YEAR and sdg_target:
                         try:
                             response = SDGMap.objects.get(year=year, sdg=sdg_target).response
-                        except ObjectDoesNotExist:
+                        except Exception as e:
                             response = get_map_data(year=year, sdg=sdg, budget_source=budget_source,
                                                     recipient_country=recipient_country, sector=sector,
                                                     project_id=project_id, budget_type=budget_type,
@@ -1822,7 +1822,7 @@ class SdgView(APIView, ResponseViewMixin):
                                               ['Please provide a year'])
             try:
                 sdg = SDGSunburst.objects.get(sdg_year=year).response
-            except ObjectDoesNotExist:
+            except Exception as e:
                 sdg = get_sdg_sunburst(year, operating_unit, budget_source, sdg_code)
             return self.jp_response(s_code='HTTP_200_OK', data=json.loads(sdg))
         except Exception as e:

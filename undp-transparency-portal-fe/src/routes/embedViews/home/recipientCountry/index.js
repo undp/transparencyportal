@@ -35,8 +35,14 @@ class EmbedHomeRecipientCountry extends Component {
     mapData = () => {
         const array = this.props.globalMapData && this.props.globalMapData.data ? this.props.globalMapData.data : [];
         if (array.length) {
-            return array[0]
-        } else {
+            let data = {
+                total_budget: this.props.total_budget,
+                total_expense: this.props.total_expense,
+                project_count: this.props.project_count,
+                donor_count: this.props.donor_count
+            }
+            return data
+        }  else {
             return {}
         }
     }
@@ -56,7 +62,7 @@ class EmbedHomeRecipientCountry extends Component {
                 {
                     this.props.title === 'true' ?
                         <div class={style.titleWrapper}>
-                            Recipient Country / Region
+                            Recipient Country / Territory / Region
                     </div>
                         : null
                 }
@@ -126,7 +132,8 @@ class EmbedHomeRecipientCountry extends Component {
                             embed={true}
                         />
                         <div class={style.disclaimer}>
-                            {'* The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.'}
+                        <ul><li> The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.</li><li> References to Kosovo* shall be understood to be in the context of UN Security Council resolution 1244 (1999)</li>
+    </ul>
                         </div>
                     </div>
                     : null}

@@ -1,3 +1,5 @@
+@import '../../style/helpers/variables';
+@import '../../style/helpers/_mixins';
 .budgetComponentWrapper {
   padding: 0 15px;
   @media screen and (min-width: 992px) {
@@ -31,13 +33,13 @@
   .projectPrice {
     margin: 0 7px;
     padding-right:15px;
-    font-weight: bold;
+    font-weight: $bold;
   }
 }
 
 .project{
   cursor: pointer;
   &:hover{
-    font-weight: 700;
+    font-weight: $bold;
   }
 }

@@ -236,3 +236,18 @@ class SdgSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sdg
         fields = '__all__'
+
+
+class BureauSerializer(serializers.Serializer):
+    name = serializers.SerializerMethodField()
+    iso3 = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Bureau
+        fields = ('name', 'iso3')
+
+    def get_iso3(self, obj):
+        return obj.code
+
+    def get_name(self, obj):
+        return obj.bureau

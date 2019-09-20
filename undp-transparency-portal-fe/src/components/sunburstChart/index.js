@@ -9,8 +9,8 @@ import style from './style';
 import d3 from 'd3';
 import { numberToCurrencyFormatter } from "../../utils/numberFormatter";
 import { getBrowserInformation } from "../../utils/commonActionUtils";
-import { getAPIBaseUrRl } from '../../utils/commonMethods';
 import SDGLegend from './components/sdgLegend';
+import { getAPIBaseUrRl } from '../../utils/commonMethods';
 import { updateSDG } from './../../routes/sdgLanding/action';
 
 class SunburstChart extends Component {

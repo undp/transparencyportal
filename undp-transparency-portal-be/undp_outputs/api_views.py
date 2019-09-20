@@ -187,7 +187,7 @@ class MarkersAggregateView(GenericAPIView, ResponseViewMixin):
                 active_projects = get_active_projects_for_year(year, operating_unit=operating_unit, flat=True)
                 aggregate = DonorFundSplitUp.objects \
                     .filter(year=year, project_id__in=active_projects, output__in=ProjectMarker.objects.filter(type=
-                            marker_type).values_list('output')).filter(query) \
+                            marker_type).values_list('output')).filter(query).distinct() \
                     .aggregate(budget_sources_count=Count('organisation', distinct=True),
                                project_count=Count('project', distinct=True),
                                output_count=Count('output', distinct=True),
@@ -198,7 +198,7 @@ class MarkersAggregateView(GenericAPIView, ResponseViewMixin):
 
                 aggregate = DonorFundSplitUp.objects \
                     .filter(year=year, project_id__in=active_projects, output__in=ProjectMarker.objects.filter(
-                        type=marker_type).values_list('output')).filter(query) \
+                        type=marker_type).values_list('output')).filter(query).distinct()\
                     .aggregate(budget_sources_count=Count('organisation', distinct=True),
                                project_count=Count('project', distinct=True),
                                output_count=Count('output', distinct=True),

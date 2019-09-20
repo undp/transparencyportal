@@ -6,7 +6,7 @@ html, body {
 	padding: 0;
 	margin: 0;
 	background: #FAFAFA;
-	font-family: 'ProximaNova-Regular', arial, sans-serif;
+	font-family: 'proxima-nova', arial, sans-serif;
 	font-weight: 400;
 	color: #444;
 	-webkit-font-smoothing: antialiased;
@@ -48,19 +48,19 @@ input[type=text]::-ms-clear {
 	display: block;
 }
 
-@font-face {
+/* @font-face {
     font-family: 'Lora-Regular';
     src: url("/assets/font/Lora/Lora-Regular.ttf") format("truetype"), url("/assets/font/Lora/lora-regular-webfont.eot") format("eot"), url("/assets/font/Lora/lora-regular-webfont.woff") format("woff"), url("/assets/font/Lora/lora-regular-webfont.svg") format("svg");
 }
 @font-face {
     font-family: 'Lora-Bold';
     src: url("/assets/font/Lora/Lora-Bold.ttf") format("truetype");
-}
-@font-face {
+} */
+/* @font-face {
     font-family: 'ProximaNova-Regular';
     src: url("/assets/font/ProximaNova/PROXIMANOVA-REGULAR.OTF") format("otf"), url("/assets/font/ProximaNova/proximanova-regular-webfont.ttf") format("embedded-opentype"), url("/assets/font/ProximaNova/proximanova-regular-webfont.eot") format("eot"), url("/assets/font/ProximaNova/proximanova-regular-webfont.woff") format("woff"), url("/assets/font/ProximaNova/proximanova-regular-webfont.svg") format("svg");
-}
-@font-face {
+} */
+/* @font-face {
     font-family: 'ProximaNova-bold';
 	src: url("/assets/font/ProximaNova/PROXIMANOVA-BOLD.OTF") format("otf"), url("/assets/font/ProximaNova/proximanova-bold.ttf") format("truetype"), url("/assets/font/ProximaNova/proximanova-bold.eot") format("eot"), url("/assets/font/ProximaNova/proximanova-bold.woff") format("woff"), url("/assets/font/ProximaNova/proximanova-bold.svg") format("svg");
 }
@@ -71,7 +71,7 @@ input[type=text]::-ms-clear {
 @font-face {
     font-family: 'ProximaNova-semibold';
 	src: url("/assets/font/ProximaNova/PROXIMANOVA-SEMIBOLD.OTF") format("otf");
-}
+} */
 @font-face {
     font-family: 'Bebas';
     src: url("/assets/font/Bebas/bebas___-webfont.ttf") format("truetype"), url("/assets/font/Bebas/bebas___-webfont.eot") format("eot"), url("/assets/font/Bebas/bebas___-webfont.woff") format("woff"), url("/assets/font/Bebas/bebas___-webfont.svg") format("svg");
@@ -251,7 +251,7 @@ input[type=text]::-ms-clear {
 	color: #1c81c2;
 }
 .aboutUsWrapper .trainingLink {
-	font-weight: bold;
+	font-weight: $bold;
 }
 
 .aboutUsWrapper .contactSection h3 {

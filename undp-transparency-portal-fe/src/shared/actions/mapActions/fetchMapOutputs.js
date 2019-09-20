@@ -91,10 +91,11 @@ let mapDonorOutputsResponseParser = (dispatch, resp) => {
 	}
 };
 
-export const loadOutputsMapData = (year, unit, sector, source, projectId, budgetType, sdg,marker,markerSubType,sigSoln) => (dispatch) => {
+export const loadOutputsMapData = (year, unit, sector, source, projectId, budgetType, sdg,marker,markerSubType,sigSoln,sdgTarget) => (dispatch) => {
 	dispatch(mapDataFetchStart());
 	year=year?year:'';
 	unit=unit?unit:'';
+	sdgTarget=sdgTarget?sdgTarget:'';
 	sigSoln = sigSoln? sigSoln : '' ;
 	sector = ( sector!== undefined && sector !== null )?sector:'';
 	source=source?source:'';
@@ -104,7 +105,7 @@ export const loadOutputsMapData = (year, unit, sector, source, projectId, budget
 	markerSubType ? null : markerSubType = '';
 	sdg =  ( sdg!== undefined && sdg !== null )?sdg:'';
 	if (year !== null)
-		return Api.get(Api.API_MAP_OUTPUTS(year, unit, sector, source, projectId, budgetType, sdg,marker,markerSubType,sigSoln)).then(resp => mapResponseParser(dispatch, resp))
+		return Api.get(Api.API_MAP_OUTPUTS(year, unit, sector, source, projectId, budgetType, sdg,marker,markerSubType,sigSoln,sdgTarget)).then(resp => mapResponseParser(dispatch, resp))
 			.catch((exception) => {
 				dispatch(mapDataFetchEnd());
 				dispatch(mapDataFetchFailed(exception));

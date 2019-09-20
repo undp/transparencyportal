@@ -115,7 +115,7 @@ def getRecepientCountry(obj, project_id=''):
                     region_narrative = region_node.find('narrative').text.strip().encode('utf-8')
                     break
             if region_narrative:
-                recipient_country = OperatingUnit.objects.filter(name=region_narrative).first()
+                recipient_country = OperatingUnit.objects.using(db).filter(name=region_narrative).first()
         except Exception as e:
             pass
 

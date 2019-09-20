@@ -118,7 +118,7 @@
 }
 
 .wrapper{
-  font-family: 'ProximaNova-Regular';
+  font-family: 'proxima-nova';
   line-height: 23px;
 }
 .mapWrapper {
@@ -148,7 +148,7 @@
 }
 .mapBtn {
   padding: 10px 20px;
-  font-family: 'ProximaNova-Regular', arial, sans-serif;
+  font-family: 'proxima-nova', arial, sans-serif;
   line-height: 16px;
   pointer-events: auto;
   margin-top: 10px;
@@ -313,8 +313,12 @@
 }
 .disclaimer {
   font-size: 12px;
-  padding: 5px;
+  padding-left: 5px;
   line-height: 1;
   color: #4f4f4f;
   padding-bottom: 20px;
 }
+.class {
+  list-style-type: unset !important;
+  padding-left: 16px;
+};

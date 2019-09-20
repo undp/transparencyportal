@@ -18,14 +18,14 @@ import { getAPIBaseUrRl } from '../../utils/commonMethods';
 /************************* Style Files ************************/
 import style from './style';
 function AboutItem(props){
-    return (<section class={style.info}>
-                <img src={getAPIBaseUrRl()+props.data.img} class={style.img}/>
-                <section class={style.infoText}>
-                    <a href={props.data.id === 3 ? '/our-approaches/ssc':'/our-approaches/'+props.data.label} class={style.infoTitle}>{props.data.title}</a>
-                    <section>{props.data.desc}</section>
-                </section>
-            </section>
-    )
+	return (<section class={style.info}>
+		<img src={getAPIBaseUrRl()+props.data.img} class={style.img} style={props.data.style?props.data.style:{}} />
+		<section class={style.infoText}>
+			<a href={props.data.id === 3 ? '/our-approaches/ssc':'/our-approaches/'+props.data.label} class={style.infoTitle}>{props.data.title}</a>
+			<section>{props.data.desc}</section>
+		</section>
+	</section>
+	)
 }
 class OurApproaches extends Component {
 	setPageHeader(type) {

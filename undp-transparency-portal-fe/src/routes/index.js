@@ -73,6 +73,9 @@ class Route extends Component {
 						{ property: 'twitter:title', content: title },
 						{ property: 'twitter:description', content: description }
 					]}
+					link={[
+						{ rel: 'stylesheet', href: 'https://use.typekit.net/dqn0siy.css' }
+					]}
 				/>
 				{
 					this.props.year.length ?
@@ -106,8 +109,8 @@ class Route extends Component {
 							<Marker path="/our-approaches/:code" />
 							<ErrorPage default />
 							<SSCMarker path="/our-approaches/ssc/" />
-							<ErrorPage default/>
-							</Router> : <Preloader />
+							<ErrorPage default />
+						</Router> : <Preloader />
 				}
 			</div>
 		);

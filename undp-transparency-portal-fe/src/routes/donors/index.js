@@ -104,11 +104,12 @@ class CountryProfile extends Component {
 		} else if (this.state.tabName[0]==='Other') {
 			tempData = this.props.donorData.otherData.contributions
 		}
+
 		data = {
 			title: 'Donors',
 			year: this.props.yearList.currentYear,
 			tabSelected:this.state.tabName,
-			tabMapper: this.state.tabName.length>1 ? ['country', 'regular_contribution', 'other_contribution', 'total_contribution'] : ['country', 'total_contribution'],
+			tabMapper: this.state.tabName.length>1 ? ['country', 'regular_contribution', 'other_contribution', 'total_contribution'] :  this.state.tabName[0] ==='Regular' ? ['country', 'regular_contribution'] : ['country', 'other_contribution'],
 			otherContribution: this.props.donorData.data.other_contributions,
 			regularContribution: this.props.donorData.data.regular_contribution,
 			totalContribution: this.props.donorData.data.total_contributions,

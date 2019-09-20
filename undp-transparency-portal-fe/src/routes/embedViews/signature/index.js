@@ -16,6 +16,7 @@ import {
     numberToCurrencyFormatter,
     numberToCommaFormatter
 } from '../../../utils/numberFormatter';
+import { updateSignatureSolution } from '../../../components/sideBar/action/updateSS';
 
 import style from './style';
 
@@ -38,6 +39,7 @@ class EmbedSignatureView extends Component {
         this.props.fetchSignatureSliderData(this.props.year, this.props.themes);
         this.props.loadSignatureMapData(this.props.year, this.props.themes);
         this.props.fetchSignatureOutcome(this.props.themes, this.props.year);
+        this.props.updateSignatureSolution(this.props.themes);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -113,12 +115,16 @@ class EmbedSignatureView extends Component {
             recepientOffices = isNonEmpty ? (themeSliderData.data && themeSliderData.data.top_recipient_offices) : {},
             mapData = isMapDataNonEmpty ? (signatureMapData && signatureMapData.data) && signatureMapData : {},
             outcomeChartData = isMapDataNonEmpty && this.state.outcomeChartData ? this.state.outcomeChartData : {}
+            
             return (
             <div>
 
                 {
                     this.props.title === 'true' ?
-                        <div class={style.titleWrapper}> {this.props.themesLabel}</div>
+                        <div>
+                            <div class={style.titleWrapper}> SIGNATURE SOLUTIONS </div>
+                            <div class={style.titleWrapper}> {this.props.themes} - {this.props.themesLabel}</div>
+                        </div>
                         : null
                 }
                 <div class={style.wrapper}>
@@ -151,36 +157,30 @@ class EmbedSignatureView extends Component {
                 </div>
                 {this.props.map === 'true' ?
                     <div class={style.mapContainer} style={{ position: 'relative', display: 'block' }}>
-
+                        
                         {isMapDataNonEmpty ?
                             <Map
-                                themes={this.props.themes}
                                 mapData={mapData}
+                                yearSelected={this.props.year}
+                                signatureSolution={'true'}
                             />
                             : <PreLoader />
                         }
                         {isMapDataNonEmpty ?
                             <div class={style.disclaimer}>
-                                {'* The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.'}
+                                 <ul><li> The designations employed and the presentation of material on this map do not imply the expression of any opinion whatsoever on the part of the Secretariat of the United Nations or UNDP concerning the legal status of any country, territory, city or area or its authorities, or concerning the delimitation of its frontiers or boundaries.</li><li> References to Kosovo* shall be understood to be in the context of UN Security Council resolution 1244 (1999)</li>
+    </ul>
                             </div> :
                             null}
                     </div>
                     : null}
                 {this.props.projectTable === 'true' ?
                     <BootTable count={totalDataSize}
-                        loading={this.props.projectList.loading}
-                        currentYear={this.props.year}
-                        theme={this.props.themes}
-                        keyword={''}
-                        unit={''}
-                        source={''}
-                        currentYear={this.props.year}
-                        sdg={''}
-                        data={projectListArr}
-                        links={links}
-                        embed={true}
-
-                    />
+                    yearSelected={this.props.year}
+                    theme= {''}
+                    data={projectListArr}
+                    signatureSolution = {this.props.themes}
+                     />
                     : null}
                 {this.props.ourFocus === 'true' ?
                     <div class={`${style.wrapper} ${style.chartWrapper}`}>
@@ -314,6 +314,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     fetchSignatureSliderData: (year, sector) => dispatch(fetchSignatureSliderData(year, sector)),
     loadSignatureMapData: (year, sector) => dispatch(loadSignatureMapData(year, sector)),
+    updateSignatureSolution: (signatureSolCode) => dispatch(updateSignatureSolution(signatureSolCode)),
     updateProjectList: (year, unit, source, theme, keyword, limit, offset, budget_type) => dispatch(updateProjectList(year, unit, source, theme, keyword, limit, offset, budget_type)),
     fetchSignatureOutcome: (code, year) => dispatch(fetchSignatureOutcome(code, year))
 });

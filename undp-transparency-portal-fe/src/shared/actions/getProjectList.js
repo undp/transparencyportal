@@ -14,10 +14,11 @@ export const projectListFetchEnd = () => ({
 	type: PROJECT_LIST.end
 });
 
-export const projectListFetchSuccess = (data) => (
+export const projectListFetchSuccess = (data,offset) => (
 	{
 		type: PROJECT_LIST.success,
-		data
+		data,
+		offset
 	});
 
 export const projectListFetchFailed = (error) => ({
@@ -30,15 +31,17 @@ export const updateProjectList = (year,operatingUnit, budgetSource, themes, keyw
 	budgetType?null:budgetType='';
 	year?null:year='';
 	budgetSource?null:budgetSource='';
-	themes?null:themes='';
+	themes = ( themes!== undefined && themes !== null )?themes:'';
 	keyword?null:keyword='';
+	limit ? null: limit='10';
+	offset?null : offset='0';
 	sdg = sdg ? sdg : sdg === 0 ? 0 : '';
 	signatureSolution = signatureSolution? signatureSolution : '';
 	
 	if (year !== null)
 		return Api.get(Api.API_PROJECT_LIST(year,operatingUnit, budgetSource, themes, keyword, limit, offset, budgetType,sdg,target,signatureSolution)).then(resp => {
 			dispatch(projectListFetchEnd());
-			dispatch(projectListFetchSuccess(resp.data));
+			dispatch(projectListFetchSuccess(resp.data,offset));
 		}).catch((exception) => {
 			dispatch(projectListFetchEnd());
 			dispatch(projectListFetchFailed(exception));
@@ -58,7 +61,7 @@ export const fetchMarkerProjectList = (year, markerId,keyword,limit,offset,count
                 if (resp.success && resp.data) {
                     resp.data.aggregate = resp.data.aggregate && resp.data.aggregate.length ? resp.data.aggregate[0]:{};
                     dispatch(projectListFetchEnd());
-                    dispatch(projectListFetchSuccess(resp.data));
+                    dispatch(projectListFetchSuccess(resp.data,offset));
                 } else {
                     dispatch(projectListFetchEnd());
                 }

@@ -3,10 +3,12 @@ from datetime import datetime
 from django.db.models.aggregates import Sum
 from django.db.models.functions.base import Coalesce
 from django.conf import settings as main_settings
+from django.db.models.expressions import F, Case, When
 
-from master_tables.models import OperatingUnit, Bureau, Organisation, Sector, Sdg
+from master_tables.models import OperatingUnit, Bureau, Organisation, Sector, Sdg, SignatureSolution
 from undp_donors.models import DonorFundSplitUp
-from undp_outputs.models import Output, OutputSector, OutputLocation, OutputTransaction, ActivityDate, OutputActiveYear
+from undp_outputs.models import Output, OutputSector, OutputLocation, OutputTransaction, ActivityDate, \
+    OutputActiveYear, ProjectMarker, MARKER_TYPE_CHOICES, OutputTarget
 from undp_projects.models import Project, ProjectDocument, ProjectActiveYear, ProjectActivityDate, \
     ProjectParticipatingOrganisations
 from rest_framework import serializers
@@ -66,11 +68,14 @@ class OutputSerializer(serializers.Serializer):
     donor_short = serializers.SerializerMethodField()
     donor_name = serializers.SerializerMethodField()
     focus_area_descr = serializers.SerializerMethodField()
+    markers = serializers.SerializerMethodField()
+    sdg = serializers.SerializerMethodField()
+    signature_solution = serializers.CharField(required=False)
 
     class Meta:
         fields = ('output_id', 'crs', 'donor_id', 'disbursement', 'focus_area', 'gender_descr',
                   'output_title', 'budget', 'fiscal_year', 'gender_id', 'expenditure', 'award_id',
-                  'output_descr', 'donor_short', 'donor_name', 'crs_descr', 'focus_area_descr')
+                  'output_descr', 'donor_short', 'donor_name', 'crs_descr', 'focus_area_descr', 'markers')
 
     def get_crs_descr(self, obj):
         return CRS_INDEXES.get(obj.crs_code, '')
@@ -131,6 +136,57 @@ class OutputSerializer(serializers.Serializer):
             focus_area_mapping = op_sectors[0]
             return focus_area_mapping.sector.sector
         return ''
+
+    def get_markers(self, obj):
+        marker_types = ProjectMarker.objects.filter(output=obj).distinct('type').values_list('type', flat=True)
+        markers = []
+        for marker_type in marker_types:
+            marker = MARKER_TYPE_CHOICES.get_label(marker_type)
+            marker_title = ProjectMarker.objects.filter(type=marker_type, output=obj)\
+                .values_list('marker_title', flat=True).distinct()
+            data = {
+                "marker": marker,
+                "marker_type": list(marker_title)
+            }
+            markers.append(data)
+        return markers
+
+    def get_sdg(self, obj):
+        sdg = OutputTarget.objects.filter(output=obj).values('target_id__sdg__name', 'target_id__sdg').distinct()
+        sdgs = []
+        for sdg_name in sdg:
+            sdg_data = OutputTarget.objects.filter(output=obj, target_id__sdg__name=sdg_name['target_id__sdg__name'])\
+                .values('year', 'percentage', 'target_id__sdg__name').distinct()
+            budget_amount = []
+            expense_amount = []
+            year = []
+            for data in sdg_data:
+                budget = DonorFundSplitUp.objects\
+                    .filter(output=obj, output__outputtarget__target_id__sdg__name=data['target_id__sdg__name'],
+                            year=data['year']).values('year')\
+                    .annotate(budget_amount=Sum(Case(When(output__outputtarget__target_id__sdg__name=data['target_id__sdg__name'],
+                                                          output__outputtarget__year=data['year'],
+                                                          then=(F('budget') * data['percentage']/100)))))\
+                    .values_list('budget_amount', flat=True).order_by('-year').distinct()
+                budget_amount.append(budget[0])
+                expense = DonorFundSplitUp.objects \
+                    .filter(output=obj, output__outputtarget__target_id__sdg__name=data['target_id__sdg__name'],
+                            year=data['year']).values('year') \
+                    .annotate(expense_amount=Sum(Case(When(output__outputtarget__target_id__sdg__name=data['target_id__sdg__name'],
+                                                           output__outputtarget__year=data['year'],
+                                                           then=(F('expense') * data['percentage'] / 100))))) \
+                    .values_list('expense_amount', flat=True).order_by('-year').distinct()
+                expense_amount.append(expense[0])
+                year.append(data['year'])
+            sdg_values = {
+                            "id": sdg_name['target_id__sdg'],
+                            "name": sdg_name['target_id__sdg__name'],
+                            "budget": budget_amount,
+                            "expenditure": expense_amount,
+                            "year": year
+                        }
+            sdgs.append(sdg_values)
+        return sdgs
 
 
 class OperatingUnitSerializer(serializers.ModelSerializer):
@@ -350,14 +406,20 @@ class ProjectSummarySerializer(serializers.ModelSerializer):
     def get_donor_countries(self, obj):
         year = self.context.get('year', datetime.now().year)
         donor_countries = DonorFundSplitUp.objects.using(db).filter(project=obj, year=year) \
-            .values_list('organisation__type_level_3', flat=True).distinct()
-        return list(donor_countries)
+            .values('organisation', 'organisation__type_level_3').distinct()
+        donor_country = []
+        for country in donor_countries:
+            donor_country.append(country['organisation__type_level_3'])
+        return list(donor_country)
 
     def get_donor_types(self, obj):
         year = self.context.get('year', datetime.now().year)
         donor_types = DonorFundSplitUp.objects.using(db).filter(project=obj, year=year) \
-            .values_list('organisation__type_level_1', flat=True).distinct()
-        return list(donor_types)
+            .values('organisation', 'organisation__type_level_1').distinct()
+        donors_type = []
+        for i in donor_types:
+            donors_type.append(i['organisation__type_level_1'])
+        return list(donors_type)
 
     def get_budget(self, obj):
         year = self.context.get('year', datetime.now().year)
@@ -501,3 +563,145 @@ class SdgIndexSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sdg
         fields = ('color', 'id', 'name')
+
+
+class MarkerIndexSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(source='type')
+    name = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_name(obj):
+        marker_title = obj.type
+        return MARKER_TYPE_CHOICES.get_label(marker_title)
+
+    class Meta:
+        model = ProjectMarker
+        fields = ('id', 'name')
+
+
+class SignatureSolutionsIndexSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(source='ss_id')
+    name = serializers.CharField()
+
+    class Meta:
+        model = SignatureSolution
+        fields = ('id', 'name')
+
+
+class ExportCSVSerializer(serializers.ModelSerializer):
+    project_id = serializers.CharField()
+    budget = serializers.CharField()
+    expense = serializers.CharField()
+    title = serializers.CharField()
+    description = serializers.CharField()
+    operating_unit = serializers.CharField()
+    our_focus = serializers.SerializerMethodField()
+    signature_solutions = serializers.SerializerMethodField()
+    sdg = serializers.SerializerMethodField()
+
+    def get_our_focus(self, obj):
+        sector = OutputSector.objects.filter(project_id=obj['project_id']).values_list('sector', flat=True).distinct()
+        sectors = ", ".join(list(sector))
+        return sectors
+
+    def get_signature_solutions(self, obj):
+        signature_solution = SignatureSolution.objects.filter(output__project_id=obj['project_id'])\
+            .values_list('ss_id', flat=True).distinct()
+        signature_solutions = ", ".join(list(signature_solution))
+        return signature_solutions
+
+    def get_sdg(self, obj):
+        sdg = OutputTarget.objects.filter(project_id=obj['project_id'])\
+            .values_list('target_id__sdg', flat=True).distinct()
+        sdgs = ", ".join(list(sdg))
+        return sdgs
+
+    class Meta:
+        model = Project
+        fields = ('project_id', 'budget', 'expense', 'title', 'description', 'operating_unit', 'our_focus',
+                  'signature_solutions', 'sdg')
+
+
+class ProjectDetailListSerializer(serializers.ModelSerializer):
+    budget = serializers.IntegerField(default=0)
+    expense = serializers.IntegerField(default=0)
+    country = serializers.CharField(source='operating_unit__name', required=False)
+    sector = serializers.SerializerMethodField()
+    sdg = serializers.SerializerMethodField()
+    signature_solution = serializers.SerializerMethodField()
+    donor = serializers.SerializerMethodField()
+    marker = serializers.SerializerMethodField()
+
+    def get_sector(self, obj):
+        request = self.context.get('request', '')
+        sectors = request.GET.get('sector', '')
+        sector_data = []
+        sector = OutputSector.objects.values('sector', 'sector__sector').filter(project_id=obj['project_id']).distinct()
+        if sectors:
+            sector = sector.filter(sector=sectors)
+        for sector_val in sector:
+            data = {
+                "code": sector_val['sector'],
+                "name": sector_val['sector__sector']
+            }
+            sector_data.append(data)
+        return sector_data
+
+    def get_sdg(self, obj):
+        request = self.context.get('request', '')
+        sdgs = request.GET.get('sdg', '')
+        sdg_data = []
+        sdg = OutputTarget.objects.values('target_id__sdg', 'target_id__sdg__name')\
+            .filter(project_id=obj['project_id']).distinct()
+        if sdgs:
+            sdg = sdg.filter(target_id__sdg=sdgs)
+        for sdg_val in sdg:
+            data = {
+                "id": sdg_val['target_id__sdg'],
+                "name": sdg_val['target_id__sdg__name']
+            }
+            sdg_data.append(data)
+        return sdg_data
+
+    def get_signature_solution(self, obj):
+        request = self.context.get('request', '')
+        ss_id = request.GET.get('signature_solution', '')
+        signature_solution = Output.objects.values('signature_solution_id__ss_id', 'signature_solution_id__name')\
+            .filter(project_id=obj['project_id']).distinct()
+        ss_data = []
+        if ss_id:
+            signature_solution = signature_solution.filter(signature_solution_id__ss_id=ss_id)
+        for ss_val in signature_solution:
+            data = {
+                "id": ss_val['signature_solution_id__ss_id'],
+                "name": ss_val['signature_solution_id__name']
+            }
+            ss_data.append(data)
+        return ss_data
+
+    def get_donor(self, obj):
+        request = self.context.get('request', '')
+        budget_sources = request.GET.get('budget_source', '')
+        donors = DonorFundSplitUp.objects.values_list('organisation__org_name', flat=True)\
+            .filter(project_id=obj['project_id']).distinct()
+        if budget_sources:
+            donors = donors.filter(organisation=budget_sources)
+        return donors
+
+    def get_marker(self, obj):
+        request = self.context.get('request', '')
+        marker_type = request.GET.get('marker_type', '')
+        marker = []
+        markers = ProjectMarker.objects.values_list('type', flat=True).filter(output__project_id=obj['project_id'])\
+            .distinct()
+        if marker_type:
+            markers = markers.filter(type=marker_type)
+        for marker_type in markers:
+            marker_title = MARKER_TYPE_CHOICES.get_label(marker_type)
+            marker.append(marker_title)
+        return marker
+
+    class Meta:
+        model = Project
+        fields = ('project_id', 'title', 'description', 'expense', 'budget', 'country', 'sector', 'sdg',
+                  'signature_solution', 'donor', 'marker')

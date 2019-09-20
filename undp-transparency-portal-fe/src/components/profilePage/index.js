@@ -42,7 +42,7 @@ const mapStateToProps = (state) => {
         yearList = state.yearList,
         baseURL = getAPIBaseUrRl();
 
-    const {recipientMapData, donorProfileMapData} = state.mapData
+    const {recipientMapData, donorProfileMapData, outputData} = state.mapData
 
     return {
         // Donor Profile
@@ -71,7 +71,8 @@ const mapStateToProps = (state) => {
         budgetVsExpense,
         budgetVsExpenseSdg,
         yearList,
-        baseURL
+        baseURL,
+        outputData
 
     }
 }

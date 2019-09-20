@@ -16,6 +16,7 @@ class ExportPopup extends Component {
     }
 
     componentWillMount() {
+       
         if (!this.props.loading) {
             if(this.props.type === 'projectDetails') {
                 this.props.data.output_list.map((outputData,index) => {
@@ -24,7 +25,16 @@ class ExportPopup extends Component {
                      });
                 });
             }
-            this.props.exportPDFCall(this.props.templateType, this.props.data);
+           
+           if(this.props.data&&this.props.data.unitSelected === 'Azerbaijan'){
+              
+            this.props.data.mapData = [];
+            this.props.exportPDFCall(this.props.templateType, this.props.data, this.props.usePuppeteer === 'true' ? 1 : 0);
+           }
+           else{
+            this.props.exportPDFCall(this.props.templateType, this.props.data, this.props.usePuppeteer === 'true' ? 1 : 0);
+           }
+            
         }
     }
     componentDidMount() {
@@ -40,7 +50,16 @@ class ExportPopup extends Component {
                 });
                 nextProps.data.markerNames = markerNames ;
             }
-            !nextProps.loading && this.props.exportPDFCall(nextProps.templateType, nextProps.data)
+
+           
+           
+            if(!nextProps.loading &&nextProps.data.selected==='Azerbaijan'){
+                nextProps.data.mapData = [];
+                this.props.exportPDFCall(nextProps.templateType, nextProps.data, nextProps.usePuppeteer === 'true' ? 1 : 0)
+            }
+            else{
+                !nextProps.loading && this.props.exportPDFCall(nextProps.templateType, nextProps.data, nextProps.usePuppeteer === 'true' ? 1 : 0);
+            }
         }
     }
     componentWillUnmount() {
@@ -60,9 +79,9 @@ class ExportPopup extends Component {
     export() {
         if(this.state.selectedOption === 'pdf'){
             if (!this.props.loading && !this.props.exportPDF.loading && this.props.exportPDF.downloadUrl) {
-                let pdfUrl = this.props.exportPDF.downloadUrl
+                let pdfUrl = this.props.exportPDF.downloadUrl;
                 let element = document.createElement('a');
-                element.setAttribute('href', pdfUrl);
+                element.setAttribute('href',`${pdfUrl}`);
                 element.setAttribute('download', 'file.pdf');
 
                 element.style.display = 'none';
@@ -84,6 +103,7 @@ class ExportPopup extends Component {
     }
     
     render(props,{selectedOption}) {
+
         return (
             <div class={style.outerContainer}>
                 <div class={style.innerContainer} ref={(node) => this.modal = node}>
@@ -112,7 +132,10 @@ class ExportPopup extends Component {
                                 this.state.selectedOption == "pdf" ?
                                     this.props.exportPDF.previewUrl && !this.props.loading && !this.props.exportPDF.loading ?
                                     <div class={style.iframeWrapper}>
-                                        <embed type="application/pdf" src={this.props.exportPDF.previewUrl} width="100%" height="100%" />
+                                        <object  data={this.props.exportPDF.previewUrl} width="100%" height="100%" >
+                                            Your Browser does not support Embedding PDFs, you can view the document 
+    											<a href={this.props.exportPDF.previewUrl} target="_blank" > here </a>
+                                        </object>
                                     </div> : <div style={{ height: '100%', position: 'relative' }}><PreLoader /></div>
                                     : <div class={style.noPreviewWrapper}>
                                         <span>No Preview</span>
@@ -135,7 +158,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         resetExportUrl: () => dispatch(resetExportUrl()),
-        exportPDFCall: (template_name, context_data) => dispatch(exportPDFCall(template_name, context_data))
+        exportPDFCall: (template_name, context_data, formatType) => dispatch(exportPDFCall(template_name, context_data,formatType))
     }
 }
 

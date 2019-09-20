@@ -46,6 +46,7 @@ class ProjectTab extends Component {
         }
     }
     render() {
+
         return (
             <div>
                 <div class={style.desktop}>
@@ -118,8 +119,8 @@ class ProjectTab extends Component {
                                     The balance amount will be displayed on other relevant project pages.
                                 </span>
                             </div>
-                            
                             {
+                                
                                 this.state.accordionSelected == "Purchase Order"
                                     ?
                                     <div class={style.accordionContent} >
@@ -128,6 +129,9 @@ class ProjectTab extends Component {
                                                 <PurchaseOrderTable
                                                     loading={this.props.projectDetail.purchase_orders.loading}
                                                     data={this.props.purchaseOrderData}
+                                                    links = {this.props.projectDetail &&
+                                                        this.props.projectDetail.purchase_orders
+                                                        && this.props.projectDetail.purchase_orders.links? this.props.projectDetail.purchase_orders.links:null}
                                                 />
                                             </Scrollbars>
                                         </div>

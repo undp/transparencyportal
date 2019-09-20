@@ -16,7 +16,8 @@ class homeHeader extends Component {
 			showDownload: false,
 			searchSelected: false,
 			showMenu: '',
-			scrolled: false
+			scrolled: false,
+			showCovidResponse: true
 		};
 		this.textInput = '';
 	}
@@ -134,10 +135,18 @@ class homeHeader extends Component {
 		return `${baseClass} ${overrideClass}`;
 	}
 
+	covidResponseClose = () => {
+		this.setState({ showCovidResponse: false });
+	}
+
 	render(props) {
 		return (
-			<section class={style.container}>
+			<section class={(this.state.showCovidResponse && !this.state.scrolled) ? `${style.container} ${style.addOnContainer}` : style.container }>
 				<header class={this.state.headerClass}>
+					<section class={(this.state.showCovidResponse && !this.state.scrolled) ? style.upperAddonSection: `${style.upperAddonSection} ${style.hideUpperAddonSection}`}>
+						<a class={style.link} href="/our-approaches/undpcr">COVID-19 Response<i></i></a>
+						<i onClick={this.covidResponseClose}></i>
+					</section>
 					<div class={style.headerContainer}>
 						<nav class={style.mainNav}>
 							<span class={style.headerLogo}>

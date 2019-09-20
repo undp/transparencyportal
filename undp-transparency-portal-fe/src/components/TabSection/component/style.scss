@@ -12,6 +12,7 @@
         font-size: $text-small;
         display: table-cell;
         text-align: left;
+       
         &:first-child {
             text-align: center;
         }
@@ -30,6 +31,7 @@
             padding: 15px 40px;
             text-decoration: none;
             overflow: visible;
+            margin-right: 8px;
             &:hover,
             &:focus {
                 @include border(2px, solid, $active-color, 44px);
@@ -57,6 +59,7 @@
 }
 .list_with_signature{
     max-width: 1137px;
+    display: -webkit-box
 }
 
 .sideBar,
@@ -590,10 +593,14 @@ input[type=text]::-ms-clear {
 
 .disclaimer {
     font-size: 12px;
-    padding: 5px;
+    padding-left: 5px;
     line-height: 1;
     color: #4f4f4f;
     padding-bottom: 20px;
+    ul {
+        list-style-type: unset !important;
+        padding-left: 16px;
+    }
     @media(min-width: $desktop) {
         padding-bottom: 0;
     }

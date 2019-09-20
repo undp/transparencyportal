@@ -46,7 +46,7 @@ $labelWidth: 130px;
   display: none;
 
   &:checked + .switchLabel {
-    font-weight: bold;
+    font-weight: $bold;
     color: $black-color;
     transition: .15s ease-out;
   }
@@ -70,7 +70,7 @@ $labelWidth: 130px;
 .buttonsWrapper {
   display: table-cell;
   vertical-align: middle;
-  font-family: 'ProximaNova-Regular';
+  font-family: 'proxima-nova';
   line-height: 23px;
   text-align: right;
   @media screen and (max-width: 991px) {

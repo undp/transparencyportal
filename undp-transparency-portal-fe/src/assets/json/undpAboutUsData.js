@@ -1,51 +1,67 @@
 export const aboutUsInfo = {
-    "data": [
-        {   
+    data: [
+        {
             img: '/assets/icons/Hows.svg',
             title: 'Hows',
-            id:1,
-            label:'hows',
+            id: 1,
+            label: 'hows',
             image_2: '/assets/icons/Hows-2.svg',
-            desc: "UNDP's types of interventions ranging from capacity building, policy advice to thought leadership and innovation"
+            desc:
+                "UNDP's types of interventions ranging from capacity building, policy advice to thought leadership and innovation",
         },
-        {   
+        {
             img: '/assets/icons/Whos.svg',
             title: 'Whos',
-            id:6,
-            label:'whos',
+            id: 6,
+            label: 'whos',
             image_2: '/assets/icons/whos-2.svg',
-            desc: "UNDP's target beneficiaries to ensure no one is left behind and reach furthest behind geographically, socio-economically and due to shocks and fragility"
+            desc:
+                "UNDP's target beneficiaries to ensure no one is left behind and reach furthest behind geographically, socio-economically and due to shocks and fragility",
         },
         {
             img: '/assets/icons/Partner.svg',
             title: 'Partner',
-            id:5,
-            label:'partner',
+            id: 5,
+            label: 'partner',
             image_2: '/assets/icons/Partner-2.svg',
-            desc: "UNDP's wide range of partners to work together to achieve common development goals"
+            desc:
+                "UNDP's wide range of partners to work together to achieve common development goals",
         },
         {
             img: '/assets/icons/South.png',
             title: 'South-South and Triangular Cooperation',
-            id:3,
+            id: 3,
             label: 'sstc',
             image_2: '/assets/icons/South-2.png',
-            desc: "Connecting best knowledge, capacities and solutions across the countries we serve"
+            desc:
+                'Connecting best knowledge, capacities and solutions across the countries we serve',
         },
         {
             img: '/assets/icons/JointPgm.png',
             title: 'Joint Programme',
-            id:4,
-            label:'joint programme',
+            id: 4,
+            label: 'joint programme',
             image_2: '/assets/icons/Jointpgm-2.png',
-            desc: "Working with the United Nations System to address common development challenges"
+            desc:
+                'Working with the United Nations System to address common development challenges',
         },
         {
             img: '/assets/icons/Humanitarian.png',
             title: 'Humanitarian',
             label: 'humanitarian',
-            id:2,
+            id: 2,
             image_2: '/assets/icons/Humanitarian-2.svg',
-            desc: "UNDP's response to disasters and crises to support efforts to return to sustainable development pathways"
-        }]
-}
+            desc:
+                "UNDP's response to disasters and crises to support efforts to return to sustainable development pathways",
+        }, {
+            img: '/assets/icons/covid-19-logo.svg',
+            title: 'COVID-19 Response',
+            label: 'undpcr',
+            id: 7,
+            style: { 'border-radius': '50%', padding: '10px','box-shadow': '0px 0.6px 0px 1.3px #DCDCE3', background: '#fff' },
+            image_2: '/assets/icons/covid-19-logo.svg',
+            desc:
+                "UNDP's work to respond to the COVID-19 pandemic from crisis management, health system support to socio-economic response",
+        },
+    ],
+};

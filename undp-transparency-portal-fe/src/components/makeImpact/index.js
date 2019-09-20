@@ -5,10 +5,58 @@ export default class MakeImpact extends Component {
     render() {
         return (
             <ArticleItem title={'Making An Impact'}
-                description={'More than 50 years of work in some 170 countries and territories.'}
+                description={'More than 50 years of work in some 170 countries and territories. In 2018'}
             >
                 <section class={style.medals}>
+                <article class={style.article}>
+                        <img src="/assets/icons/make-an-impact/Poverty1.svg" alt="Tackling Poverty" />
+                        <div class={style.impactWrapper}>
+                            <span class={style.value}>31M</span>
+                            <span class={style.text}>people</span>
+                            <span class={style.description}>had better access to the services they need to tackle poverty</span>
+                        </div>
+                    </article>
                     <article class={style.article}>
+                        <img src="/assets/icons/make-an-impact/Job1.svg" alt="Job Creation" />
+                        <div class={style.impactWrapper}>
+                            <span class={style.value}>4M</span>
+                            <span class={style.text}>people</span>
+                            <span class={style.description}>living in or recovering from crisis got a job or improved their livelihoods</span>
+                        </div>
+                    </article>
+                    <article class={style.article}>
+                        <img src="/assets/icons/make-an-impact/SustEnergy1.svg" alt="Sustainable Energy Image" />
+                        <div class={style.impactWrapper}>
+                            <span class={style.text}>Leveraged</span>
+                            <span class={style.value}>$6B</span>
+                            <span class={style.description}>from public and private sources across 110 countries for sustainable energy</span>
+                        </div>
+                    </article>
+                    <article class={style.article}>
+                        <img src="/assets/icons/make-an-impact/Vote1.svg" alt="Voter Image" />
+                        <div class={style.impactWrapper}>
+                            <span class={style.value}>21M</span>
+                            <span class={style.text}>people</span>
+                            <span class={style.description}>registered to vote in 2018</span>
+                        </div>
+                    </article>
+                    <article class={style.article}>
+                        <img src="/assets/icons/make-an-impact/GreenCars1.svg" alt="Green Cars Image" />
+                        <div class={style.impactWrapper}>
+                            <span class={style.value}>256M</span>
+                            <span class={style.text}>tonnes</span>
+                            <span class={style.description}>of carbon emissions cut with our support (equivalent to 50 million cars in one year)</span>
+                        </div>
+                    </article>
+                    <article class={style.article}>
+                        <img src="/assets/icons/make-an-impact/WomenEmpowerment1.svg" alt="Women Empowerment Image" />
+                        <div class={style.impactWrapper}>
+                            <span class={style.value}>73</span>
+                            <span class={style.text}>countries</span>
+                            <span class={style.description}>promoted women in leadership and decisionmaking positions</span>
+                        </div>
+                    </article>
+                    {/* <article class={style.article}>
                         <img src="/assets/icons/lovelihoods.svg" alt="Ranking Image" />
                         <div class={style.impactWrapper}>
                             <span class={style.value}>37.3M</span>
@@ -56,7 +104,7 @@ export default class MakeImpact extends Component {
                         <span class={style.value}># 1</span>
                         <span class={style.description}>   in value for money in Development Information for Policy Making</span>
                         </div>
-                    </article>
+                    </article> */}
                 </section>
             </ArticleItem>
         );

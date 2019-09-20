@@ -8,7 +8,7 @@ export default class MapNoDataTemplate extends Component {
                 <div class={style.template_wrapper}>
                     <img class={style.no_data_img} src="/assets/icons/no-data.svg" alt=
                         "no-data" />
-                    <div class={style.no_data_text}>{'No data available.'}</div>
+                    <div class={style.no_data_text}>{'No Map available.'}</div>
                 </div>
             </section>
         );

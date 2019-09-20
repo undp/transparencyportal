@@ -114,7 +114,8 @@
                             color: $black-color;
                             outline: none;
                             &.active {
-                                font-family: ProximaNova-bold;
+                                font-family: 'proxima-nova';
+                                font-weight: $bold;
                                 color: $active-color;
                                 border-bottom: 5px solid $active-color;
                             }
@@ -233,7 +234,8 @@
         vertical-align: top;
         text-align: center;
         font-size: 20px;
-        font-family: lora-bold;
+        font-family: "lora";
+        font-weight: $bold;
         @media(max-width: 320px) {
             font-size: 18px;
         }
@@ -349,7 +351,8 @@
                 display: block;
                 cursor: pointer;
                 &.active {
-                    font-family: ProximaNova-bold;
+                    font-family: 'proxima-nova';
+                    font-weight: $bold;
                     border-bottom: none;
                     color: $active-color;
                     @media(min-width: $desktop) {
@@ -358,7 +361,7 @@
                     }
                 }
                 &:not(.active):hover {
-                    font-family: ProximaNova-regular;
+                    font-family: 'proxima-nova';
                     color: $white-background;
                     border-bottom: none;
                     @media(min-width: $desktop) {
@@ -494,7 +497,8 @@
         color: #fff;
         transform: translateY(-50%);
         text-align: center;
-        font-family: Lora-bold;
+        font-family: "lora";
+        font-weight: $bold;
         font-size: 22px;
         font-weight: 700;
         z-index: 2;

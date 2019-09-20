@@ -130,13 +130,13 @@
     ul{
         padding: 5px 10px;
         .header{
-            font-weight: bold;
+            font-weight: $bold;
             font-size: 16px;
             color: #1c81c2;
             margin-left: 5px;
         }
         .subheader{
-            font-weight: bold;
+            font-weight: $bold;
             font-size: 14px;
             margin-left: 15px;
         }

@@ -158,7 +158,7 @@ class CountryProfile extends Component {
 
 				data = {
 					recipientName: this.profileName,
-					title: this.profileName,
+					title: this.profileName + ' - Recipient Profile',
 					year: this.props.mapCurrentYear,
 					basicDetails: basicDetails.data,
 					budgetVsExpense: budgetVsExpense.data,
@@ -166,7 +166,7 @@ class CountryProfile extends Component {
 					recepientSdg: recepientSdg.data,
 					themeBudget: themeBudget.data,
 					topBudgetSources: topBudgetSources.data,
-					projectList: projects && projects.data ? projects.data.slice(0, 10) : [],
+					projectList: projects && projects.data ? this.props.projectList.top10Projects : [],
 					mapData: this.props.mapData.outputData.data ? this.props.mapData.outputData.data : [],
 					themeAggregate: themeBudget.themeAggregate,
 					sdgAggregate: recepientSdg.sdgAggregate,
@@ -199,14 +199,15 @@ class CountryProfile extends Component {
 
 				data = {
 					donorName: this.profileName,
-					title: this.profileName,
+					title: this.profileName + ' - Donor Profile',
 					year: this.props.mapCurrentYear,
 					basicDetails: basicDetail.data,
 					budgetSources: budgetSources.data,
 					regularAndOthers: regularAndOther.data,
 					resourcesModalityContribution: resourcesModalityContri.data,
 					topRecipientOffices: topRecipientOffices.data,
-					projectList: donorProjects && donorProjects.data ? donorProjects.data.slice(0, 10) : [],
+					mapData: this.props.mapData.outputData.data.length === 0? this.props.donorProfileMapData.data && this.props.donorProfileMapData.data.length > 0 ? this.props.donorProfileMapData.data : [] : this.props.mapData.outputData.data, 
+					projectList: donorProjects && donorProjects.data ? this.props.projectList.top10Projects : [],
 					regularAndOthersCountryAggregate: regularAndOther.countryAggregate,
 					resourcesModalityCountryAggregate: resourcesModalityContri.countryAggregate,
 					lastUpdatedDate: getFormmattedDate(this.props.lastUpdatedDate.data.last_updated_date)
@@ -220,6 +221,7 @@ class CountryProfile extends Component {
 				templateType = "profile_donor"
 				break;
 		}
+		
 		return (
 			<ExportPopup
 				templateType={templateType}
@@ -490,10 +492,10 @@ class CountryProfile extends Component {
 				donorprofile: `&year=${this.props.currentYear}&budgetType=${this.state.budgetType}`
 			};
 
-		if (this.props.type === 'recipientprofile' && this.profileFound) {
+		if (this.props.type === 'recipientprofile' && this.profileFound && !this.state.selectedCountry.isRegion) {
 			this.state.selectedCountry.is_recipient ? null : route('/404');
 		}
-		else if (this.props.type === 'donorprofile' && this.profileFound) {
+		else if (this.props.type === 'donorprofile' && this.profileFound && !this.state.selectedCountry.isRegion) {
 			this.state.selectedCountry.is_donor ? null : route('/404');
 		}
 		return (
@@ -556,7 +558,9 @@ class CountryProfile extends Component {
 const mapStateToProps = (state) => {
 	const { list: searchResult } = state.countryRegionSearch,
 		{ currentYear } = state.yearList,
-		{ mapCurrentYear } = state.mapData.yearTimeline;
+		{ mapCurrentYear } = state.mapData.yearTimeline,
+		donorProfileMapData = state.mapData.donorProfileMapData;
+
 	return {
 		router: state.router,
 		countryList: state.countryList,
@@ -568,7 +572,8 @@ const mapStateToProps = (state) => {
 		searchResult,
 		currentYear,
 		mapCurrentYear,
-		lastUpdatedDate:state.lastUpdatedDate
+		lastUpdatedDate: state.lastUpdatedDate,
+		donorProfileMapData
 	};
 };
 

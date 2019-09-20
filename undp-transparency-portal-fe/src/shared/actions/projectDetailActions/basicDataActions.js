@@ -31,10 +31,6 @@ export const fetchProjectBasicData = (id) => (dispatch, getState) => {
 	dispatch(projectBasicDataFetchStart());
 	return Api.get(Api.API_PROJECT_DETAILS + id).then(resp => {
 		if (resp.data && resp.success) {
-			resp.data.storyMap = [
-				{ location: 'Ubari', source: 'https://unosat.maps.arcgis.com/apps/Cascade/index.html?appid=1e216a4f58624dfd8fd88e4d10792d3b' },
-				{location: 'Benghazi', source: 'https://unosat.maps.arcgis.com/apps/Cascade/index.html?appid=eb29652914fe4cfb9f10fb910b6c9b6a' } 
-			];
 			dispatch(projectBasicDataFetchEnd());
 			dispatch(projectBasicDataFetchSuccess(resp.data));
 		}
